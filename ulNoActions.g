@@ -22,43 +22,129 @@ grammar ulNoActions;
     }
 }
 
-program         : function+
+/* Parser */
+
+program
+    : function+
 	;
 
-function        : functionDecl functionBody
+function
+    : functionDecl functionBody
     ;
 
-functionDecl    : type identifier '(' ')'
+functionDecl
+    : compoundType identifier LPARENS RPARENS
     ;
 
-functionBody    : '{' '}'
+functionBody
+    : LCURLY varDecl* RCURLY
     ;
 
-identifier      : ID
+varDecl
+    : compoundType identifier SEMI
     ;
 
-type            : TYPE
+identifier
+    : ID
     ;
+
+compoundType
+    : TYPE
+    | TYPE LSQUARE INTEGERC RSQUARE
+    ;
+
+literal
+    : STRINGC
+    | INTEGERC
+    | FLOATC
+    | CHARC
+    | TRUE
+    | FALSE
+    ;
+
+/* Fragments */
 
 /* Lexer */
 
-IF              : 'if'
+IF
+    : 'if'
     ;
 
-TYPE            : 'int'
+WHILE
+    : 'while'
     ;
 
-ID              : ('a'..'z')+
+TYPE
+    : ('int' | 'float' | 'char' | 'string' | 'boolean' | 'void')
+    ;
+
+ID
+    : ('a'..'z')+
+    ;
+
+INTEGERC
+    : ('0'..'9')+
+    ;
+
+STRINGC
+    : '"'.*'"'
+    ;
+
+CHARC
+    : '\''.'\''
+    ;
+
+FLOATC
+    : ('0'..'9')+'.'('0'..'9')+
+    ;
+
+TRUE
+    : 'true'
+    ;
+
+FALSE
+    : 'false'
+    ;
+
+SEMI
+    : ';'
+    ;
+
+COMMA
+    : ','
+    ;
+
+LPARENS
+    : '('
+    ;
+
+RPARENS
+    : ')'
+    ;
+
+LSQUARE
+    : '['
+    ;
+
+RSQUARE
+    : ']'
+    ;
+
+LCURLY
+    : '{'
+    ;
+
+RCURLY
+    : '}'
     ;
 
 
-/* These two lines match whitespace and comments 
- * and ignore them.
- * You want to leave these as last in the file.  
- * Add new lexical rules above 
- */
-WS              : ( '\t' | ' ' | ('\r' | '\n') )+ { $channel = HIDDEN;}
+/* Whitespace */
+
+WS
+    : ( '\t' | ' ' | ('\r' | '\n') )+ { $channel = HIDDEN;}
     ;
 
-COMMENT         : '//' ~('\r' | '\n')* ('\r' | '\n') { $channel = HIDDEN;}
+COMMENT
+    : '//' ~('\r' | '\n')* ('\r' | '\n') { $channel = HIDDEN;}
     ;
