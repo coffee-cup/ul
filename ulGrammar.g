@@ -58,9 +58,9 @@ compoundType
     | TYPE
     ;
 
-statement
-options { backtrack = true; }
+statement options { backtrack = true; }
     : SEMI
+    | expr SEMI
     | IF LPARENS expr RPARENS block ELSE block
     | IF LPARENS expr RPARENS block
     | WHILE LPARENS expr RPARENS block
@@ -68,19 +68,37 @@ options { backtrack = true; }
     | PRINTLN expr SEMI
     | RETURN expr? SEMI
     | identifier LSQUARE expr RSQUARE EQUALS SEMI
-    | expr SEMI
     ;
 
 block
     : LCURLY statement* RCURLY
     ;
 
-
 expr
-    : literal
+    : doubleEqExpr
     | identifier LSQUARE expr RSQUARE
     | identifier LPARENS exprList RPARENS
-    | identifier
+    ;
+
+doubleEqExpr
+    : lessThanExpr (DOUBEQOP lessThanExpr)*
+    ;
+
+lessThanExpr
+    : addSubExpr (LESSOP addSubExpr)*
+    ;
+
+addSubExpr
+    : multExpr ((ADDOP | SUBOP) multExpr)*
+    ;
+
+multExpr
+    : atom (MULTOP atom)*
+    ;
+
+atom
+    : identifier
+    | literal
     | LPARENS expr RPARENS
     ;
 
@@ -93,22 +111,6 @@ literal
     | FALSE
     ;
 
-// expr
-//     : literal
-//     | identifier LSQUARE expr RSQUARE
-//     | identifier LPARENS exprList RPARENS
-//     | /*identifier*/
-//     | LPARENS expr RPARENS
-//     ;
-
-// literal
-//     : BOOLC
-//     | STRINGC
-//     | INTEGERC
-//     | FLOATC
-//     | CHARC
-//     ;
-
 exprList
     : expr exprMore*
     |
@@ -116,6 +118,14 @@ exprList
 
 exprMore
     : COMMA expr
+    ;
+
+op
+    : MULTOP
+    | SUBOP
+    | ADDOP
+    | LESSOP
+    | DOUBEQOP
     ;
 
 identifier
@@ -134,97 +144,41 @@ fragment DIGIT
 
 /* Lexer */
 
-IF
-    : 'if'
-    ;
+TYPE : ('int' | 'float' | 'char' | 'string' | 'boolean' | 'void') ;
 
-ELSE
-    : 'else'
-    ;
+IF          : 'if' ;
+ELSE        : 'else' ;
+WHILE       : 'while' ;
+PRINT       : 'print' ;
+PRINTLN     : 'println' ;
+RETURN      : 'return' ;
 
-WHILE
-    : 'while'
-    ;
+INTEGERC    : ('0' | ('1'..'9'('0'..'9')*)) ;
+STRINGC     : '"' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ')* '"' ;
+CHARC       : '\'' (LETTER | DIGIT | '_' | '!' | '.' | '?' | '-' | ' ') '\'' ;
+FLOATC      : ('0' | ('1'..'9'('0'..'9')*))'.'(DIGIT+)? ;
 
-PRINT
-    : 'print'
-    ;
+TRUE        : 'true' ;
+FALSE       : 'false' ;
 
-PRINTLN
-    : 'println'
-    ;
+MULTOP      : '*'  ;
+SUBOP       : '-'  ;
+ADDOP       : '+'  ;
+LESSOP      : '<'  ;
+DOUBEQOP    : '==' ;
 
-RETURN
-    : 'return'
-    ;
+EQUALS      : '=' ;
+SEMI        : ';' ;
+COMMA       : ',' ;
 
-TYPE
-    : ('int' | 'float' | 'char' | 'string' | 'boolean' | 'void')
-    ;
+LPARENS     : '(' ;
+RPARENS     : ')' ;
+LSQUARE     : '[' ;
+RSQUARE     : ']' ;
+LCURLY      : '{' ;
+RCURLY      : '}' ;
 
-INTEGERC
-    : DIGIT+
-    ;
-
-STRINGC
-    : '"' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ')* '"'
-    ;
-
-CHARC
-    : '\'' (LETTER | DIGIT | '_' | '!' | '.' | '?' | '-' | ' ') '\''
-    ;
-
-FLOATC
-    : (DIGIT+)'.'(DIGIT+)?
-    ;
-
-TRUE
-    : 'true'
-    ;
-
-FALSE
-    : 'false'
-    ;
-
-EQUALS
-    : '='
-    ;
-
-SEMI
-    : ';'
-    ;
-
-COMMA
-    : ','
-    ;
-
-LPARENS
-    : '('
-    ;
-
-RPARENS
-    : ')'
-    ;
-
-LSQUARE
-    : '['
-    ;
-
-RSQUARE
-    : ']'
-    ;
-
-LCURLY
-    : '{'
-    ;
-
-RCURLY
-    : '}'
-    ;
-
-ID
-    : (LETTER | '_') (LETTER | DIGIT | '_')*
-    ;
+ID : (LETTER | '_') (LETTER | DIGIT | '_')* ;
 
 /* Whitespace */
 

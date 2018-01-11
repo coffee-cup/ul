@@ -1,0 +1,16 @@
+void main () {
+    int x;
+    boolean b;
+
+    1 + (1 < (x * 2));
+
+    //    x = 1 + 2;
+    //x = 5 - (3 * 9);
+    //x = 5 * 5 - 2;
+
+    //b = true == false;
+    //b = true == true;
+    //b = true == (true == false);
+
+    //b = "asdf" == "hello";
+}
