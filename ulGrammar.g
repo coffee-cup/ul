@@ -88,6 +88,8 @@ literal
     | INTEGERC
     | FLOATC
     | CHARC
+    | TRUE
+    | FALSE
     ;
 
 exprList
@@ -105,8 +107,12 @@ identifier
 
 /* Fragments */
 
-fragment DIGITS
-    : ('0'..'9')+
+fragment LETTER
+    : ('a'..'z' | 'A'..'Z')
+    ;
+
+fragment DIGIT
+    : ('0'..'9')
     ;
 
 /* Lexer */
@@ -140,27 +146,31 @@ TYPE
     ;
 
 ID
-    : ('a'..'z')+
+    : (LETTER | '_') (LETTER | DIGIT | '_')*
     ;
 
 INTEGERC
-    : DIGITS
+    : DIGIT+
     ;
 
 STRINGC
-    : '"'.*'"'
+    : '"' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ')* '"'
     ;
 
 CHARC
-    : '\''.'\''
+    : '\'' (LETTER | DIGIT | '_' | '!' | '.' | '?' | '-' | ' ') '\''
     ;
 
 FLOATC
-    : DIGITS'.'DIGITS?
+    : (DIGIT+)'.'(DIGIT+)?
     ;
 
 TRUE
     : 'true'
+    ;
+
+FALSE
+    : 'false'
     ;
 
 EQUALS

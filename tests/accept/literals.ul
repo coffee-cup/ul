@@ -1,0 +1,32 @@
+void main() {
+    // Integers
+    0;
+    1;
+    10;
+    1234567890;
+
+    // Floats
+    0.;
+    0.1;
+    0.123456789;
+    123456789.123456789;
+    1.1;
+
+    // Booleans
+    true;
+    false;
+
+    // Characters
+    'a';
+    'z';
+    ' ';
+    'A';
+    'Z';
+
+
+    // Strings
+    "";
+    "abc123_ ";
+    "hello world";
+    "hello, world!";
+}
