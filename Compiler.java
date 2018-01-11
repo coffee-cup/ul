@@ -1,3 +1,4 @@
+
 /*
  * Compiler.java
  *
@@ -9,14 +10,13 @@ import org.antlr.runtime.*;
 import java.io.*;
 
 public class Compiler {
-	public static void main (String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		ANTLRInputStream input;
 
-		if (args.length == 0 ) {
+		if (args.length == 0) {
 			System.out.println("Usage: Test filename.ul");
 			return;
-		}
-		else {
+		} else {
 			input = new ANTLRInputStream(new FileInputStream(args[0]));
 		}
 
@@ -28,14 +28,13 @@ public class Compiler {
 
 		try {
 			parser.program();
-		}
-		catch (RecognitionException e )	{
+			System.out.println("\nIn the language.");
 			// A lexical or parsing error occured.
 			// ANTLR will have already printed information on the
-			// console due to code added to the grammar.  So there is
+			// console due to code added to the grammar. So there is
 			// nothing to do here.
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
+			System.out.println("\nNot in the language!\n");
 			System.out.println(e);
 			e.printStackTrace();
 		}

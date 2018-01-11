@@ -1,0 +1,2 @@
+void foo() {}
+int foo(int a, int b, char [2]c, boolean flag) {}

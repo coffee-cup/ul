@@ -33,24 +33,54 @@ function
     ;
 
 functionDecl
-    : compoundType identifier LPARENS RPARENS
+    : compoundType identifier LPARENS formalParameters RPARENS
+    ;
+
+formalParameters
+    : compoundType identifier moreFormals*
+    |
+    ;
+
+moreFormals
+    : COMMA compoundType identifier
     ;
 
 functionBody
-    : LCURLY varDecl* RCURLY
+    : LCURLY varDecl* statement* RCURLY
     ;
 
 varDecl
     : compoundType identifier SEMI
     ;
 
-identifier
-    : ID
+compoundType
+    : TYPE LSQUARE INTEGERC RSQUARE
+    | TYPE
     ;
 
-compoundType
-    : TYPE
-    | TYPE LSQUARE INTEGERC RSQUARE
+statement
+options { backtrack = true; }
+    : SEMI
+    | IF LPARENS expr RPARENS block ELSE block
+    | IF LPARENS expr RPARENS block
+    | WHILE LPARENS expr RPARENS block
+    | PRINT expr SEMI
+    | PRINTLN expr SEMI
+    | RETURN expr? SEMI
+    | identifier LSQUARE expr RSQUARE EQUALS SEMI
+    | expr SEMI
+    ;
+
+block
+    : LCURLY statement* RCURLY
+    ;
+
+expr
+    : literal
+    | identifier LSQUARE expr RSQUARE
+    | identifier LPARENS exprList RPARENS
+    | identifier
+    | LPARENS expr RPARENS
     ;
 
 literal
@@ -58,11 +88,26 @@ literal
     | INTEGERC
     | FLOATC
     | CHARC
-    | TRUE
-    | FALSE
+    ;
+
+exprList
+    : expr exprMore*
+    |
+    ;
+
+exprMore
+    : COMMA expr
+    ;
+
+identifier
+    : ID
     ;
 
 /* Fragments */
+
+fragment DIGITS
+    : ('0'..'9')+
+    ;
 
 /* Lexer */
 
@@ -70,8 +115,24 @@ IF
     : 'if'
     ;
 
+ELSE
+    : 'else'
+    ;
+
 WHILE
     : 'while'
+    ;
+
+PRINT
+    : 'print'
+    ;
+
+PRINTLN
+    : 'println'
+    ;
+
+RETURN
+    : 'return'
     ;
 
 TYPE
@@ -83,7 +144,7 @@ ID
     ;
 
 INTEGERC
-    : ('0'..'9')+
+    : DIGITS
     ;
 
 STRINGC
@@ -95,15 +156,15 @@ CHARC
     ;
 
 FLOATC
-    : ('0'..'9')+'.'('0'..'9')+
+    : DIGITS'.'DIGITS?
     ;
 
 TRUE
     : 'true'
     ;
 
-FALSE
-    : 'false'
+EQUALS
+    : '='
     ;
 
 SEMI

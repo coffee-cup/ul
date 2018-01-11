@@ -1,0 +1,17 @@
+void main() {
+    // Basic types
+    int a;
+    float b;
+    char c;
+    string d;
+    boolean e;
+    void f;
+
+    // Array types
+    int [10]g;
+    float [1] h;
+    char[1000] i;
+    string[0] j;
+    boolean    [10]     k;
+    void[1]l;
+}
