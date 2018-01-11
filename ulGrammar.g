@@ -1,4 +1,4 @@
-grammar ulNoActions;
+grammar ulGrammar;
 
 @members {
   protected void mismatch (IntStream input, int ttype, BitSet follow)
