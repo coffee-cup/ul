@@ -25,7 +25,7 @@ grammar ulGrammar;
 /* Parser */
 
 program
-    : function+
+    : function+ EOF
 	;
 
 function
@@ -75,6 +75,7 @@ block
     : LCURLY statement* RCURLY
     ;
 
+
 expr
     : literal
     | identifier LSQUARE expr RSQUARE
@@ -91,6 +92,22 @@ literal
     | TRUE
     | FALSE
     ;
+
+// expr
+//     : literal
+//     | identifier LSQUARE expr RSQUARE
+//     | identifier LPARENS exprList RPARENS
+//     | /*identifier*/
+//     | LPARENS expr RPARENS
+//     ;
+
+// literal
+//     : BOOLC
+//     | STRINGC
+//     | INTEGERC
+//     | FLOATC
+//     | CHARC
+//     ;
 
 exprList
     : expr exprMore*
@@ -143,10 +160,6 @@ RETURN
 
 TYPE
     : ('int' | 'float' | 'char' | 'string' | 'boolean' | 'void')
-    ;
-
-ID
-    : (LETTER | '_') (LETTER | DIGIT | '_')*
     ;
 
 INTEGERC
@@ -209,6 +222,9 @@ RCURLY
     : '}'
     ;
 
+ID
+    : (LETTER | '_') (LETTER | DIGIT | '_')*
+    ;
 
 /* Whitespace */
 
