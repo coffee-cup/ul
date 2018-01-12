@@ -61,7 +61,46 @@ int ifFn () {
 }
 
 void whileFn() {
-    ;
+    while(true) {}
+    while(false) {}
+    while     (x == 2) {;}
+    while (((((((((((((x - 3) + 2) - 4))))))))))) {}
+    while  (  (6 - 2) < (y + b * (t - y)) == (h * (b * (a)))) {
+        while(true) {
+            while(false) {
+                ;
+            }
+        }
+    }
+}
+
+void printAndReturn() {
+    print (a + 1);
+    print a;
+    print "hello";
+    print 'a';
+    print x[2];
+    print 2.3;
+    print true;
+    print false;
+
+    println (a + 1);
+    println a;
+    println "hello";
+    println 'a';
+    println x[2];
+    println 2.3;
+    println true;
+    println false;
+
+    return (a + 1);
+    return a;
+    return "hello";
+    return 'a';
+    return x[2];
+    return 2.3;
+    return true;
+    return false;
 }
 
 void main() {}

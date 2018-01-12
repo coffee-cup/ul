@@ -77,8 +77,6 @@ block
 
 expr
     : doubleEqExpr
-    | identifier LSQUARE expr RSQUARE
-    | identifier LPARENS exprList RPARENS
     ;
 
 doubleEqExpr
@@ -100,6 +98,8 @@ multExpr
 atom
     : identifier
     | literal
+    | identifier LSQUARE expr RSQUARE
+    | identifier LPARENS exprList RPARENS
     | LPARENS expr RPARENS
     ;
 

@@ -1,5 +1,0 @@
-int main() {
-    float hello;
-    int[4] test;
-    int [5] yes;
-}

@@ -30,6 +30,11 @@ int func() {
     } else {
         print "Hello";
         println 123;
+        if ((2 + 3) < 3) {
+            return 'a';
+        } else {
+            return "balloon";
+        }
         return (foo());
     }
 
@@ -43,7 +48,13 @@ int func() {
     a; b; c;
     (foo(100, bar(), charlie("asdf", g[100])));
 
-    // TODO test operators
+    // Test operators
+    a = 1 + 2;
+    a = 1 - 2;
+    a = 1 * 2;
+    b = 1 < 2;
+    b = 1 == 2;
+    x = x * f(x + b(a * (2 - test)));
 
     // Test literals
     "hello"; "";
@@ -67,5 +78,9 @@ int func() {
 }
 
 int foo(int a, float b, char c, string d, boolean e, void f) {}
+float floatFn() {}
+boolean boolFn() {}
+int[3] arrFn() {}
+int    [45]    fn() {}
 void a() {}
 void main() {}
