@@ -1,2 +1,13 @@
 void foo() {}
 int foo(int a, int b, char [2]c, boolean flag) {}
+float foo() {}
+char foo() {}
+string foo() {}
+boolean foo() {}
+
+void [1224141] foo() {}
+int[2] foo() {}
+float      [0] foo() {}
+char[1]foo(){}
+string[0]foo() {}
+boolean[1000]foo() {}
