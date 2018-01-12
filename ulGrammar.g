@@ -67,7 +67,8 @@ statement options { backtrack = true; }
     | PRINT expr SEMI
     | PRINTLN expr SEMI
     | RETURN expr? SEMI
-    | identifier LSQUARE expr RSQUARE EQUALS SEMI
+    | identifier EQUALS expr SEMI
+    | identifier LSQUARE expr RSQUARE EQUALS expr SEMI
     ;
 
 block
@@ -154,8 +155,8 @@ PRINTLN     : 'println' ;
 RETURN      : 'return' ;
 
 INTEGERC    : ('0' | ('1'..'9'('0'..'9')*)) ;
-STRINGC     : '"' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ')* '"' ;
-CHARC       : '\'' (LETTER | DIGIT | '_' | '!' | '.' | '?' | '-' | ' ') '\'' ;
+STRINGC     : '"' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ' | ';')* '"' ;
+CHARC       : '\'' (LETTER | DIGIT | '_' | '!' | '.' | ',' | '?' | '-' | ' ' | ';') '\'' ;
 FLOATC      : ('0' | ('1'..'9'('0'..'9')*))'.'(DIGIT+)? ;
 
 TRUE        : 'true' ;

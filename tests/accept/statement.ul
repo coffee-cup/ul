@@ -1,0 +1,36 @@
+int ifFn () {
+    int x;
+
+    if (x + 2 < 40) {
+        ;
+    }
+
+    if (true) {
+        ;
+    } else {
+        ;
+    }
+
+    if ((6 - 2) < (y + b * (t - y)) == (h * (b * (a)))) {
+        ;
+    } else {
+        ;;;
+        if (true) {
+            ;
+        } else {
+            if (false) {
+                if (hello == world) {
+                    if (a < b) {
+                        i
+                    }
+                }
+            }
+        }
+    }
+}
+
+void whileFn() {
+    ;
+}
+
+void main() {}

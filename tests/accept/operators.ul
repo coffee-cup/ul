@@ -3,14 +3,16 @@ void main () {
     boolean b;
 
     1 + (1 < (x * 2));
+    (((((((((((((1) - (1 * (1))))))))))))));
 
-    //    x = 1 + 2;
-    //x = 5 - (3 * 9);
-    //x = 5 * 5 - 2;
+    x = 1 + 2;
+    x = 5 - (3 * 9);
+    x = 5 * 5 - 2;
 
-    //b = true == false;
-    //b = true == true;
-    //b = true == (true == false);
+    b = true == false;
+    b = true == true;
+    b = true == (true == false);
+    b = (6 - 2) < (y + b * (t - y)) == (h * (b * (a)));
 
-    //b = "asdf" == "hello";
+    b = "asdf" == "hello";
 }

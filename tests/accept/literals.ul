@@ -22,11 +22,17 @@ void main() {
     ' ';
     'A';
     'Z';
-
+    '_';
+    '!';
+    '.';
+    ',';
+    '?';
+    '-';
 
     // Strings
     "";
     "abc123_ ";
     "hello world";
     "hello, world!";
+    "_!.,?-";
 }
