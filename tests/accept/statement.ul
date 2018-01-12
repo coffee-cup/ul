@@ -11,6 +11,33 @@ int ifFn () {
         ;
     }
 
+    if (a < b) {
+        ;
+    }
+    else {
+        x = 1;
+    }
+
+    if (a < (x + (x + ((x * 2) - (5 - y))))) {
+        ;
+    } else {
+        ;
+    }
+
+    if (a < b) {
+        if (b < c) {
+            ;
+        }
+        else {
+            x = 2;
+            if (true) {
+                if (hello == world) {
+                    ;
+                }
+            }
+        }
+    }
+
     if ((6 - 2) < (y + b * (t - y)) == (h * (b * (a)))) {
         ;
     } else {
@@ -21,9 +48,13 @@ int ifFn () {
             if (false) {
                 if (hello == world) {
                     if (a < b) {
-                        i
+                        return i;
                     }
                 }
+                else
+                    {
+                        return a + (c * 22);
+                    }
             }
         }
     }
