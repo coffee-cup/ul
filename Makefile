@@ -1,4 +1,3 @@
-#
 GNAME= ulGrammar
 GSRC= $(GNAME).g
 

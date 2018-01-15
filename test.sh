@@ -8,16 +8,18 @@ echo "------ Running parser against accept files"
 echo ""
 
 # All of these files should be in the language
-# for f in $ACCEPT_FILES
-# do
-#     echo "Testing accept - $f"
-#     java Compiler $f
-#     if ! java Compiler $f; then
-#         echo "$f is not in the language!"
-#         exit 1
-#     fi
-#     echo ""
-# done
+for f in $ACCEPT_FILES
+do
+    echo "Testing accept - $f"
+    java Compiler $f
+    if ! java Compiler $f; then
+        echo "$f is not in the language!"
+        echo ""
+        echo "!!!!! ERROR !!!!!"
+        exit 1
+    fi
+    echo ""
+done
 
 echo ""
 echo "------ Running parser against reject files"
@@ -30,6 +32,8 @@ do
     echo "Testing reject - $f"
     if java Compiler $f; then
         echo "$f is in the language and shouldn't be!"
+        echo ""
+        echo "!!!!! ERROR !!!!!"
         exit 1
     fi
 done

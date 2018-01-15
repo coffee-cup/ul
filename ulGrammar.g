@@ -103,13 +103,18 @@ atom
     | LPARENS expr RPARENS
     ;
 
+stringLiteral : STRINGC ;
+intLiteral    : INTEGERC ;
+floatLiteral  : FLOATC ;
+charLiteral   : CHARC ;
+boolLiteral   : TRUE | FALSE ;
+
 literal
-    : STRINGC
-    | INTEGERC
-    | FLOATC
-    | CHARC
-    | TRUE
-    | FALSE
+    : stringLiteral
+    | intLiteral
+    | floatLiteral
+    | charLiteral
+    | boolLiteral
     ;
 
 exprList
