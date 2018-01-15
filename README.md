@@ -10,7 +10,7 @@ The language is built with `make`.
 - `make compiler` compiles the compiler
 - `make clean` removes compile and build files
 
-To to a full clean and build run,
+To do a full clean and build run,
 
 ```sh
 make clean; make
