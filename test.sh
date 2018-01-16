@@ -1,7 +1,9 @@
 #!/bin/bash
 
-ACCEPT_FILES=./tests/accept/*.ul
-REJECT_FILES=./tests/reject/*.ul
+ACCEPT_FILES=../tests/accept/*.ul
+REJECT_FILES=../tests/reject/*.ul
+
+cd src/
 
 echo ""
 echo "------ Running parser against accept files"
