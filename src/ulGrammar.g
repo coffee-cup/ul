@@ -74,9 +74,9 @@ compoundType returns [Type t]
     ;
 
 arrayType returns [Type t]
-    : of=type LSQUARE INTEGERC RSQUARE
+    : of=type LSQUARE i=integerLiteral RSQUARE
         {
-            $t = new ArrayType(of);
+            $t = new ArrayType(of, i.getValue());
         }
     ;
 
@@ -167,14 +167,15 @@ functionCall
     ;
 
 stringLiteral : STRINGC ;
-intLiteral    : INTEGERC ;
+integerLiteral returns [IntegerLiteral i]
+    : INTEGERC { i = new IntegerLiteral(Integer.parseInt($INTEGERC.text)); } ;
 floatLiteral  : FLOATC ;
 charLiteral   : CHARC ;
 boolLiteral   : TRUE | FALSE ;
 
 literal
     : stringLiteral
-    | intLiteral
+    | integerLiteral
     | floatLiteral
     | charLiteral
     | boolLiteral

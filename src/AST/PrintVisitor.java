@@ -60,7 +60,9 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(IfStatement i);
 
-	// public void visit(IntegerLiteral i);
+	public void visit(IntegerLiteral i) {
+        out.print(i.value);
+    }
 
 	// public void visit(LessThanExpression e);
 

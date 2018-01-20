@@ -41,7 +41,7 @@ public interface Visitor {
 
 	// public void visit(IfStatement i);
 
-	// public void visit(IntegerLiteral i);
+	public void visit(IntegerLiteral i);
 
 	// public void visit(LessThanExpression e);
 

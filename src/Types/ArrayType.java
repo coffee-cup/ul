@@ -4,14 +4,14 @@ import Types.Type;
 
 public class ArrayType extends Type {
     Type arrayOf;
-    Integer size;
+    int size;
 
-    public ArrayType(Type arrayOf) {
+    public ArrayType(Type arrayOf, int size) {
         this.arrayOf = arrayOf;
-        this.size = 0;
+        this.size = size;
     }
 
     public String toString() {
-        return arrayOf.toString() + "[" + size.toString() + "]";
+        return arrayOf.toString() + "[" + size + "]";
     }
 }
