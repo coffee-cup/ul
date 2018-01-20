@@ -1,5 +1,7 @@
 GNAME= ulGrammar
 SRCDIR= src/
+SRCENTRY= Compiler
+OUTDIR= bin/
 GSRC= $(SRCDIR)$(GNAME).g
 
 all: grammar compiler
@@ -8,8 +10,8 @@ grammar: $(GSRCS)
 	java org.antlr.Tool -fo $(SRCDIR) $(GSRC)
 
 compiler:
-	javac $(SRCDIR)**/*.java
+	javac -d $(OUTDIR) -sourcepath $(SRCDIR) $(SRCDIR)$(SRCENTRY).java
 
 clean:
-	rm $(SRCDIR)**/*.class $(SRCDIR)$(GNAME)**/*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
+	rm $(OUTDIR)/*.class rm $(OUTDIR)**/*.class $(SRCDIR)$(GNAME)*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
 

@@ -1,6 +1,6 @@
 grammar ulGrammar;
 
-@headers {
+@header {
     import Types.*;
     import AST.*;
 }

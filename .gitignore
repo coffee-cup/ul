@@ -193,3 +193,5 @@ Temporary Items
 ulGrammar__.g
 ulGrammar*.java
 ulGrammar.tokens
+
+bin/
