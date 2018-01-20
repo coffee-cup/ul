@@ -1,5 +1,10 @@
 grammar ulGrammar;
 
+@headers {
+    import Types.*;
+    import AST.*;
+}
+
 @members {
   protected void mismatch (IntStream input, int ttype, BitSet follow)
     throws RecognitionException {
@@ -24,8 +29,11 @@ grammar ulGrammar;
 
 /* Parser */
 
-program
+program returns [Program p]
     : function+ EOF
+        {
+            p = new Program();
+        }
 	;
 
 function
@@ -61,14 +69,38 @@ compoundType
 statement options { backtrack = true; }
     : SEMI
     | expr SEMI
-    | IF LPARENS expr RPARENS block ELSE block
+    | ifStatement
+    | whileStatement
+    | printStatement
+    | returnStatement
+    | assignStatement
+    | arrayAssignStatement
+    ;
+
+ifStatement options { backtrack = true; }
+    : IF LPARENS expr RPARENS block ELSE block
     | IF LPARENS expr RPARENS block
-    | WHILE LPARENS expr RPARENS block
-    | PRINT expr SEMI
+    ;
+
+whileStatement
+    : WHILE LPARENS expr RPARENS block
+    ;
+
+printStatement
+    : PRINT expr SEMI
     | PRINTLN expr SEMI
-    | RETURN expr? SEMI
-    | identifier EQUALS expr SEMI
-    | identifier LSQUARE expr RSQUARE EQUALS expr SEMI
+    ;
+
+returnStatement
+    : RETURN expr? SEMI
+    ;
+
+assignStatement
+    : identifier EQUALS expr SEMI
+    ;
+
+arrayAssignStatement
+    : identifier LSQUARE expr RSQUARE EQUALS expr SEMI
     ;
 
 block
@@ -98,9 +130,17 @@ multExpr
 atom
     : identifier
     | literal
-    | identifier LSQUARE expr RSQUARE
-    | identifier LPARENS exprList RPARENS
+    | arrayReference
+    | functionCall
     | LPARENS expr RPARENS
+    ;
+
+arrayReference
+    : identifier LSQUARE expr RSQUARE
+    ;
+
+functionCall
+    : identifier LPARENS exprList RPARENS
     ;
 
 stringLiteral : STRINGC ;
@@ -189,9 +229,9 @@ ID : (LETTER | '_') (LETTER | DIGIT | '_')* ;
 /* Whitespace */
 
 WS
-    : ( '\t' | ' ' | ('\r' | '\n') )+ { $channel = HIDDEN;}
+    : ( '\t' | ' ' | ('\r' | '\n') )+ { $channel = HIDDEN; skip(); }
     ;
 
 COMMENT
-    : '//' ~('\r' | '\n')* ('\r' | '\n') { $channel = HIDDEN;}
+    : '//' ~('\r' | '\n')* ('\r' | '\n') { $channel = HIDDEN; skip(); }
     ;

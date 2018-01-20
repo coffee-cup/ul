@@ -8,8 +8,8 @@ grammar: $(GSRCS)
 	java org.antlr.Tool -fo $(SRCDIR) $(GSRC)
 
 compiler:
-	javac $(SRCDIR)*.java
+	javac $(SRCDIR)**/*.java
 
 clean:
-	rm $(SRCDIR)*.class $(SRCDIR)$(GNAME)*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
+	rm $(SRCDIR)**/*.class $(SRCDIR)$(GNAME)**/*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
 

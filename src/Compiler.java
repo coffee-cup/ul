@@ -1,11 +1,11 @@
 
 /*
  * Compiler.java
- *
  */
 
 import org.antlr.runtime.*;
 import java.io.*;
+import AST.*;
 
 public class Compiler {
 	public static void main(String[] args) throws Exception {
@@ -27,7 +27,10 @@ public class Compiler {
 		ulGrammarParser parser = new ulGrammarParser(tokens);
 
 		try {
-			parser.program();
+			Program p = parser.program();
+
+            PrintVisitor printVisitor = new PrintVisitor();
+            p.accept(printVisitor);
 		} catch (RecognitionException e) {
 			// A lexical or parsing error occurred.
 			// ANTLR will have already printed information on the
