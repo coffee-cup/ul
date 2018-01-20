@@ -30,14 +30,18 @@ grammar ulGrammar;
 /* Parser */
 
 program returns [Program p]
-    : function+ EOF
-        {
-            p = new Program();
-        }
+    @init
+    {
+        p = new Program();
+    }
+    : (f=function { p.functions.add(f); })+ EOF
 	;
 
-function
+function returns [Function f]
     : functionDecl functionBody
+        {
+            f = new Function("name");
+        }
     ;
 
 functionDecl
@@ -62,8 +66,12 @@ varDecl
     ;
 
 compoundType
-    : TYPE LSQUARE INTEGERC RSQUARE
+    : arrayType
     | TYPE
+    ;
+
+arrayType
+    : TYPE LSQUARE INTEGERC RSQUARE
     ;
 
 statement options { backtrack = true; }
