@@ -1,9 +1,9 @@
 package Types;
 
 public class BooleanType extends Type {
-	boolean value;
+	public BooleanType() {}
 
-	public BooleanType(boolean value) {
-		this.value = value;
-	}
+    public String toString() {
+        return "boolean";
+    }
 }

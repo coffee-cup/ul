@@ -38,14 +38,17 @@ program returns [Program p]
 	;
 
 function returns [Function f]
-    : functionDecl functionBody
+    : d=functionDecl functionBody
         {
-            f = new Function("name");
+            f = new Function(d.t, d.i);
         }
     ;
 
-functionDecl
-    : compoundType identifier LPARENS formalParameters RPARENS
+functionDecl returns [Identifier i, Type t]
+    : ct=compoundType ident=identifier LPARENS formalParameters RPARENS
+        {
+            $i = ident; $t = ct;
+        }
     ;
 
 formalParameters
@@ -65,13 +68,25 @@ varDecl
     : compoundType identifier SEMI
     ;
 
-compoundType
-    : arrayType
-    | TYPE
+compoundType returns [Type t]
+    : a=arrayType { $t = a; }
+    | t1=type { $t = t1; }
     ;
 
-arrayType
-    : TYPE LSQUARE INTEGERC RSQUARE
+arrayType returns [Type t]
+    : of=type LSQUARE INTEGERC RSQUARE
+        {
+            $t = new ArrayType(of);
+        }
+    ;
+
+type returns [Type t]
+    : INT       { $t = new IntegerType(); }
+    | FLOAT     { $t = new FloatType(); }
+    | CHAR      { $t = new CharType(); }
+    | STRING    { $t = new StringType(); }
+    | BOOLEAN   { $t = new BooleanType(); }
+    | VOID      { $t = new VoidType(); }
     ;
 
 statement options { backtrack = true; }
@@ -182,8 +197,8 @@ op
     | DOUBEQOP
     ;
 
-identifier
-    : ID
+identifier returns [Identifier i]
+    : ID { i = new Identifier($ID.text); }
     ;
 
 /* Fragments */
@@ -198,7 +213,12 @@ fragment DIGIT
 
 /* Lexer */
 
-TYPE : ('int' | 'float' | 'char' | 'string' | 'boolean' | 'void') ;
+INT         : 'int' ;
+FLOAT       : 'float' ;
+CHAR        : 'char' ;
+STRING      : 'string' ;
+BOOLEAN     : 'boolean' ;
+VOID        : 'void' ;
 
 IF          : 'if' ;
 ELSE        : 'else' ;

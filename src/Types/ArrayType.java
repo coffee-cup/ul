@@ -1,13 +1,17 @@
 package Types;
 
-import Types.*;
+import Types.Type;
 
-public class ArrayType {
-    IntegerType count;
-    Type[] array;
+public class ArrayType extends Type {
+    Type arrayOf;
+    Integer size;
 
-    public ArrayType(IntegerType count) {
-        this.count = count;
-        this.array = new Type[count.value];
+    public ArrayType(Type arrayOf) {
+        this.arrayOf = arrayOf;
+        this.size = 0;
+    }
+
+    public String toString() {
+        return arrayOf.toString() + "[" + size.toString() + "]";
     }
 }

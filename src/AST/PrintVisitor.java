@@ -36,16 +36,25 @@ public class PrintVisitor implements Visitor {
 	// public void visit(FormalParameter p);
 
 	public void visit(Function f) {
-        out.println("Function");
+        f.type.accept(this);
+        space();
+        f.ident.accept(this);
+        space(); openParen();
+        closeParen(); newLine();
+        openBrace();
+        closeBrace();
+        newLine();
     }
- 
+
 	// public void visit(FunctionBody f);
 
 	// public void visit(FunctionCall f);
 
 	// public void visit(FunctionDeclaration f);
 
-	// public void visit(Identifier i);
+	public void visit(Identifier i) {
+        out.print(i.name);
+    }
 
 	// public void visit(IdentifierValue v);
 
@@ -64,8 +73,6 @@ public class PrintVisitor implements Visitor {
 	// public void visit(PrintStatement s);
 
 	public void visit(Program p) {
-        out.println("Program");
-
         for (Function f : p.functions) {
             f.accept(this);
         }
@@ -77,7 +84,9 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(SubtractExpression e);
 
-	// public void visit(Type t);
+	public void visit(Type t) {
+        out.print(t.toString());
+    }
 
 	// public void visit(TypeNode t);
 
@@ -86,5 +95,29 @@ public class PrintVisitor implements Visitor {
 	// public void visit(VariableDeclaration v);
 
 	// public void visit(WhileStatement s);
+
+    private void openBrace() {
+        out.print("{\n");
+    }
+
+    private void closeBrace() {
+        out.print("}\n");
+    }
+
+    private void openParen() {
+        out.print("(");
+    }
+
+    private void closeParen() {
+        out.print(")");
+    }
+
+    private void newLine() {
+        out.println("");
+    }
+
+    private void space() {
+        out.print(" ");
+    }
 }
 

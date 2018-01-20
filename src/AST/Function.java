@@ -1,12 +1,15 @@
 package AST;
 
+import Types.*;
 import AST.*;
 
 public class Function extends ASTNode {
-    String name;
+    Type type;
+    Identifier ident;
 
-    public Function(String name) {
-        this.name = name;
+    public Function(Type type, Identifier ident) {
+        this.type = type;
+        this.ident = ident;
     }
 
     public void accept(Visitor v) {

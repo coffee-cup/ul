@@ -1,9 +1,9 @@
 package Types;
 
 public class IntegerType extends Type {
-    int value;
+    public IntegerType() {}
 
-    public IntegerType(int value) {
-        this.value = value;
+    public String toString() {
+        return "int";
     }
 }

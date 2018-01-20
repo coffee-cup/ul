@@ -1,9 +1,9 @@
 package Types;
 
 public class StringType extends Type {
-    String value;
+    public StringType() {}
 
-    public StringType(String value) {
-        this.value = value;
+    public String toString() {
+        return "string";
     }
 }
