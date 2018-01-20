@@ -25,7 +25,7 @@ public interface Visitor {
 
 	// public void visit(FloatLiteral f);
 
-	// public void visit(FormalParameter p);
+	public void visit(FormalParameter p);
 
 	public void visit(Function f);
 

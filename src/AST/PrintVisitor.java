@@ -5,13 +5,13 @@ import AST.*;
 import java.io.PrintStream;
 
 public class PrintVisitor implements Visitor {
-    PrintStream out;
+	PrintStream out;
 
-    public PrintVisitor() {
-        out = System.out;
-    }
+	public PrintVisitor() {
+		out = System.out;
+	}
 
-    // public void visit(AddExpression e);
+	// public void visit(AddExpression e);
 
 	// public void visit(ArrayType a);
 
@@ -33,18 +33,33 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(FloatLiteral f);
 
-	// public void visit(FormalParameter p);
+	public void visit(FormalParameter p) {
+		p.type.accept(this);
+		space();
+		p.ident.accept(this);
+	}
 
 	public void visit(Function f) {
-        f.type.accept(this);
-        space();
-        f.ident.accept(this);
-        space(); openParen();
-        closeParen(); newLine();
-        openBrace();
-        closeBrace();
-        newLine();
-    }
+		f.type.accept(this);
+		space();
+		f.ident.accept(this);
+		space();
+		openParen();
+
+		for (int i = 0; i < f.params.size(); i += 1) {
+			f.params.get(i).accept(this);
+
+			if (i < f.params.size() - 1) {
+				commaSep();
+			}
+		}
+
+		closeParen();
+		newLine();
+		openBrace();
+		closeBrace();
+		newLine();
+	}
 
 	// public void visit(FunctionBody f);
 
@@ -53,16 +68,16 @@ public class PrintVisitor implements Visitor {
 	// public void visit(FunctionDeclaration f);
 
 	public void visit(Identifier i) {
-        out.print(i.name);
-    }
+		out.print(i.name);
+	}
 
 	// public void visit(IdentifierValue v);
 
 	// public void visit(IfStatement i);
 
 	public void visit(IntegerLiteral i) {
-        out.print(i.value);
-    }
+		out.print(i.value);
+	}
 
 	// public void visit(LessThanExpression e);
 
@@ -75,10 +90,10 @@ public class PrintVisitor implements Visitor {
 	// public void visit(PrintStatement s);
 
 	public void visit(Program p) {
-        for (Function f : p.functions) {
-            f.accept(this);
-        }
-    }
+		for (Function f : p.functions) {
+			f.accept(this);
+		}
+	}
 
 	// public void visit(ReturnStatement s);
 
@@ -87,8 +102,8 @@ public class PrintVisitor implements Visitor {
 	// public void visit(SubtractExpression e);
 
 	public void visit(Type t) {
-        out.print(t.toString());
-    }
+		out.print(t.toString());
+	}
 
 	// public void visit(TypeNode t);
 
@@ -98,28 +113,31 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(WhileStatement s);
 
-    private void openBrace() {
-        out.print("{\n");
-    }
+	private void openBrace() {
+		out.print("{\n");
+	}
 
-    private void closeBrace() {
-        out.print("}\n");
-    }
+	private void closeBrace() {
+		out.print("}\n");
+	}
 
-    private void openParen() {
-        out.print("(");
-    }
+	private void openParen() {
+		out.print("(");
+	}
 
-    private void closeParen() {
-        out.print(")");
-    }
+	private void closeParen() {
+		out.print(")");
+	}
 
-    private void newLine() {
-        out.println("");
-    }
+	private void newLine() {
+		out.println("");
+	}
 
-    private void space() {
-        out.print(" ");
-    }
+	private void space() {
+		out.print(" ");
+	}
+
+	private void commaSep() {
+		out.print(", ");
+	}
 }
-

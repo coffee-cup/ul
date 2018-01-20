@@ -3,6 +3,7 @@ grammar ulGrammar;
 @header {
     import Types.*;
     import AST.*;
+    import java.util.ArrayList;
 }
 
 @members {
@@ -40,24 +41,37 @@ program returns [Program p]
 function returns [Function f]
     : d=functionDecl functionBody
         {
-            f = new Function(d.t, d.i);
+            f = new Function($d.t, $d.i, $d.params);
         }
     ;
 
-functionDecl returns [Identifier i, Type t]
-    : ct=compoundType ident=identifier LPARENS formalParameters RPARENS
+functionDecl returns [Identifier i, Type t, ArrayList<FormalParameter> params]
+    : ct=compoundType ident=identifier LPARENS fps=formalParameters RPARENS
         {
-            $i = ident; $t = ct;
+            $i = ident; $t = ct; $params = fps;
         }
     ;
 
-formalParameters
-    : compoundType identifier moreFormals*
+formalParameters returns [ArrayList<FormalParameter> params]
+    @init
+    {
+        params = new ArrayList<FormalParameter>();
+    }
+    : ct=compoundType i=identifier (fp=moreFormals {
+            params.add(fp);
+        })*
+        {
+            fp = new FormalParameter(ct, i);
+            params.add(0, fp);
+        }
     |
     ;
 
-moreFormals
-    : COMMA compoundType identifier
+moreFormals returns [FormalParameter fp]
+    : COMMA ct=compoundType i=identifier
+        {
+            fp = new FormalParameter(ct, i);
+        }
     ;
 
 functionBody
