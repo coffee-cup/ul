@@ -1,11 +1,17 @@
 void main() {
+     int x;
+     int y;
 }
 
 int[100] foo(int x, boolean[2] bs) {
+    int[10] arr;
+    int x;
+    float y;
+    boolean t;
 }
 
 void bar(int y) {
-
+    boolean b; 
 }
 
 int test(int x1, int x2, int x3, int x4, int x5) {}

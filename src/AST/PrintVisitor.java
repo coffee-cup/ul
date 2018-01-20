@@ -46,6 +46,7 @@ public class PrintVisitor implements Visitor {
 		space();
 		openParen();
 
+        // Parameters
 		for (int i = 0; i < f.params.size(); i += 1) {
 			f.params.get(i).accept(this);
 
@@ -57,11 +58,20 @@ public class PrintVisitor implements Visitor {
 		closeParen();
 		newLine();
 		openBrace();
+
+        // Body
+        f.body.accept(this);
+
 		closeBrace();
 		newLine();
 	}
 
-	// public void visit(FunctionBody f);
+	public void visit(FunctionBody f) {
+        for (VariableDeclaration v : f.vars) {
+            v.accept(this);
+            newLine();
+        }
+    }
 
 	// public void visit(FunctionCall f);
 
@@ -109,7 +119,13 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(VariableAssignment s);
 
-	// public void visit(VariableDeclaration v);
+	public void visit(VariableDeclaration v) {
+        v.type.accept(this);
+        space();
+        v.ident.accept(this);
+        semi();
+    }
+
 
 	// public void visit(WhileStatement s);
 
@@ -140,4 +156,8 @@ public class PrintVisitor implements Visitor {
 	private void commaSep() {
 		out.print(", ");
 	}
+
+    private void semi() {
+        out.print(";");
+    }
 }

@@ -29,7 +29,7 @@ public interface Visitor {
 
 	public void visit(Function f);
 
-	// public void visit(FunctionBody f);
+	public void visit(FunctionBody f);
 
 	// public void visit(FunctionCall f);
 
@@ -67,7 +67,7 @@ public interface Visitor {
 
 	// public void visit(VariableAssignment s);
 
-	// public void visit(VariableDeclaration v);
+	public void visit(VariableDeclaration v);
 
 	// public void visit(WhileStatement s);
 }

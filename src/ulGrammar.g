@@ -39,9 +39,9 @@ program returns [Program p]
 	;
 
 function returns [Function f]
-    : d=functionDecl functionBody
+    : d=functionDecl body=functionBody
         {
-            f = new Function($d.t, $d.i, $d.params);
+            f = new Function($d.t, $d.i, $d.params, body);
         }
     ;
 
@@ -74,12 +74,22 @@ moreFormals returns [FormalParameter fp]
         }
     ;
 
-functionBody
-    : LCURLY varDecl* statement* RCURLY
+functionBody returns [FunctionBody body]
+    @init
+    {
+        ArrayList<VariableDeclaration> vars = new ArrayList<VariableDeclaration>();
+    }
+    : LCURLY (v=varDecl { vars.add(v); })* statement* RCURLY
+        {
+            body = new FunctionBody(vars);
+        }
     ;
 
-varDecl
-    : compoundType identifier SEMI
+varDecl returns [VariableDeclaration v]
+    : ct=compoundType i=identifier SEMI
+        {
+            v = new VariableDeclaration(ct, i);
+        }
     ;
 
 compoundType returns [Type t]
