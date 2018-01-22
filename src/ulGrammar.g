@@ -212,7 +212,7 @@ functionCall returns [Expression e]
     ;
 
 stringLiteral returns [StringLiteral s]
-    : STRINGC { $s = new StringLiteral($STRINGC.text); }
+    : STRINGC { $s = new StringLiteral($STRINGC.text.substring(1, $STRINGC.text.length() - 1)); }
     ;
 
 integerLiteral returns [IntegerLiteral i]
@@ -224,7 +224,7 @@ floatLiteral returns [FloatLiteral f]
     ;
 
 charLiteral returns [CharacterLiteral c]
-    : CHARC { $c = new CharacterLiteral($CHARC.text.charAt(0)); }
+    : CHARC { $c = new CharacterLiteral($CHARC.text.charAt(1)); }
     ;
 
 boolLiteral returns [BooleanLiteral b]

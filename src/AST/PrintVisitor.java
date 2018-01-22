@@ -53,7 +53,9 @@ public class PrintVisitor implements Visitor {
 	}
 
 	public void visit(CharacterLiteral c) {
+        out.print("'");
 		out.print(c.value);
+        out.print("'");
 	}
 
 	public void visit(ExpressionStatement e) {
@@ -232,7 +234,9 @@ public class PrintVisitor implements Visitor {
     }
 
 	public void visit(StringLiteral s) {
+        out.print('"');
 		out.print(s.value);
+        out.print('"');
 	}
 
 	public void visit(Type t) {

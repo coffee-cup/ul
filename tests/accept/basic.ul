@@ -25,5 +25,8 @@ void main ()
  string[10] a;
  int w;
  println sampleOne(10,9.3);
+ print "";
+ print ' ';
+ print 'a';
  sampleTwo();
 }
