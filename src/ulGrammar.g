@@ -69,27 +69,22 @@ formalParameters returns [ArrayList<FormalParameter> params]
 
 moreFormals returns [FormalParameter fp]
     : COMMA ct=compoundType i=identifier
-        {
-            fp = new FormalParameter(ct, i);
-        }
+        { fp = new FormalParameter(ct, i); }
     ;
 
 functionBody returns [FunctionBody body]
     @init
     {
         ArrayList<VariableDeclaration> vars = new ArrayList<VariableDeclaration>();
+        ArrayList<Statement> stmts = new ArrayList<Statement>();
     }
-    : LCURLY (v=varDecl { vars.add(v); })* statement* RCURLY
-        {
-            body = new FunctionBody(vars);
-        }
+    : LCURLY (v=varDecl { vars.add(v); })* (s=statement { stmts.add(s); })* RCURLY
+        { body = new FunctionBody(vars, stmts); }
     ;
 
 varDecl returns [VariableDeclaration v]
     : ct=compoundType i=identifier SEMI
-        {
-            v = new VariableDeclaration(ct, i);
-        }
+        { $v = new VariableDeclaration(ct, i); }
     ;
 
 compoundType returns [Type t]
@@ -99,9 +94,7 @@ compoundType returns [Type t]
 
 arrayType returns [Type t]
     : of=type LSQUARE i=integerLiteral RSQUARE
-        {
-            $t = new ArrayType(of, i.getValue());
-        }
+        { $t = new ArrayType(of, i.getValue()); }
     ;
 
 type returns [Type t]
@@ -113,10 +106,12 @@ type returns [Type t]
     | VOID      { $t = new VoidType(); }
     ;
 
-statement options { backtrack = true; }
+statement
+returns [Statement s]
+options { backtrack = true; }
     : SEMI
     | expr SEMI
-    | ifStatement
+    | ifStmt=ifStatement           { $s = ifStmt; }
     | whileStatement
     | printStatement
     | returnStatement
@@ -124,9 +119,13 @@ statement options { backtrack = true; }
     | arrayAssignStatement
     ;
 
-ifStatement options { backtrack = true; }
-    : IF LPARENS expr RPARENS block ELSE block
-    | IF LPARENS expr RPARENS block
+ifStatement
+returns [IfStatement ifStmt]
+options { backtrack = true; }
+    : IF LPARENS expr RPARENS thenBlock=block ELSE elseBlock=block
+        { $ifStmt = new IfStatement(thenBlock, elseBlock); }
+    | IF LPARENS expr RPARENS thenBlock=block
+        { $ifStmt = new IfStatement(thenBlock); }
     ;
 
 whileStatement
@@ -150,8 +149,10 @@ arrayAssignStatement
     : identifier LSQUARE expr RSQUARE EQUALS expr SEMI
     ;
 
-block
-    : LCURLY statement* RCURLY
+block returns [Block b]
+    @init { ArrayList<Statement> stmts = new ArrayList<Statement>(); }
+    : LCURLY (stmt=statement { stmts.add(stmt); })* RCURLY
+        { $b = new Block(stmts); }
     ;
 
 expr

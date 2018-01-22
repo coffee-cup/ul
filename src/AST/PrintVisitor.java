@@ -21,7 +21,13 @@ public class PrintVisitor implements Visitor {
 	// public void visit(ArrayReference a);
 
 	public void visit(Block b) {
-		out.println("Block");
+        for (Statement s : b.stmts) {
+            if (s != null) {
+                printIndent();
+                s.accept(this);
+            }
+            // s.accept(this);
+        }
 	}
 
 	// public void visit(BooleanLiteral b);
@@ -78,6 +84,12 @@ public class PrintVisitor implements Visitor {
 			newLine();
 		}
 
+        for (Statement s: f.stmts) {
+            newLine();
+            printIndent();
+            s.accept(this);
+        }
+
         backIndent();
 	}
 
@@ -92,7 +104,22 @@ public class PrintVisitor implements Visitor {
 	// public void visit(IdentifierValue v);
 
 	public void visit(IfStatement i) {
-		out.println("IF");
+        out.print("if");
+        space();
+        openParen();
+        closeParen();
+        newLine();
+        printIndent();
+        openBrace();
+
+        forwardIndent();
+        i.thenBlock.accept(this);
+        if (i.elseBlock != null) {
+            i.elseBlock.accept(this);
+        }
+        backIndent();
+        printIndent();
+        closeBrace();
 	}
 
 	public void visit(IntegerLiteral i) {

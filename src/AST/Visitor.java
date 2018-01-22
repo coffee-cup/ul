@@ -11,7 +11,7 @@ public interface Visitor {
 
 	// public void visit(ArrayReference a);
 
-	// public void visit(Block b);
+	public void visit(Block b);
 
 	// public void visit(BooleanLiteral b);
 
@@ -39,7 +39,7 @@ public interface Visitor {
 
 	// public void visit(IdentifierValue v);
 
-	// public void visit(IfStatement i);
+	public void visit(IfStatement i);
 
 	public void visit(IntegerLiteral i);
 

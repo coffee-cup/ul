@@ -1,6 +1,12 @@
 void main() {
      int x;
      int y;
+
+     if (true) {
+        if (true) {
+        ;
+        }
+     }
 }
 
 int[100] foo(int x, boolean[2] bs) {
