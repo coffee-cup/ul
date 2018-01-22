@@ -3,7 +3,7 @@
 ACCEPT_FILES=../tests/accept/*.ul
 REJECT_FILES=../tests/reject/*.ul
 
-cd src/
+cd bin/
 
 echo ""
 echo "------ Running parser against accept files"

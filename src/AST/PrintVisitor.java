@@ -228,8 +228,11 @@ public class PrintVisitor implements Visitor {
 
 	public void visit(ReturnStatement s) {
         out.print("return");
-        space();
-        s.expr.accept(this);
+
+        if (s.expr != null) {
+            space();
+            s.expr.accept(this);
+        }
         semi();
     }
 
