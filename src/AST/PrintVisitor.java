@@ -5,7 +5,8 @@ import AST.*;
 import java.io.PrintStream;
 
 public class PrintVisitor implements Visitor {
-	PrintStream out;
+	private PrintStream out;
+	private int indentLevel = 0;
 
 	public PrintVisitor() {
 		out = System.out;
@@ -19,7 +20,9 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(ArrayReference a);
 
-	// public void visit(Block b);
+	public void visit(Block b) {
+		out.println("Block");
+	}
 
 	// public void visit(BooleanLiteral b);
 
@@ -46,7 +49,7 @@ public class PrintVisitor implements Visitor {
 		space();
 		openParen();
 
-        // Parameters
+		// Parameters
 		for (int i = 0; i < f.params.size(); i += 1) {
 			f.params.get(i).accept(this);
 
@@ -59,19 +62,24 @@ public class PrintVisitor implements Visitor {
 		newLine();
 		openBrace();
 
-        // Body
-        f.body.accept(this);
+		// Body
+		f.body.accept(this);
 
 		closeBrace();
 		newLine();
 	}
 
 	public void visit(FunctionBody f) {
-        for (VariableDeclaration v : f.vars) {
-            v.accept(this);
-            newLine();
-        }
-    }
+        forwardIndent();
+
+		for (VariableDeclaration v : f.vars) {
+            printIndent();
+			v.accept(this);
+			newLine();
+		}
+
+        backIndent();
+	}
 
 	// public void visit(FunctionCall f);
 
@@ -83,17 +91,19 @@ public class PrintVisitor implements Visitor {
 
 	// public void visit(IdentifierValue v);
 
-	// public void visit(IfStatement i);
+	public void visit(IfStatement i) {
+		out.println("IF");
+	}
 
 	public void visit(IntegerLiteral i) {
 		out.print(i.value);
 	}
 
-	// public void visit(LessThanExpression e);
+	// publwic void visit(LessThanExpression e);
 
-	// public void visit(MultExpression e);
+	// pubrlic void visit(MultExpression e);
 
-	// public void visit(ParenExpression p);
+	// pfoublic void visit(ParenExpression p);
 
 	// public void visit(PrintLnStatement s);
 
@@ -120,14 +130,29 @@ public class PrintVisitor implements Visitor {
 	// public void visit(VariableAssignment s);
 
 	public void visit(VariableDeclaration v) {
-        v.type.accept(this);
-        space();
-        v.ident.accept(this);
-        semi();
-    }
-
+		v.type.accept(this);
+		space();
+		v.ident.accept(this);
+		semi();
+	}
 
 	// public void visit(WhileStatement s);
+
+	private void forwardIndent() {
+		indentLevel += 1;
+	}
+
+	private void backIndent() {
+		indentLevel -= 1;
+		if (indentLevel < 0)
+			indentLevel = 0;
+	}
+
+    private void printIndent() {
+        for (int i = 0; i < indentLevel; i += 1) {
+            out.print("    ");
+        }
+    }
 
 	private void openBrace() {
 		out.print("{\n");
@@ -157,7 +182,7 @@ public class PrintVisitor implements Visitor {
 		out.print(", ");
 	}
 
-    private void semi() {
-        out.print(";");
-    }
+	private void semi() {
+		out.print(";");
+	}
 }
