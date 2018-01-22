@@ -16,10 +16,17 @@ int[100] foo(int x, boolean[2] bs) {
     int x;
     float y;
     boolean t;
+
+    if (bools[2 + 3]) {
+    ;}
 }
 
 void bar(int y) {
     boolean b; 
+
+       // foo(1,2,3);
+       // bar    (  x);
+       if(foo[1 * x]) {;}
 }
 
 int test(int x1, int x2, int x3, int x4, int x5) {}

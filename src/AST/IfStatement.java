@@ -3,15 +3,17 @@ package AST;
 import AST.*;
 
 public class IfStatement extends Statement {
-    // Expression expr;
+    Expression expr;
     Block thenBlock;
     Block elseBlock;
 
-    public IfStatement(Block thenBlock) {
+    public IfStatement(Expression expr, Block thenBlock) {
+        this.expr = expr;
         this.thenBlock = thenBlock;
     }
 
-    public IfStatement(Block thenBlock, Block elseBlock) {
+    public IfStatement(Expression expr, Block thenBlock, Block elseBlock) {
+        this.expr = expr;
         this.thenBlock = thenBlock;
         this.elseBlock = elseBlock;
     }

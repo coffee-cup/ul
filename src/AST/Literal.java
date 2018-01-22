@@ -1,5 +1,5 @@
 package AST;
 
-import AST.ASTNode;
+import AST.*;
 
-public abstract class Literal extends ASTNode {}
+public abstract class Literal extends Expression {}

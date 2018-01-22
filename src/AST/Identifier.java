@@ -2,7 +2,7 @@ package AST;
 
 import AST.*;
 
-public class Identifier extends ASTNode {
+public class Identifier extends Expression {
     String name;
 
     public Identifier(String name) {

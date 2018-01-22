@@ -122,10 +122,10 @@ options { backtrack = true; }
 ifStatement
 returns [IfStatement ifStmt]
 options { backtrack = true; }
-    : IF LPARENS expr RPARENS thenBlock=block ELSE elseBlock=block
-        { $ifStmt = new IfStatement(thenBlock, elseBlock); }
-    | IF LPARENS expr RPARENS thenBlock=block
-        { $ifStmt = new IfStatement(thenBlock); }
+    : IF LPARENS e=expr RPARENS thenBlock=block ELSE elseBlock=block
+        { $ifStmt = new IfStatement(e, thenBlock, elseBlock); }
+    | IF LPARENS e=expr RPARENS thenBlock=block
+        { $ifStmt = new IfStatement(e, thenBlock); }
     ;
 
 whileStatement
@@ -155,64 +155,96 @@ block returns [Block b]
         { $b = new Block(stmts); }
     ;
 
-expr
-    : doubleEqExpr
+expr returns [Expression e]
+    : e1=doubleEqExpr { $e = e1; }
     ;
 
-doubleEqExpr
-    : lessThanExpr (DOUBEQOP lessThanExpr)*
+doubleEqExpr returns [Expression e]
+    @init { Expression it = null; }
+    @after { $e = it; }
+    : e1=lessThanExpr { it = e1; }
+        (DOUBEQOP e2=lessThanExpr { it = new EqualityExpression(it, e2); })*
     ;
 
-lessThanExpr
-    : addSubExpr (LESSOP addSubExpr)*
+lessThanExpr returns [Expression e]
+    @init { Expression it = null; }
+    @after { $e = it; }
+    : e1=addSubExpr { it = e1; }
+        (LESSOP e2=addSubExpr { it = new LessThanExpression(it, e2); } )*
     ;
 
-addSubExpr
-    : multExpr ((ADDOP | SUBOP) multExpr)*
+addSubExpr returns [Expression e]
+    @init { Expression it = null; }
+    @after { $e = it; }
+    : e1=multExpr { it = e1; }
+        ( (ADDOP e2=multExpr { it = new AddExpression(it, e2); })
+        | (SUBOP e2=multExpr { it = new SubExpression(it, e2); })
+    )*
     ;
 
-multExpr
-    : atom (MULTOP atom)*
+multExpr returns [Expression e]
+    @init { Expression it = null; }
+    @after { $e = it; }
+    : e1=atom { it = e1; }
+        (MULTOP e2=atom { it = new MultExpression(it, e2); } )*
     ;
 
-atom
-    : identifier
-    | literal
-    | arrayReference
-    | functionCall
-    | LPARENS expr RPARENS
+atom returns [Expression e]
+    : id=identifier             { $e = id; }
+    | lit=literal               { $e = lit; }
+    | ref = arrayReference      { $e = ref; }
+    | call=functionCall         { $e = call; }
+    | LPARENS pe=expr RPARENS   { $e = new ParenExpression(pe); }
     ;
 
-arrayReference
-    : identifier LSQUARE expr RSQUARE
+arrayReference returns [ArrayReference a]
+    : i=identifier LSQUARE e=expr RSQUARE
+        { a = new ArrayReference(i, e); }
     ;
 
-functionCall
-    : identifier LPARENS exprList RPARENS
+functionCall returns [Expression e]
+    : i=identifier LPARENS params=exprList RPARENS
+        { $e = new FunctionCall(i, params); }
     ;
 
-stringLiteral : STRINGC ;
+stringLiteral returns [StringLiteral s]
+    : STRINGC { $s = new StringLiteral($STRINGC.text); }
+    ;
+
 integerLiteral returns [IntegerLiteral i]
-    : INTEGERC { i = new IntegerLiteral(Integer.parseInt($INTEGERC.text)); } ;
-floatLiteral  : FLOATC ;
-charLiteral   : CHARC ;
-boolLiteral   : TRUE | FALSE ;
-
-literal
-    : stringLiteral
-    | integerLiteral
-    | floatLiteral
-    | charLiteral
-    | boolLiteral
+    : INTEGERC { $i = new IntegerLiteral(Integer.parseInt($INTEGERC.text)); }
     ;
 
-exprList
-    : expr exprMore*
+floatLiteral returns [FloatLiteral f]
+    : FLOATC { $f = new FloatLiteral(Float.parseFloat($FLOATC.text)); }
+    ;
+
+charLiteral returns [CharacterLiteral c]
+    : CHARC { $c = new CharacterLiteral($CHARC.text.charAt(0)); }
+    ;
+
+boolLiteral returns [BooleanLiteral b]
+    : (TRUE  { $b = new BooleanLiteral(true); })
+    | (FALSE { $b = new BooleanLiteral(false); })
+    ;
+
+literal returns [Literal l]
+    : s=stringLiteral       { $l = s; }
+    | i=integerLiteral      { $l = i; }
+    | f=floatLiteral        { $l = f; }
+    | c=charLiteral         { $l = c; }
+    | b=boolLiteral         { $l = b; }
+    ;
+
+exprList returns [ArrayList<Expression> params]
+    @init { params = new ArrayList<Expression>(); }
+    : e=expr { params.add(0, e); }
+        (e=exprMore { params.add(e); })*
     |
     ;
 
-exprMore
-    : COMMA expr
+exprMore returns [Expression e]
+    : COMMA e1=expr { $e = e1; }
     ;
 
 op
