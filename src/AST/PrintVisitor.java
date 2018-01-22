@@ -12,9 +12,22 @@ public class PrintVisitor implements Visitor {
 		out = System.out;
 	}
 
-	// public void visit(ArrayType a);
+    public void visit(AssignStatement s) {
+        s.name.accept(this);
+        out.print("=");
+        s.expr.accept(this);
+        semi();
+    }
 
-	// public void visit(ArrayAssignment s);
+	public void visit(ArrayAssignStatement s) {
+        s.name.accept(this);
+        openSquare();
+        s.refExpr.accept(this);
+        closeSquare();
+        out.print("=");
+        s.assignExpr.accept(this);
+        semi();
+    }
 
 	public void visit(ArrayReference a) {
         a.name.accept(this);
@@ -25,11 +38,9 @@ public class PrintVisitor implements Visitor {
 
 	public void visit(Block b) {
 		for (Statement s : b.stmts) {
-			if (s != null) {
-				printIndent();
-				s.accept(this);
-			}
-			// s.accept(this);
+			printIndent();
+			s.accept(this);
+            newLine();
 		}
 	}
 
@@ -45,9 +56,12 @@ public class PrintVisitor implements Visitor {
 		out.print(c.value);
 	}
 
-	// public void visit(DoStatement s);
-
-	// public void visit(ExpressionStatement e);
+	public void visit(ExpressionStatement e) {
+        if (e.expr != null) {
+            e.expr.accept(this);
+        }
+        semi();
+    }
 
 	public void visit(FloatLiteral f) {
 		out.print(f.value);
@@ -78,6 +92,7 @@ public class PrintVisitor implements Visitor {
 		closeParen();
 		newLine();
 		openBrace();
+        newLine();
 
 		// Body
 		f.body.accept(this);
@@ -95,13 +110,16 @@ public class PrintVisitor implements Visitor {
 			newLine();
 		}
 
+        if (f.vars.size() > 0) {
+            newLine();
+        }
+
 		int index = 0;
 		for (Statement s : f.stmts) {
-			if (f.vars.size() > 0 || index > 0)
-				newLine();
 			printIndent();
 			s.accept(this);
 			index += 1;
+            newLine();
 		}
 
 		backIndent();
@@ -123,8 +141,6 @@ public class PrintVisitor implements Visitor {
         closeParen();
     }
 
-	// public void visit(FunctionDeclaration f);
-
 	public void visit(Identifier i) {
 		out.print(i.name);
 	}
@@ -142,6 +158,7 @@ public class PrintVisitor implements Visitor {
 		newLine();
 		printIndent();
 		openBrace();
+        newLine();
 
 		// Then block
 		forwardIndent();
@@ -152,11 +169,13 @@ public class PrintVisitor implements Visitor {
 
 		// Else block
 		if (i.elseBlock != null) {
+            newLine();
 			printIndent();
 			out.print("else");
 			newLine();
 			printIndent();
 			openBrace();
+            newLine();
 
 			forwardIndent();
 			i.elseBlock.accept(this);
@@ -182,17 +201,35 @@ public class PrintVisitor implements Visitor {
 		closeParen();
 	}
 
-	// public void visit(PrintLnStatement s);
+	public void visit(PrintStatement s) {
+        String ps = "print";
+        if (s.newline) {
+            ps += "ln";
+        }
 
-	// public void visit(PrintStatement s);
+        out.print(ps);
+        space();
+        s.expr.accept(this);
+        semi();
+    }
 
 	public void visit(Program p) {
+        int index = 0;
 		for (Function f : p.functions) {
+            if (index != 0) {
+                newLine();
+            }
 			f.accept(this);
+            index += 1;
 		}
 	}
 
-	// public void visit(ReturnStatement s);
+	public void visit(ReturnStatement s) {
+        out.print("return");
+        space();
+        s.expr.accept(this);
+        semi();
+    }
 
 	public void visit(StringLiteral s) {
 		out.print(s.value);
@@ -202,10 +239,6 @@ public class PrintVisitor implements Visitor {
 		out.print(t.toString());
 	}
 
-	// public void visit(TypeNode t);
-
-	// public void visit(VariableAssignment s);
-
 	public void visit(VariableDeclaration v) {
 		v.type.accept(this);
 		space();
@@ -213,7 +246,24 @@ public class PrintVisitor implements Visitor {
 		semi();
 	}
 
-	// public void visit(WhileStatement s);
+	public void visit(WhileStatement s) {
+        out.print("while");
+        space();
+        openParen();
+        s.expr.accept(this);
+        closeParen();
+		newLine();
+		printIndent();
+		openBrace();
+        newLine();
+
+		// Block
+		forwardIndent();
+		s.block.accept(this);
+		backIndent();
+		printIndent();
+		closeBrace();
+    }
 
 	private void forwardIndent() {
 		indentLevel += 1;
@@ -232,11 +282,11 @@ public class PrintVisitor implements Visitor {
 	}
 
 	private void openBrace() {
-		out.print("{\n");
+		out.print("{");
 	}
 
 	private void closeBrace() {
-		out.print("}\n");
+		out.print("}");
 	}
 
 	private void openParen() {

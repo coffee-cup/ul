@@ -109,14 +109,14 @@ type returns [Type t]
 statement
 returns [Statement s]
 options { backtrack = true; }
-    : SEMI
-    | expr SEMI
-    | ifStmt=ifStatement           { $s = ifStmt; }
-    | whileStatement
-    | printStatement
-    | returnStatement
-    | assignStatement
-    | arrayAssignStatement
+    : SEMI                          { $s = new ExpressionStatement(null); }
+    | e=expr SEMI                   { $s = new ExpressionStatement(e); }
+    | ifStmt=ifStatement            { $s = ifStmt; }
+    | whileStmt=whileStatement      { $s = whileStmt; }
+    | printStmt=printStatement      { $s = printStmt; }
+    | returnStmt=returnStatement    { $s = returnStmt; }
+    | assignStmt=assignStatement    { $s = assignStmt; }
+    | aaStmt=arrayAssignStatement   { $s = aaStmt; }
     ;
 
 ifStatement
@@ -128,25 +128,29 @@ options { backtrack = true; }
         { $ifStmt = new IfStatement(e, thenBlock); }
     ;
 
-whileStatement
-    : WHILE LPARENS expr RPARENS block
+whileStatement returns [WhileStatement s]
+    : WHILE LPARENS e=expr RPARENS b=block
+        { s = new WhileStatement(e, b); }
     ;
 
-printStatement
-    : PRINT expr SEMI
-    | PRINTLN expr SEMI
+printStatement returns [PrintStatement s]
+    : PRINT e=expr SEMI { s = new PrintStatement(e); }
+    | PRINTLN e=expr SEMI { s = new PrintStatement(e, true); }
     ;
 
-returnStatement
-    : RETURN expr? SEMI
+returnStatement returns [ReturnStatement s]
+    : RETURN e=expr? SEMI
+        { s = new ReturnStatement(e); }
     ;
 
-assignStatement
-    : identifier EQUALS expr SEMI
+assignStatement returns [AssignStatement s]
+    : i=identifier EQUALS e=expr SEMI
+        { s = new AssignStatement(i, e); }
     ;
 
-arrayAssignStatement
-    : identifier LSQUARE expr RSQUARE EQUALS expr SEMI
+arrayAssignStatement returns [ArrayAssignStatement s]
+    : i=identifier LSQUARE e1=expr RSQUARE EQUALS e2=expr SEMI
+        { s = new ArrayAssignStatement(i, e1, e2); }
     ;
 
 block returns [Block b]

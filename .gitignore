@@ -195,3 +195,4 @@ ulGrammar*.java
 ulGrammar.tokens
 
 bin/
+dot.*
