@@ -105,6 +105,8 @@ public class PrintVisitor implements Visitor {
 
 	public void visit(IfStatement i) {
         out.print("if");
+
+        // Expression condition
         space();
         openParen();
         closeParen();
@@ -112,14 +114,27 @@ public class PrintVisitor implements Visitor {
         printIndent();
         openBrace();
 
+        // Then block
         forwardIndent();
         i.thenBlock.accept(this);
-        if (i.elseBlock != null) {
-            i.elseBlock.accept(this);
-        }
         backIndent();
         printIndent();
         closeBrace();
+
+        // Else block
+        if (i.elseBlock != null) {
+            printIndent();
+            out.print("else");
+            newLine();
+            printIndent();
+            openBrace();
+
+            forwardIndent();
+            i.elseBlock.accept(this);
+            backIndent();
+            printIndent();
+            closeBrace();
+        }
 	}
 
 	public void visit(IntegerLiteral i) {
