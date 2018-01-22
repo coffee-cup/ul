@@ -18,13 +18,19 @@ make clean; make
 
 ## Running
 
-The compiler can be run against language files to determine whether or not the files are in the ul language.
+The compiler can be run against language files to produce a pretty printed version of the file. Options can be specified to change the default behaviour.
+
+The built compiler is located in the `bin/` directory.
 
 ```sh
+cd bin/
 java Compiler path/to/file.ul
 ```
 
-If the file is in the language then there will be no output. Otherwise, a lexer or parser error will be displayed.
+### Options
+
+- `-o outfile` Specify a file to output the pretty printed language.
+- `-s 1|0` Silent mode. If `1` then no output will be produced. Use this no just compile a file and check for errors.
 
 ## Testing
 
@@ -35,10 +41,15 @@ For the first assignment there are a bunch of .ul language files that can be tes
 ./test.sh
 ```
 
+## Licenses
+
+All third party code is referenced in the LICENSES file.
+
 ## TODO
 
 - [x] Lexer
-- [ ] Parser and AST generation
+- [x] Parser and AST generation
+- [x] Pretty printing
 - [ ] Syntax analysis
 - [ ] Type checking
 - [ ] Intermediate code generation
