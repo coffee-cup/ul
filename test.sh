@@ -13,8 +13,7 @@ echo ""
 for f in $ACCEPT_FILES
 do
     echo "Testing accept - $f"
-    java Compiler $f
-    if ! java Compiler $f; then
+    if ! java Compiler -s 1 $f; then
         echo "$f is not in the language!"
         echo ""
         echo "!!!!! ERROR !!!!!"
@@ -32,7 +31,7 @@ for f in $REJECT_FILES
 do
     echo ""
     echo "Testing reject - $f"
-    if java Compiler $f; then
+    if java Compiler -s 1 $f; then
         echo "$f is in the language and shouldn't be!"
         echo ""
         echo "!!!!! ERROR !!!!!"

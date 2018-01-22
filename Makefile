@@ -13,5 +13,5 @@ compiler:
 	javac -d $(OUTDIR) -sourcepath $(SRCDIR) $(SRCDIR)$(SRCENTRY).java
 
 clean:
-	rm $(OUTDIR)/*.class rm $(OUTDIR)**/*.class $(SRCDIR)$(GNAME)*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
+	rm $(OUTDIR)/*.class $(OUTDIR)**/*.class $(SRCDIR)$(GNAME)*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
 

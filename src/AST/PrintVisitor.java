@@ -8,8 +8,8 @@ public class PrintVisitor implements Visitor {
 	private PrintStream out;
 	private int indentLevel = 0;
 
-	public PrintVisitor() {
-		out = System.out;
+	public PrintVisitor(PrintStream out) {
+        this.out = out;
 	}
 
     public void visit(AssignStatement s) {
