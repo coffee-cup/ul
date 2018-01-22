@@ -12,10 +12,6 @@ public class PrintVisitor implements Visitor {
 		out = System.out;
 	}
 
-	public void visit(AddExpression e) {
-		out.print("ADD EXPR");
-	}
-
 	// public void visit(ArrayType a);
 
 	// public void visit(ArrayAssignment s);
@@ -50,10 +46,6 @@ public class PrintVisitor implements Visitor {
 	}
 
 	// public void visit(DoStatement s);
-
-	public void visit(EqualityExpression e) {
-		out.print("EQUIALITY EXPR");
-	}
 
 	// public void visit(ExpressionStatement e);
 
@@ -178,21 +170,15 @@ public class PrintVisitor implements Visitor {
 		out.print(i.value);
 	}
 
-	public void visit(LessThanExpression e) {
-		out.print("LESS THAN EXPR");
-	}
-
-	public void visit(MultExpression e) {
-		out.print("MULT EXPR");
-	}
+    public void visit(OperatorExpression e) {
+        e.e1.accept(this);
+        out.print(e.operatorSymbol);
+        e.e2.accept(this);
+    }
 
 	public void visit(ParenExpression p) {
-		printIndent();
 		openParen();
-
 		p.expr.accept(this);
-
-		printIndent();
 		closeParen();
 	}
 
@@ -210,10 +196,6 @@ public class PrintVisitor implements Visitor {
 
 	public void visit(StringLiteral s) {
 		out.print(s.value);
-	}
-
-	public void visit(SubExpression e) {
-		out.print("SUB EXPR");
 	}
 
 	public void visit(Type t) {

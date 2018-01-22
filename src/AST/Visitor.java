@@ -3,8 +3,6 @@ package AST;
 import Types.*;
 
 public interface Visitor {
-	public void visit(AddExpression e);
-
 	// public void visit(ArrayType a);
 
 	// public void visit(ArrayAssignment s);
@@ -18,8 +16,6 @@ public interface Visitor {
 	public void visit(CharacterLiteral c);
 
 	// public void visit(DoStatement s);
-
-	public void visit(EqualityExpression e);
 
 	// public void visit(ExpressionStatement e);
 
@@ -43,9 +39,7 @@ public interface Visitor {
 
 	public void visit(IntegerLiteral i);
 
-	public void visit(LessThanExpression e);
-
-	public void visit(MultExpression e);
+    public void visit(OperatorExpression e);
 
 	public void visit(ParenExpression p);
 
@@ -58,8 +52,6 @@ public interface Visitor {
 	// public void visit(ReturnStatement s);
 
 	public void visit(StringLiteral s);
-
-    public void visit(SubExpression e);
 
 	public void visit(Type t);
 

@@ -26,7 +26,7 @@ void bar(int y) {
 
        // foo(1,2,3);
        // bar    (  x);
-       if(foo[1 * x]) {;}
+       if(foo[1 * x - 2 + (4 < 3)]) {;}
 }
 
 int test(int x1, int x2, int x3, int x4, int x5) {}
