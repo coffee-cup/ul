@@ -24,6 +24,9 @@ public class Compiler {
                 .parm("-s", "0")
                     .rex("^[01]{1}$")
                     .msg("enter 0 or 1; other values are invalid")
+                .parm("-d", "0")
+                    .rex("^[01]{1}$")
+                    .msg("enter 0 or 1; other values are invalid")
                 .build();
 
 		if (args.length == 0) {
@@ -49,6 +52,7 @@ public class Compiler {
 
 			String outfile = R.get("-o");
             boolean silent = R.get("-s").equals("1");
+            boolean dot = R.get("-d").equals("1");
 
 			// System.out.println("filename: " + filename);
 			// System.out.println("outfile: " + outfile);
@@ -67,10 +71,14 @@ public class Compiler {
                 outStream = new PrintStream(new File(outfile));
             }
 
-			PrintVisitor printVisitor = new PrintVisitor(outStream);
-
             if (!silent) {
-                p.accept(printVisitor);
+                if (dot) {
+                    DotVisitor dotVisitor = new DotVisitor(outStream);
+                    p.accept(dotVisitor);
+                } else {
+                    PrintVisitor printVisitor = new PrintVisitor(outStream);
+                    p.accept(printVisitor);
+                }
             }
 		} catch (RecognitionException e) {
 			// A lexical or parsing error occurred.
