@@ -1,6 +1,6 @@
 # The Unnamed Language
 
-Programming language for the UVic CSC 435 Compiler Construction class.
+Programming language for the UVic CSC 435 Compiler Construction class. The grammar for the language can be found [here](https://github.com/coffee-cup/unnamed-language/blob/master/grammar.pdf).
 
 _View this repo on [Github](https://github.com/coffee-cup/unnamed-language)._
 
