@@ -62,7 +62,7 @@ The following AST is produced.
 
 [Dot language](https://www.graphviz.org/doc/info/lang.html) programs can be produced with the `-d 1` option to the compiler.
 
-For example, if you have this language
+For example, if you have this file
 
 ```c
 // hello.ul
