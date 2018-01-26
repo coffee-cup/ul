@@ -2,9 +2,11 @@
 
 Programming language for the UVic CSC 435 Compiler Construction class.
 
+_View this repo on [Github](https://github.com/coffee-cup/unnamed-language)._
+
 ## Compiling
 
-The language is built with `make`.
+The compiler is built with `make`.
 
 - `make grammar` runs Antlr to generate lexer and parser classes
 - `make compiler` compiles the compiler
@@ -31,6 +33,7 @@ java Compiler path/to/file.ul
 
 - `-o outfile` Specify a file to output the pretty printed language.
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this no just compile a file and check for errors.
+- `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
 ## Example
 
@@ -55,6 +58,34 @@ The following AST is produced.
 
 ![image](https://user-images.githubusercontent.com/3044853/35426106-5b002308-0215-11e8-8ae8-3edc4e5a54c5.png)
 
+## Dot Graphs
+
+[Dot language](https://www.graphviz.org/doc/info/lang.html) programs can be produced with the `-d 1` option to the compiler.
+
+For example, if you have this language
+
+```c
+// hello.ul
+void main() {
+    println "hello world";
+}
+```
+
+You can compile it with
+
+```bash
+java Compiler -d 1 -o hello.dot hello.ul
+```
+
+You can then use the dot program to create an png image file and open it
+
+```bash
+dot -Tpng hello.dot -O && open hello.dot.png
+```
+
+The output should be
+
+![image](https://user-images.githubusercontent.com/3044853/35428729-80cd5df2-0225-11e8-839d-5340dd7983af.png)
 
 ## Testing
 
@@ -74,6 +105,7 @@ All third party code is referenced in the LICENSES file.
 - [x] Lexer
 - [x] Parser and AST generation
 - [x] Pretty printing
+- [x] Dot output
 - [ ] Syntax analysis
 - [ ] Type checking
 - [ ] Intermediate code generation
