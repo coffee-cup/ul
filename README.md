@@ -1,6 +1,6 @@
 # The Unnamed Language
 
-Programming language for the UVic CSC 435 Compiler Construction class.
+Programming language for the UVic CSC 435 Compiler Construction class. The grammar for the language can be found [here](https://github.com/coffee-cup/unnamed-language/blob/master/grammar.pdf).
 
 _View this repo on [Github](https://github.com/coffee-cup/unnamed-language)._
 
@@ -32,7 +32,7 @@ java Compiler path/to/file.ul
 ### Options
 
 - `-o outfile` Specify a file to output the pretty printed language.
-- `-s 1|0` Silent mode. If `1` then no output will be produced. Use this no just compile a file and check for errors.
+- `-s 1|0` Silent mode. If `1` then no output will be produced. Use this to just compile a file and check for errors.
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
 ## Example
@@ -62,7 +62,7 @@ The following AST is produced.
 
 [Dot language](https://www.graphviz.org/doc/info/lang.html) programs can be produced with the `-d 1` option to the compiler.
 
-For example, if you have this language
+For example, if you have this file
 
 ```c
 // hello.ul
@@ -77,7 +77,7 @@ You can compile it with
 java Compiler -d 1 -o hello.dot hello.ul
 ```
 
-You can then use the dot program to create an png image file and open it
+You can then use the dot program to create a png image file and open it
 
 ```bash
 dot -Tpng hello.dot -O && open hello.dot.png
