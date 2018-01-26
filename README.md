@@ -32,6 +32,30 @@ java Compiler path/to/file.ul
 - `-o outfile` Specify a file to output the pretty printed language.
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this no just compile a file and check for errors.
 
+## Example
+
+This following code finds the factorial of 8.
+
+```c
+int factorial (int n) {
+  if (n == 1) {
+    return 1;
+  } else {
+    return n*factorial(n-1);
+  }
+}
+
+void main () {
+  print "The factorial of 8 is ";
+  println factorial(8);
+}
+```
+
+The following AST is produced.
+
+![image](https://user-images.githubusercontent.com/3044853/35426106-5b002308-0215-11e8-8ae8-3edc4e5a54c5.png)
+
+
 ## Testing
 
 For the first assignment there are a bunch of .ul language files that can be tested against the parser. Files in tests/accept should all pass and be in the language. Files in tests/reject should all fail and not be in the language. Use the script test.sh to run on the tests.
