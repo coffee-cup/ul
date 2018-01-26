@@ -1,5 +1,7 @@
 #!/bin/bash
 
+make clean; make
+
 ACCEPT_FILES=../tests/accept/*.ul
 REJECT_FILES=../tests/reject/*.ul
 
