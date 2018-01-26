@@ -77,7 +77,7 @@ You can compile it with
 java Compiler -d 1 -o hello.dot hello.ul
 ```
 
-You can then use the dot program to create an png image file and open it
+You can then use the dot program to create a png image file and open it
 
 ```bash
 dot -Tpng hello.dot -O && open hello.dot.png
