@@ -3,7 +3,7 @@ package AST;
 import Types.*;
 
 public interface Visitor {
-    public void visit(AssignStatement s);
+	public void visit(AssignStatement s);
 
 	public void visit(ArrayAssignStatement s);
 
@@ -29,13 +29,11 @@ public interface Visitor {
 
 	public void visit(Identifier i);
 
-	// public void visit(IdentifierValue v);
-
 	public void visit(IfStatement i);
 
 	public void visit(IntegerLiteral i);
 
-    public void visit(OperatorExpression e);
+	public void visit(OperatorExpression e);
 
 	public void visit(ParenExpression p);
 
@@ -47,7 +45,7 @@ public interface Visitor {
 
 	public void visit(StringLiteral s);
 
-	public void visit(Type t);
+	public void visit(TypeNode t);
 
 	public void visit(VariableDeclaration v);
 

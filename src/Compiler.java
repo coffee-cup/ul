@@ -1,8 +1,3 @@
-
-/*
- * Compiler.java
- */
-
 import org.antlr.runtime.*;
 import java.io.*;
 import AST.*;

@@ -4,10 +4,10 @@ import Types.*;
 import AST.*;
 
 public class FormalParameter extends ASTNode {
-    Type type;
+    TypeNode type;
     Identifier ident;
 
-    public FormalParameter(Type type, Identifier ident) {
+    public FormalParameter(TypeNode type, Identifier ident) {
         this.type = type;
         this.ident = ident;
     }

@@ -7,4 +7,6 @@ void main() {
 
      x = add(1, 4);
      print x;
+
+     if(true) {}
 }

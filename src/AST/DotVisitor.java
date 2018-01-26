@@ -70,14 +70,26 @@ public class DotVisitor implements Visitor {
         connectNodes(f, f.vars);
         labelNode(f.vars, "Var Decls");
 
+        for (VariableDeclaration v: f.vars) {
+            connectNodes(f.vars, v);
+            v.accept(this);
+        }
+
         connectNodes(f, f.stmts);
         labelNode(f.stmts, "Stmts");
 	}
 
 	public void visit(FunctionCall f) {
+        labelNode(f, "Call");
+
+        for (Expression e: f.params) {
+            connectNodes(f, e);
+            e.accept(this);
+        }
     }
 
 	public void visit(Identifier i) {
+        labelNode(i, i.name);
 	}
 
 	// public void visit(IdentifierValue v);
@@ -120,11 +132,12 @@ public class DotVisitor implements Visitor {
 	public void visit(StringLiteral s) {
 	}
 
-	public void visit(Type t) {
-        labelNode(t, t.toString());
+	public void visit(TypeNode t) {
+        labelNode(t, t.type.toString());
 	}
 
 	public void visit(VariableDeclaration v) {
+        labelNode(v, v.type.toString() + " " + v.ident.name);
 	}
 
 	public void visit(WhileStatement s) {

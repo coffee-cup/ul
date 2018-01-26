@@ -242,8 +242,8 @@ public class PrintVisitor implements Visitor {
         out.print('"');
 	}
 
-	public void visit(Type t) {
-		out.print(t.toString());
+	public void visit(TypeNode t) {
+		out.print(t.type.toString());
 	}
 
 	public void visit(VariableDeclaration v) {

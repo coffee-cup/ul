@@ -4,10 +4,10 @@ import AST.*;
 import Types.*;
 
 public class VariableDeclaration extends ASTNode {
-    Type type;
+    TypeNode type;
     Identifier ident;
 
-    public VariableDeclaration(Type type, Identifier ident) {
+    public VariableDeclaration(TypeNode type, Identifier ident) {
         this.type = type;
         this.ident = ident;
     }

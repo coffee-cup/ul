@@ -31,32 +31,23 @@ grammar ulGrammar;
 /* Parser */
 
 program returns [Program p]
-    @init
-    {
-        p = new Program();
-    }
+    @init { p = new Program(); }
     : (f=function { p.functions.add(f); })+ EOF
 	;
 
 function returns [Function f]
     : d=functionDecl body=functionBody
-        {
-            f = new Function($d.t, $d.i, $d.params, body);
-        }
+        { f = new Function($d.t, $d.i, $d.params, body); }
     ;
 
-functionDecl returns [Identifier i, Type t, ArrayList<FormalParameter> params]
+functionDecl returns [Identifier i, TypeNode t, ArrayList<FormalParameter> params]
     : ct=compoundType ident=identifier LPARENS fps=formalParameters RPARENS
-        {
-            $i = ident; $t = ct; $params = fps;
-        }
+        { $i = ident; $t = ct; $params = fps; }
     ;
 
 formalParameters returns [ArrayList<FormalParameter> params]
     @init
-    {
-        params = new ArrayList<FormalParameter>();
-    }
+    { params = new ArrayList<FormalParameter>(); }
     : ct=compoundType i=identifier (fp=moreFormals {
             params.add(fp);
         })*
@@ -87,9 +78,9 @@ varDecl returns [VariableDeclaration v]
         { $v = new VariableDeclaration(ct, i); }
     ;
 
-compoundType returns [Type t]
-    : a=arrayType { $t = a; }
-    | t1=type { $t = t1; }
+compoundType returns [TypeNode t]
+    : a=arrayType { $t = new TypeNode(a); }
+    | t1=type { $t = new TypeNode(t1); }
     ;
 
 arrayType returns [Type t]
