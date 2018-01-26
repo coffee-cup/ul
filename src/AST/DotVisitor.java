@@ -23,6 +23,15 @@ public class DotVisitor implements Visitor {
 	}
 
 	public void visit(ArrayAssignStatement s) {
+        labelNode(s);
+
+        connectNodes(s, s.name);
+        connectNodes(s, s.refExpr);
+        connectNodes(s, s.assignExpr);
+
+        s.name.accept(this);
+        s.refExpr.accept(this);
+        s.assignExpr.accept(this);
 	}
 
 	public void visit(ArrayReference a) {
