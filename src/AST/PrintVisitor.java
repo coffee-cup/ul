@@ -66,7 +66,7 @@ public class PrintVisitor implements Visitor {
     }
 
 	public void visit(FloatLiteral f) {
-		out.print(f.value);
+        out.printf("%f", f.value);
 	}
 
 	public void visit(FormalParameter p) {
