@@ -1,12 +1,14 @@
-int add(int a, int b) {
-    return a + b;
-}
-
 void main() {
-     int x;
+     int i;
+     i = 0;
 
-     x = add(1, 4);
-     print x;
+     while(i < 10) {
+             i = i + 1; 
 
-     if(true) {}
+             if (i == (foo(i + 3, bar()))) {
+                println "its here";
+                return;
+             }
+     }
+     return "done";
 }

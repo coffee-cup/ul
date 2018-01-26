@@ -14,4 +14,8 @@ public class TypeNode extends ASTNode {
     public void accept(Visitor v) {
         v.visit(this);
     }
+
+    public String toString() {
+        return type.toString();
+    }
 }
