@@ -89,7 +89,7 @@ The output should be
 
 ## Testing
 
-For the first assignment there are a bunch of .ul language files that can be tested against the parser. Files in tests/accept should all pass and be in the language. Files in tests/reject should all fail and not be in the language. Use the script test.sh to run on the tests.
+There are a bunch of .ul language files that can be tested against the compiler. Throughout the course I will update the test script to check whether the latest requirements are met. Use the script `test.sh` to run all tests.
 
 ```sh
 # Run the tests
