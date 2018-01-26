@@ -10,7 +10,7 @@ grammar: $(GSRCS)
 	java org.antlr.Tool -fo $(SRCDIR) $(GSRC)
 
 compiler:
-	javac -d $(OUTDIR) -sourcepath $(SRCDIR) $(SRCDIR)$(SRCENTRY).java
+	mkdir -p bin; javac -d $(OUTDIR) -sourcepath $(SRCDIR) $(SRCDIR)$(SRCENTRY).java
 
 clean:
 	rm $(OUTDIR)/*.class $(OUTDIR)**/*.class $(SRCDIR)$(GNAME)*.java $(SRCDIR)$(GNAME)__.g $(SRCDIR)$(GNAME).tokens
