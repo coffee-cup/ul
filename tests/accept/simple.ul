@@ -1,14 +1,10 @@
-void main() {
-     int i;
-     i = 0;
+int foo(int x, int z) {
 
-     while(i < 10) {
-             i = i + 1; 
-
-             if (i == (foo(i + 3, bar()))) {
-                println "its here";
-                return;
-             }
-     }
-     return "done";
+    int y;
+    if (x < 10) {
+       y = x + 7;
+    } else {
+      y = z - 7;
+    }
+    return y;
 }

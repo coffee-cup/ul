@@ -80,7 +80,7 @@ public class DotVisitor implements Visitor {
 		labelNode(f, f.type.toString() + " " + f.ident.name);
 
 		connectNodes(f, f.params);
-		labelNode(f.params, "Parameters");
+		labelNode(f.params, "FormalParameters");
 		for (FormalParameter p : f.params) {
 			connectNodes(f.params, p);
 			p.accept(this);
@@ -98,7 +98,7 @@ public class DotVisitor implements Visitor {
 		labelNode(f);
 
 		connectNodes(f, f.vars);
-		labelNode(f.vars, "Variable Declarations");
+		labelNode(f.vars, "VariableDeclarations");
 
 		for (VariableDeclaration v : f.vars) {
 			connectNodes(f.vars, v);
