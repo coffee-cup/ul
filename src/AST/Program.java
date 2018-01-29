@@ -5,13 +5,13 @@ import AST.*;
 
 public class Program extends ASTNode {
     public ArrayList<Function> functions;
-	String filename;
+    String filename;
 
-	public Program() {
+    public Program() {
         functions = new ArrayList<Function>();
-	}
+    }
 
-	public void accept(Visitor v) {
-		v.visit(this);
-	}
+    public void accept(Visitor v) {
+        v.visit(this);
+    }
 }

@@ -37,30 +37,30 @@ public class Compiler {
         }
     }
 
-	public static void main(String[] args) {
-
+    public static void main(String[] args) {
         CompilerOptions options = CompilerOptions.parseCompilerArgs(args);
+
         if (options == null) {
             System.exit(1);
         }
 
         Compiler compiler = new Compiler(options);
 
-		try {
+        try {
             compiler.compile();
-		} catch (RecognitionException e) {
-			System.exit(1);
-		} catch (FileNotFoundException e) {
-			System.out.println("File " + options.infile + " not found");
-			System.exit(1);
-		} catch (IOException e) {
-			System.out.println(e);
-			e.printStackTrace();
-			System.exit(1);
-		} catch (Exception e) {
-			System.out.println(e);
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
+        } catch (RecognitionException e) {
+            System.exit(1);
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + options.infile + " not found");
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+            System.exit(1);
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 }
