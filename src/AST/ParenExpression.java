@@ -9,7 +9,7 @@ public class ParenExpression extends Expression {
         this.expr = expr;
     }
 
-    public void accept(Visitor v) {
-        v.visit(this);
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

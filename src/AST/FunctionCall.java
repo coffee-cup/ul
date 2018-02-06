@@ -12,7 +12,7 @@ public class FunctionCall extends Expression {
         this.params = params;
     }
 
-    public void accept(Visitor v) {
-        v.visit(this);
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

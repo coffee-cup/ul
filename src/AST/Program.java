@@ -11,7 +11,7 @@ public class Program extends ASTNode {
         functions = new ArrayList<Function>();
     }
 
-    public void accept(Visitor v) {
-        v.visit(this);
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

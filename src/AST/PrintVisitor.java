@@ -4,7 +4,7 @@ import Types.*;
 import AST.*;
 import java.io.PrintStream;
 
-public class PrintVisitor implements Visitor {
+public class PrintVisitor implements Visitor<Void> {
     private PrintStream out;
     private int indentLevel = 0;
 
@@ -12,14 +12,16 @@ public class PrintVisitor implements Visitor {
         this.out = out;
     }
 
-    public void visit(AssignStatement s) {
+    public Void visit(AssignStatement s) {
         s.name.accept(this);
         out.print("=");
         s.expr.accept(this);
         semi();
+
+        return null;
     }
 
-    public void visit(ArrayAssignStatement s) {
+    public Void visit(ArrayAssignStatement s) {
         s.name.accept(this);
         openSquare();
         s.refExpr.accept(this);
@@ -27,55 +29,71 @@ public class PrintVisitor implements Visitor {
         out.print("=");
         s.assignExpr.accept(this);
         semi();
+
+        return null;
     }
 
-    public void visit(ArrayReference a) {
+    public Void visit(ArrayReference a) {
         a.name.accept(this);
         openSquare();
         a.expr.accept(this);
         closeSquare();
+
+        return null;
     }
 
-    public void visit(Block b) {
+    public Void visit(Block b) {
         for (Statement s : b.stmts) {
             printIndent();
             s.accept(this);
             newLine();
         }
+
+        return null;
     }
 
-    public void visit(BooleanLiteral b) {
+    public Void visit(BooleanLiteral b) {
         if (b.value) {
             out.print("true");
         } else {
             out.print("false");
         }
+
+        return null;
     }
 
-    public void visit(CharacterLiteral c) {
+    public Void visit(CharacterLiteral c) {
         out.print("'");
         out.print(c.value);
         out.print("'");
+
+        return null;
     }
 
-    public void visit(ExpressionStatement e) {
+    public Void visit(ExpressionStatement e) {
         if (e.expr != null) {
             e.expr.accept(this);
         }
         semi();
+
+        return null;
     }
 
-    public void visit(FloatLiteral f) {
+    public Void visit(FloatLiteral f) {
         out.printf("%f", f.value);
+
+        return null;
     }
 
-    public void visit(FormalParameter p) {
+    public Void visit(FormalParameter p) {
         p.type.accept(this);
         space();
         p.ident.accept(this);
+
+        return null;
     }
 
-    public void visit(Function f) {
+    public Void visit(Function f) {
         f.type.accept(this);
         space();
         f.ident.accept(this);
@@ -101,9 +119,11 @@ public class PrintVisitor implements Visitor {
 
         closeBrace();
         newLine();
+
+        return null;
     }
 
-    public void visit(FunctionBody f) {
+    public Void visit(FunctionBody f) {
         forwardIndent();
 
         for (VariableDeclaration v : f.vars) {
@@ -125,9 +145,11 @@ public class PrintVisitor implements Visitor {
         }
 
         backIndent();
+
+        return null;
     }
 
-    public void visit(FunctionCall f) {
+    public Void visit(FunctionCall f) {
         f.name.accept(this);
         openParen();
 
@@ -141,13 +163,17 @@ public class PrintVisitor implements Visitor {
         }
 
         closeParen();
+
+        return null;
     }
 
-    public void visit(Identifier i) {
+    public Void visit(Identifier i) {
         out.print(i.name);
+
+        return null;
     }
 
-    public void visit(IfStatement i) {
+    public Void visit(IfStatement i) {
         out.print("if");
 
         // Expression condition
@@ -183,25 +209,33 @@ public class PrintVisitor implements Visitor {
             printIndent();
             closeBrace();
         }
+
+        return null;
     }
 
-    public void visit(IntegerLiteral i) {
+    public Void visit(IntegerLiteral i) {
         out.print(i.value);
+
+        return null;
     }
 
-    public void visit(OperatorExpression e) {
+    public Void visit(OperatorExpression e) {
         e.e1.accept(this);
         out.print(e.operatorSymbol);
         e.e2.accept(this);
+
+        return null;
     }
 
-    public void visit(ParenExpression p) {
+    public Void visit(ParenExpression p) {
         openParen();
         p.expr.accept(this);
         closeParen();
+
+        return null;
     }
 
-    public void visit(PrintStatement s) {
+    public Void visit(PrintStatement s) {
         String ps = "print";
         if (s.newline) {
             ps += "ln";
@@ -211,9 +245,11 @@ public class PrintVisitor implements Visitor {
         space();
         s.expr.accept(this);
         semi();
+
+        return null;
     }
 
-    public void visit(Program p) {
+    public Void visit(Program p) {
         int index = 0;
         for (Function f : p.functions) {
             if (index != 0) {
@@ -222,9 +258,11 @@ public class PrintVisitor implements Visitor {
             f.accept(this);
             index += 1;
         }
+
+        return null;
     }
 
-    public void visit(ReturnStatement s) {
+    public Void visit(ReturnStatement s) {
         out.print("return");
 
         if (s.expr != null) {
@@ -232,26 +270,34 @@ public class PrintVisitor implements Visitor {
             s.expr.accept(this);
         }
         semi();
+
+        return null;
     }
 
-    public void visit(StringLiteral s) {
+    public Void visit(StringLiteral s) {
         out.print('"');
         out.print(s.value);
         out.print('"');
+
+        return null;
     }
 
-    public void visit(TypeNode t) {
+    public Void visit(TypeNode t) {
         out.print(t.type.toString());
+
+        return null;
     }
 
-    public void visit(VariableDeclaration v) {
+    public Void visit(VariableDeclaration v) {
         v.type.accept(this);
         space();
         v.ident.accept(this);
         semi();
+
+        return null;
     }
 
-    public void visit(WhileStatement s) {
+    public Void visit(WhileStatement s) {
         out.print("while");
         space();
         openParen();
@@ -268,6 +314,8 @@ public class PrintVisitor implements Visitor {
         backIndent();
         printIndent();
         closeBrace();
+
+        return null;
     }
 
     private void forwardIndent() {

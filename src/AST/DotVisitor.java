@@ -4,7 +4,7 @@ import Types.*;
 import AST.*;
 import java.io.PrintStream;
 
-public class DotVisitor implements Visitor {
+public class DotVisitor implements Visitor<Void> {
     private PrintStream out;
     private int indentLevel = 0;
 
@@ -12,7 +12,7 @@ public class DotVisitor implements Visitor {
         this.out = out;
     }
 
-    public void visit(AssignStatement s) {
+    public Void visit(AssignStatement s) {
         labelNode(s);
 
         connectNodes(s, s.name);
@@ -20,9 +20,11 @@ public class DotVisitor implements Visitor {
 
         s.name.accept(this);
         s.expr.accept(this);
+
+        return null;
     }
 
-    public void visit(ArrayAssignStatement s) {
+    public Void visit(ArrayAssignStatement s) {
         labelNode(s);
 
         connectNodes(s, s.name);
@@ -32,45 +34,67 @@ public class DotVisitor implements Visitor {
         s.name.accept(this);
         s.refExpr.accept(this);
         s.assignExpr.accept(this);
+
+        return null;
     }
 
-    public void visit(ArrayReference a) {
+    public Void visit(ArrayReference a) {
+        labelNode(a);
+        connectNodes(a, a.name);
+        connectNodes(a, a.expr);
+
+        a.name.accept(this);
+        a.expr.accept(this);
+
+        return null;
     }
 
-    public void visit(Block b) {
+    public Void visit(Block b) {
         labelNode(b);
 
         for (Statement s : b.stmts) {
             connectNodes(b, s);
             s.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(BooleanLiteral b) {
+    public Void visit(BooleanLiteral b) {
         labelNode(b, Boolean.toString(b.value));
+
+        return null;
     }
 
-    public void visit(CharacterLiteral c) {
+    public Void visit(CharacterLiteral c) {
         labelNode(c, Character.toString(c.value));
+
+        return null;
     }
 
-    public void visit(ExpressionStatement e) {
+    public Void visit(ExpressionStatement e) {
         labelNode(e);
         if (e.expr != null) {
             connectNodes(e, e.expr);
             e.expr.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(FloatLiteral f) {
+    public Void visit(FloatLiteral f) {
         labelNode(f, Float.toString(f.value));
+
+        return null;
     }
 
-    public void visit(FormalParameter p) {
+    public Void visit(FormalParameter p) {
         labelNode(p, p.type.toString() + " " + p.ident.name);
+
+        return null;
     }
 
-    public void visit(Function f) {
+    public Void visit(Function f) {
         printIndent();
         out.print("subgraph " + f.ident.name + " ");
         openBrace();
@@ -92,9 +116,11 @@ public class DotVisitor implements Visitor {
         printIndent();
         closeBrace();
         newLine();
+
+        return null;
     }
 
-    public void visit(FunctionBody f) {
+    public Void visit(FunctionBody f) {
         labelNode(f);
 
         connectNodes(f, f.vars);
@@ -112,22 +138,28 @@ public class DotVisitor implements Visitor {
             connectNodes(f.stmts, s);
             s.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(FunctionCall f) {
+    public Void visit(FunctionCall f) {
         labelNode(f, f.name.name);
 
         for (Expression e : f.params) {
             connectNodes(f, e);
             e.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(Identifier i) {
+    public Void visit(Identifier i) {
         labelNode(i, i.name);
+
+        return null;
     }
 
-    public void visit(IfStatement i) {
+    public Void visit(IfStatement i) {
         labelNode(i);
 
         connectNodes(i, i.expr);
@@ -140,13 +172,17 @@ public class DotVisitor implements Visitor {
             connectNodes(i, i.elseBlock);
             i.elseBlock.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(IntegerLiteral i) {
+    public Void visit(IntegerLiteral i) {
         labelNode(i, Integer.toString(i.value));
+
+        return null;
     }
 
-    public void visit(OperatorExpression e) {
+    public Void visit(OperatorExpression e) {
         labelNode(e);
 
         connectNodes(e, e.e1);
@@ -154,21 +190,27 @@ public class DotVisitor implements Visitor {
 
         e.e1.accept(this);
         e.e2.accept(this);
+
+        return null;
     }
 
-    public void visit(ParenExpression p) {
+    public Void visit(ParenExpression p) {
         labelNode(p);
         connectNodes(p, p.expr);
         p.expr.accept(this);
+
+        return null;
     }
 
-    public void visit(PrintStatement s) {
+    public Void visit(PrintStatement s) {
         labelNode(s);
         connectNodes(s, s.expr);
         s.expr.accept(this);
+
+        return null;
     }
 
-    public void visit(Program p) {
+    public Void visit(Program p) {
         out.print("digraph G");
         space();
         openBrace();
@@ -183,30 +225,40 @@ public class DotVisitor implements Visitor {
 
         backIndent();
         closeBrace();
+
+        return null;
     }
 
-    public void visit(ReturnStatement s) {
+    public Void visit(ReturnStatement s) {
         labelNode(s);
 
         if (s.expr != null) {
             connectNodes(s, s.expr);
             s.expr.accept(this);
         }
+
+        return null;
     }
 
-    public void visit(StringLiteral s) {
+    public Void visit(StringLiteral s) {
         labelNode(s, s.value);
+
+        return null;
     }
 
-    public void visit(TypeNode t) {
+    public Void visit(TypeNode t) {
         labelNode(t, t.type.toString());
+
+        return null;
     }
 
-    public void visit(VariableDeclaration v) {
+    public Void visit(VariableDeclaration v) {
         labelNode(v, v.type.toString() + " " + v.ident.name);
+
+        return null;
     }
 
-    public void visit(WhileStatement s) {
+    public Void visit(WhileStatement s) {
         labelNode(s);
 
         connectNodes(s, s.expr);
@@ -214,6 +266,8 @@ public class DotVisitor implements Visitor {
 
         s.expr.accept(this);
         s.block.accept(this);
+  
+        return null;
     }
 
     private void connectNodes(Object fromNode, Object toNode) {
