@@ -1,9 +1,7 @@
 package AST;
 
-import AST.*;
-
 public class IntegerLiteral extends Literal {
-    int value;
+    private int value;
 
     public IntegerLiteral(int value) {
         this.value = value;

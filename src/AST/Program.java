@@ -1,17 +1,32 @@
 package AST;
 
 import java.util.ArrayList;
-import AST.*;
 
 public class Program extends ASTNode {
-    public ArrayList<Function> functions;
-    String filename;
+    private ArrayList<Function> functions;
+    private String filename;
 
     public Program() {
-        functions = new ArrayList<Function>();
+        setFunctions(new ArrayList<Function>());
     }
 
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }
+
+	public ArrayList<Function> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(ArrayList<Function> functions) {
+		this.functions = functions;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 }

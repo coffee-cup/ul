@@ -1,7 +1,5 @@
 package AST;
 
-import Types.*;
-import AST.*;
 import java.io.PrintStream;
 
 public class DotVisitor implements Visitor<Void> {
@@ -15,11 +13,11 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(AssignStatement s) {
         labelNode(s);
 
-        connectNodes(s, s.name);
-        connectNodes(s, s.expr);
+        connectNodes(s, s.getName());
+        connectNodes(s, s.getExpr());
 
-        s.name.accept(this);
-        s.expr.accept(this);
+        s.getName().accept(this);
+        s.getExpr().accept(this);
 
         return null;
     }
@@ -27,24 +25,24 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(ArrayAssignStatement s) {
         labelNode(s);
 
-        connectNodes(s, s.name);
-        connectNodes(s, s.refExpr);
-        connectNodes(s, s.assignExpr);
+        connectNodes(s, s.getName());
+        connectNodes(s, s.getRefExpr());
+        connectNodes(s, s.getAssignExpr());
 
-        s.name.accept(this);
-        s.refExpr.accept(this);
-        s.assignExpr.accept(this);
+        s.getName().accept(this);
+        s.getRefExpr().accept(this);
+        s.getAssignExpr().accept(this);
 
         return null;
     }
 
     public Void visit(ArrayReference a) {
         labelNode(a);
-        connectNodes(a, a.name);
-        connectNodes(a, a.expr);
+        connectNodes(a, a.getName());
+        connectNodes(a, a.getExpr());
 
-        a.name.accept(this);
-        a.expr.accept(this);
+        a.getName().accept(this);
+        a.getExpr().accept(this);
 
         return null;
     }
@@ -52,7 +50,7 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(Block b) {
         labelNode(b);
 
-        for (Statement s : b.stmts) {
+        for (Statement s : b.getStmts()) {
             connectNodes(b, s);
             s.accept(this);
         }
@@ -61,56 +59,56 @@ public class DotVisitor implements Visitor<Void> {
     }
 
     public Void visit(BooleanLiteral b) {
-        labelNode(b, Boolean.toString(b.value));
+        labelNode(b, Boolean.toString(b.getValue()));
 
         return null;
     }
 
     public Void visit(CharacterLiteral c) {
-        labelNode(c, Character.toString(c.value));
+        labelNode(c, Character.toString(c.getValue()));
 
         return null;
     }
 
     public Void visit(ExpressionStatement e) {
         labelNode(e);
-        if (e.expr != null) {
-            connectNodes(e, e.expr);
-            e.expr.accept(this);
+        if (e.getExpr() != null) {
+            connectNodes(e, e.getExpr());
+            e.getExpr().accept(this);
         }
 
         return null;
     }
 
     public Void visit(FloatLiteral f) {
-        labelNode(f, Float.toString(f.value));
+        labelNode(f, Float.toString(f.getValue()));
 
         return null;
     }
 
     public Void visit(FormalParameter p) {
-        labelNode(p, p.type.toString() + " " + p.ident.name);
+        labelNode(p, p.getType().toString() + " " + p.getIdent().getName());
 
         return null;
     }
 
     public Void visit(Function f) {
         printIndent();
-        out.print("subgraph " + f.ident.name + " ");
+        out.print("subgraph " + f.getIdent().getName() + " ");
         openBrace();
         newLine();
         forwardIndent();
 
-        labelNode(f, f.type.toString() + " " + f.ident.name);
+        labelNode(f, f.getType().toString() + " " + f.getIdent().getName());
 
-        connectNodes(f, f.params);
-        labelNode(f.params, "FormalParameters");
-        for (FormalParameter p : f.params) {
-            connectNodes(f.params, p);
+        connectNodes(f, f.getParams());
+        labelNode(f.getParams(), "FormalParameters");
+        for (FormalParameter p : f.getParams()) {
+            connectNodes(f.getParams(), p);
             p.accept(this);
         }
-        connectNodes(f, f.body);
-        f.body.accept(this);
+        connectNodes(f, f.getBody());
+        f.getBody().accept(this);
 
         backIndent();
         printIndent();
@@ -123,19 +121,19 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(FunctionBody f) {
         labelNode(f);
 
-        connectNodes(f, f.vars);
-        labelNode(f.vars, "VariableDeclarations");
+        connectNodes(f, f.getVars());
+        labelNode(f.getVars(), "VariableDeclarations");
 
-        for (VariableDeclaration v : f.vars) {
-            connectNodes(f.vars, v);
+        for (VariableDeclaration v : f.getVars()) {
+            connectNodes(f.getVars(), v);
             v.accept(this);
         }
 
-        connectNodes(f, f.stmts);
-        labelNode(f.stmts, "Statements");
+        connectNodes(f, f.getStmts());
+        labelNode(f.getStmts(), "Statements");
 
-        for (Statement s : f.stmts) {
-            connectNodes(f.stmts, s);
+        for (Statement s : f.getStmts()) {
+            connectNodes(f.getStmts(), s);
             s.accept(this);
         }
 
@@ -143,9 +141,9 @@ public class DotVisitor implements Visitor<Void> {
     }
 
     public Void visit(FunctionCall f) {
-        labelNode(f, f.name.name);
+        labelNode(f, f.getName().getName());
 
-        for (Expression e : f.params) {
+        for (Expression e : f.getParams()) {
             connectNodes(f, e);
             e.accept(this);
         }
@@ -154,7 +152,7 @@ public class DotVisitor implements Visitor<Void> {
     }
 
     public Void visit(Identifier i) {
-        labelNode(i, i.name);
+        labelNode(i, i.getName());
 
         return null;
     }
@@ -162,22 +160,22 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(IfStatement i) {
         labelNode(i);
 
-        connectNodes(i, i.expr);
-        i.expr.accept(this);
+        connectNodes(i, i.getExpr());
+        i.getExpr().accept(this);
 
-        connectNodes(i, i.thenBlock);
-        i.thenBlock.accept(this);
+        connectNodes(i, i.getThenBlock());
+        i.getThenBlock().accept(this);
 
-        if (i.elseBlock != null) {
-            connectNodes(i, i.elseBlock);
-            i.elseBlock.accept(this);
+        if (i.getElseBlock() != null) {
+            connectNodes(i, i.getElseBlock());
+            i.getElseBlock().accept(this);
         }
 
         return null;
     }
 
     public Void visit(IntegerLiteral i) {
-        labelNode(i, Integer.toString(i.value));
+        labelNode(i, Integer.toString(i.getValue()));
 
         return null;
     }
@@ -196,16 +194,16 @@ public class DotVisitor implements Visitor<Void> {
 
     public Void visit(ParenExpression p) {
         labelNode(p);
-        connectNodes(p, p.expr);
-        p.expr.accept(this);
+        connectNodes(p, p.getExpr());
+        p.getExpr().accept(this);
 
         return null;
     }
 
     public Void visit(PrintStatement s) {
         labelNode(s);
-        connectNodes(s, s.expr);
-        s.expr.accept(this);
+        connectNodes(s, s.getExpr());
+        s.getExpr().accept(this);
 
         return null;
     }
@@ -218,7 +216,7 @@ public class DotVisitor implements Visitor<Void> {
 
         forwardIndent();
 
-        for (Function f : p.functions) {
+        for (Function f : p.getFunctions()) {
             f.accept(this);
             newLine();
         }
@@ -232,28 +230,28 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(ReturnStatement s) {
         labelNode(s);
 
-        if (s.expr != null) {
-            connectNodes(s, s.expr);
-            s.expr.accept(this);
+        if (s.getExpr() != null) {
+            connectNodes(s, s.getExpr());
+            s.getExpr().accept(this);
         }
 
         return null;
     }
 
     public Void visit(StringLiteral s) {
-        labelNode(s, s.value);
+        labelNode(s, s.getValue());
 
         return null;
     }
 
     public Void visit(TypeNode t) {
-        labelNode(t, t.type.toString());
+        labelNode(t, t.getType().toString());
 
         return null;
     }
 
     public Void visit(VariableDeclaration v) {
-        labelNode(v, v.type.toString() + " " + v.ident.name);
+        labelNode(v, v.getType().toString() + " " + v.getIdent().getName());
 
         return null;
     }
@@ -261,11 +259,11 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(WhileStatement s) {
         labelNode(s);
 
-        connectNodes(s, s.expr);
-        connectNodes(s, s.block);
+        connectNodes(s, s.getExpr());
+        connectNodes(s, s.getBlock());
 
-        s.expr.accept(this);
-        s.block.accept(this);
+        s.getExpr().accept(this);
+        s.getBlock().accept(this);
   
         return null;
     }

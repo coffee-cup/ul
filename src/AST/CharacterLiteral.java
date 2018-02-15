@@ -1,9 +1,7 @@
 package AST;
 
-import AST.*;
-
 public class CharacterLiteral extends Literal {
-    char value;
+    private char value;
 
     public CharacterLiteral(char value) {
         this.value = value;

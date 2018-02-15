@@ -1,11 +1,9 @@
 package AST;
 
-import AST.*;
-import Types.*;
-
+import Types.Type;
 
 public class TypeNode extends ASTNode {
-    Type type;
+    private Type type;
 
     public TypeNode(Type type) {
         this.type = type;
@@ -17,5 +15,9 @@ public class TypeNode extends ASTNode {
 
     public String toString() {
         return type.toString();
+    }
+    
+    public Type getType() {
+    		return this.type;
     }
 }

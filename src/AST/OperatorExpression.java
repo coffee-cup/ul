@@ -1,11 +1,9 @@
 package AST;
 
-import AST.*;
-
 public abstract class OperatorExpression extends Expression {
-    Expression e1;
-    Expression e2;
-    String operatorSymbol;
+    protected Expression e1;
+    protected Expression e2;
+    protected String operatorSymbol;
 
     public OperatorExpression(Expression e1, Expression e2) {
         this.e1 = e1;

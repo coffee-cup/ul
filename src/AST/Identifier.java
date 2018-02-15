@@ -1,15 +1,21 @@
 package AST;
 
-import AST.*;
-
 public class Identifier extends Expression {
-    String name;
+    private String name;
 
     public Identifier(String name) {
-        this.name = name;
+        this.setName(name);
     }
 
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

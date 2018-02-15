@@ -1,18 +1,31 @@
 package AST;
 
-import Types.*;
-import AST.*;
-
 public class FormalParameter extends ASTNode {
-    TypeNode type;
-    Identifier ident;
+    private TypeNode type;
+    private Identifier ident;
 
     public FormalParameter(TypeNode type, Identifier ident) {
-        this.type = type;
-        this.ident = ident;
+        this.setType(type);
+        this.setIdent(ident);
     }
 
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }
+
+	public TypeNode getType() {
+		return type;
+	}
+
+	public void setType(TypeNode type) {
+		this.type = type;
+	}
+
+	public Identifier getIdent() {
+		return ident;
+	}
+
+	public void setIdent(Identifier ident) {
+		this.ident = ident;
+	}
 }

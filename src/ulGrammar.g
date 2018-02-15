@@ -32,7 +32,7 @@ grammar ulGrammar;
 
 program returns [Program p]
     @init { p = new Program(); }
-    : (f=function { p.functions.add(f); })+ EOF
+    : (f=function { p.getFunctions().add(f); })+ EOF
     ;
 
 function returns [Function f]

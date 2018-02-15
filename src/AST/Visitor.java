@@ -1,7 +1,5 @@
 package AST;
 
-import Types.*;
-
 public interface Visitor<T> {
     public T visit(AssignStatement s);
 

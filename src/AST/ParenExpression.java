@@ -1,15 +1,21 @@
 package AST;
 
-import AST.*;
-
 public class ParenExpression extends Expression {
-    Expression expr;
+    private Expression expr;
 
     public ParenExpression(Expression expr) {
-        this.expr = expr;
+        this.setExpr(expr);
     }
 
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }
+
+	public Expression getExpr() {
+		return expr;
+	}
+
+	public void setExpr(Expression expr) {
+		this.expr = expr;
+	}
 }

@@ -1,15 +1,21 @@
 package AST;
 
-import AST.*;
-
 public class ExpressionStatement extends Statement {
-    Expression expr;
+    private Expression expr;
 
     public ExpressionStatement(Expression expr) {
-        this.expr = expr;
+        this.setExpr(expr);
     }
 
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }
+
+	public Expression getExpr() {
+		return expr;
+	}
+
+	public void setExpr(Expression expr) {
+		this.expr = expr;
+	}
 }
