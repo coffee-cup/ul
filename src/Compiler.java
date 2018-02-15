@@ -1,6 +1,7 @@
 import org.antlr.runtime.*;
 import java.io.*;
 import AST.*;
+import Semantics.*;
 
 public class Compiler {
     private CompilerOptions options;
@@ -26,15 +27,18 @@ public class Compiler {
             outStream = new PrintStream(new File(options.outfile));
         }
 
-        if (!options.silent) {
-            if (options.dotFormat) {
-                DotVisitor dotVisitor = new DotVisitor(outStream);
-                p.accept(dotVisitor);
-            } else {
-                PrintVisitor printVisitor = new PrintVisitor(outStream);
-                p.accept(printVisitor);
-            }
-        }
+        TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
+        p.accept(typeCheckVisitor);
+
+        // if (!options.silent) {
+        //     if (options.dotFormat) {
+        //         DotVisitor dotVisitor = new DotVisitor(outStream);
+        //         p.accept(dotVisitor);
+        //     } else {
+        //         PrintVisitor printVisitor = new PrintVisitor(outStream);
+        //         p.accept(printVisitor);
+        //     }
+        // }
     }
 
     public static void main(String[] args) {

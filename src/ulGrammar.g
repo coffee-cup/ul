@@ -79,22 +79,22 @@ varDecl returns [VariableDeclaration v]
     ;
 
 compoundType returns [TypeNode t]
-    : a=arrayType { $t = new TypeNode(a); }
-    | t1=type { $t = new TypeNode(t1); }
+    : a=arrayType { $t = a; }
+    | t1=type { $t = t1; }
     ;
 
-arrayType returns [Type t]
+arrayType returns [TypeNode t]
     : of=type LSQUARE i=integerLiteral RSQUARE
-        { $t = new ArrayType(of, i.getValue()); }
+        { $t = new TypeNode(new ArrayType(of.getType(), i.getValue()), of.getLine(), of.getOffset()); }
     ;
 
-type returns [Type t]
-    : INT       { $t = new IntegerType(); }
-    | FLOAT     { $t = new FloatType(); }
-    | CHAR      { $t = new CharType(); }
-    | STRING    { $t = new StringType(); }
-    | BOOLEAN   { $t = new BooleanType(); }
-    | VOID      { $t = new VoidType(); }
+type returns [TypeNode t]
+    : INT       { $t = new TypeNode(new IntegerType(), $INT.line, $INT.pos); }
+    | FLOAT     { $t = new TypeNode(new FloatType(), $FLOAT.line, $FLOAT.pos); }
+    | CHAR      { $t = new TypeNode(new CharType(), $CHAR.line, $CHAR.pos); }
+    | STRING    { $t = new TypeNode(new StringType(), $STRING.line, $STRING.pos); }
+    | BOOLEAN   { $t = new TypeNode(new BooleanType(), $BOOLEAN.line, $BOOLEAN.pos); }
+    | VOID      { $t = new TypeNode(new VoidType(), $VOID.line, $VOID.pos); }
     ;
 
 statement
@@ -158,22 +158,22 @@ doubleEqExpr returns [Expression e]
     @init { Expression it = null; }
     @after { $e = it; }
     : e1=lessThanExpr { it = e1; }
-        (DOUBEQOP e2=lessThanExpr { it = new EqualityExpression(it, e2); })*
+        (DOUBEQOP e2=lessThanExpr { it = new EqualityExpression(it, e2, $DOUBEQOP.line, $DOUBEQOP.pos); })*
     ;
 
 lessThanExpr returns [Expression e]
     @init { Expression it = null; }
     @after { $e = it; }
     : e1=addSubExpr { it = e1; }
-        (LESSOP e2=addSubExpr { it = new LessThanExpression(it, e2); } )*
+        (LESSOP e2=addSubExpr { it = new LessThanExpression(it, e2, $LESSOP.line, $LESSOP.pos); } )*
     ;
 
 addSubExpr returns [Expression e]
     @init { Expression it = null; }
     @after { $e = it; }
     : e1=multExpr { it = e1; }
-        ( (ADDOP e2=multExpr { it = new AddExpression(it, e2); })
-        | (SUBOP e2=multExpr { it = new SubExpression(it, e2); })
+        ( (ADDOP e2=multExpr { it = new AddExpression(it, e2, $ADDOP.line, $ADDOP.pos); })
+        | (SUBOP e2=multExpr { it = new SubExpression(it, e2, $SUBOP.line, $SUBOP.pos); })
     )*
     ;
 
@@ -181,7 +181,7 @@ multExpr returns [Expression e]
     @init { Expression it = null; }
     @after { $e = it; }
     : e1=atom { it = e1; }
-        (MULTOP e2=atom { it = new MultExpression(it, e2); } )*
+        (MULTOP e2=atom { it = new MultExpression(it, e2, $MULTOP.line, $MULTOP.pos); } )*
     ;
 
 atom returns [Expression e]
@@ -203,24 +203,24 @@ functionCall returns [Expression e]
     ;
 
 stringLiteral returns [StringLiteral s]
-    : STRINGC { $s = new StringLiteral($STRINGC.text.substring(1, $STRINGC.text.length() - 1)); }
+    : STRINGC { $s = new StringLiteral($STRINGC.text.substring(1, $STRINGC.text.length() - 1), $STRINGC.line, $STRINGC.pos); }
     ;
 
 integerLiteral returns [IntegerLiteral i]
-    : INTEGERC { $i = new IntegerLiteral(Integer.parseInt($INTEGERC.text)); }
+    : INTEGERC { $i = new IntegerLiteral(Integer.parseInt($INTEGERC.text), $INTEGERC.line, $INTEGERC.pos); }
     ;
 
 floatLiteral returns [FloatLiteral f]
-    : FLOATC { $f = new FloatLiteral(Float.parseFloat($FLOATC.text)); }
+    : FLOATC { $f = new FloatLiteral(Float.parseFloat($FLOATC.text), $FLOATC.line, $FLOATC.pos); }
     ;
 
 charLiteral returns [CharacterLiteral c]
-    : CHARC { $c = new CharacterLiteral($CHARC.text.charAt(1)); }
+    : CHARC { $c = new CharacterLiteral($CHARC.text.charAt(1), $CHARC.line, $CHARC.pos); }
     ;
 
 boolLiteral returns [BooleanLiteral b]
-    : (TRUE  { $b = new BooleanLiteral(true); })
-    | (FALSE { $b = new BooleanLiteral(false); })
+    : (TRUE  { $b = new BooleanLiteral(true, $TRUE.line, $TRUE.pos); })
+    | (FALSE { $b = new BooleanLiteral(false, $FALSE.line, $FALSE.pos); })
     ;
 
 literal returns [Literal l]
@@ -251,7 +251,7 @@ op
     ;
 
 identifier returns [Identifier i]
-    : ID { i = new Identifier($ID.text); }
+    : ID { $i = new Identifier($ID.text, $ID.line, $ID.pos); }
     ;
 
 /* Fragments */
