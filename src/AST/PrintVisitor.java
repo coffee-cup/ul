@@ -92,25 +92,8 @@ public class PrintVisitor implements Visitor<Void> {
     }
 
     public Void visit(Function f) {
-        f.getType().accept(this);
-        space();
-        f.getIdent().accept(this);
-        space();
-        openParen();
-
-        // Parameters
-        for (int i = 0; i < f.getParams().size(); i += 1) {
-            f.getParams().get(i).accept(this);
-
-            if (i < f.getParams().size() - 1) {
-                commaSep();
-            }
-        }
-
-        closeParen();
-        newLine();
-        openBrace();
-        newLine();
+        // Declaration
+        f.getDecl().accept(this);
 
         // Body
         f.getBody().accept(this);
@@ -161,6 +144,30 @@ public class PrintVisitor implements Visitor<Void> {
         }
 
         closeParen();
+
+        return null;
+    }
+
+    public Void visit(FunctionDecl decl) {
+        decl.getType().accept(this);
+        space();
+        decl.getIdent().accept(this);
+        space();
+        openParen();
+
+        // Parameters
+        for (int i = 0; i < decl.getParams().size(); i += 1) {
+            decl.getParams().get(i).accept(this);
+
+            if (i < decl.getParams().size() - 1) {
+                commaSep();
+            }
+        }
+
+        closeParen();
+        newLine();
+        openBrace();
+        newLine();
 
         return null;
     }

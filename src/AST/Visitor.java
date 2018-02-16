@@ -25,6 +25,8 @@ public interface Visitor<T> {
 
     public T visit(FunctionCall f);
 
+    public T visit(FunctionDecl f);
+
     public T visit(Identifier i);
 
     public T visit(IfStatement i);

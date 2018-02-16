@@ -93,20 +93,9 @@ public class DotVisitor implements Visitor<Void> {
     }
 
     public Void visit(Function f) {
-        printIndent();
-        out.print("subgraph " + f.getIdent().getName() + " ");
-        openBrace();
-        newLine();
-        forwardIndent();
+        connectNodes(f, f.getDecl());
+        f.getDecl().accept(this);
 
-        labelNode(f, f.getType().toString() + " " + f.getIdent().getName());
-
-        connectNodes(f, f.getParams());
-        labelNode(f.getParams(), "FormalParameters");
-        for (FormalParameter p : f.getParams()) {
-            connectNodes(f.getParams(), p);
-            p.accept(this);
-        }
         connectNodes(f, f.getBody());
         f.getBody().accept(this);
 
@@ -146,6 +135,27 @@ public class DotVisitor implements Visitor<Void> {
         for (Expression e : f.getParams()) {
             connectNodes(f, e);
             e.accept(this);
+        }
+
+        return null;
+    }
+
+    public Void visit(FunctionDecl decl) {
+        labelNode(decl, "FunctionDecl");
+
+        printIndent();
+        out.print("subgraph " + decl.getIdent().getName() + " ");
+        openBrace();
+        newLine();
+        forwardIndent();
+
+        labelNode(decl, decl.getType().toString() + " " + decl.getIdent().getName());
+
+        connectNodes(decl, decl.getParams());
+        labelNode(decl.getParams(), "FormalParameters");
+        for (FormalParameter p : decl.getParams()) {
+            connectNodes(decl.getParams(), p);
+            p.accept(this);
         }
 
         return null;

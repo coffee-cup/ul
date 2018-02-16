@@ -36,13 +36,13 @@ program returns [Program p]
     ;
 
 function returns [Function f]
-    : d=functionDecl body=functionBody
-        { f = new Function($d.t, $d.i, $d.params, body); }
+    : decl=functionDecl body=functionBody
+        { f = new Function(decl, body); }
     ;
 
-functionDecl returns [Identifier i, TypeNode t, ArrayList<FormalParameter> params]
+functionDecl returns [FunctionDecl decl]
     : ct=compoundType ident=identifier LPARENS fps=formalParameters RPARENS
-        { $i = ident; $t = ct; $params = fps; }
+        { $decl = new FunctionDecl(ct, ident, fps); }
     ;
 
 formalParameters returns [ArrayList<FormalParameter> params]
