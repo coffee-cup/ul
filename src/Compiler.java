@@ -2,6 +2,7 @@ import org.antlr.runtime.*;
 import java.io.*;
 import AST.*;
 import Semantics.*;
+import Semantics.Exceptions.*;
 
 public class Compiler {
     private CompilerOptions options;
@@ -9,6 +10,14 @@ public class Compiler {
     public Compiler(CompilerOptions options) {
         this.options = options;
     }
+
+    // public void test() {
+    //     return;
+    // }
+
+    // public void test() {
+    //     return;
+    // }
 
     public void compile() throws RecognitionException, FileNotFoundException, Exception {
         ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(options.infile));
@@ -60,6 +69,9 @@ public class Compiler {
         } catch (IOException e) {
             System.out.println(e);
             e.printStackTrace();
+            System.exit(1);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         } catch (Exception e) {
             System.out.println(e);

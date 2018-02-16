@@ -17,6 +17,19 @@ public class FunctionDecl extends ASTNode {
         return v.visit(this);
     }
 
+    public String toString() {
+        String s = type.getType().toString() + " " + ident.getName() + " (";
+
+        int i = 0;
+        for (FormalParameter fp: params) {
+            s += fp.getType().getType().toString();
+            if (i != params.size() - 1) s += ", ";
+            i += 1;
+        }
+        s += ")";
+        return s;
+    }
+
 	public TypeNode getType() {
 		return type;
 	}
@@ -40,4 +53,18 @@ public class FunctionDecl extends ASTNode {
 	public void setParams(ArrayList<FormalParameter> params) {
 		this.params = params;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj instanceof FunctionDecl) {
+            return ((FunctionDecl) obj).toString().equals(this.toString());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
 }
