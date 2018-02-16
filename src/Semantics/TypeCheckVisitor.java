@@ -50,6 +50,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Function f) {
+        vtable.beginScope();
+        f.getDecl().accept(this);
+        f.getBody().accept(this);
+        vtable.endScope();
+
         return null;
     }
 
@@ -62,6 +67,17 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionDecl decl) {
+        for (FormalParameter p: decl.getParams()) {
+            if (vtable.inCurrentScope(p.getIdent())) {
+                throw new MultipleDefinitionException(p);
+            }
+            vtable.add(p.getIdent(), p.getType().getType());
+
+            if (p.getType().getType() instanceof VoidType) {
+                throw new InvalidTypeException(p);
+            }
+        }
+
         return null;
     }
 
@@ -92,14 +108,32 @@ public class TypeCheckVisitor implements Visitor<Type> {
     public Type visit(Program p) {
         // Add all function declarations to the ftable
         ftable.beginScope();
+
+        boolean foundMain = false;
         for (Function f: p.getFunctions()) {
             FunctionDecl prevDecl = ftable.lookup(f.getDecl());
             if (prevDecl != null) {
                 throw new MultipleDefinitionException(prevDecl, f.getDecl());
             }
             ftable.add(f.getDecl(), f.getDecl());
+
+            if (f.getDecl().getType().getType() instanceof VoidType
+                && f.getDecl().getIdent().getName().equals("main")
+                && f.getDecl().getParams().size() == 0) {
+                foundMain = true;
+            }
         }
 
+        if (!foundMain) {
+            throw new SemanticException("function void main() not found in program");
+        }
+
+        // Visit all functions
+        for (Function f: p.getFunctions()) {
+            f.accept(this);
+        }
+
+        ftable.endScope();
         return null;
     }
 

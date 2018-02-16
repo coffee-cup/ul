@@ -5,7 +5,10 @@ import Types.*;
 
 public class MultipleDefinitionException extends SemanticException {
     public MultipleDefinitionException(FunctionDecl prevDecl, FunctionDecl decl) {
-        super("error: function " + decl.toString() + " previously defined on line " + prevDecl.getIdent().getLine() + "\n" +
-              SemanticException.getPositionMessage(decl.getIdent()));
+        super("function " + decl.toString() + " previously defined on line " + prevDecl.getIdent().getLine(), decl.getIdent());
+    }
+
+    public MultipleDefinitionException(FormalParameter p) {
+        super("parameter " + p.getIdent().getName() + " already defined", p.getIdent());
     }
 }

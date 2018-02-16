@@ -2,13 +2,9 @@ int foo(int x) {
     ;
 }
 
-int bar(int x, int y) {
+int bar (int x, void y) {}
+int bar(int x, float y) {
     ;
 }
 
-int bar(int t, int z) {
-    ;
-}
-
-void main() {
-}
+void main() {}

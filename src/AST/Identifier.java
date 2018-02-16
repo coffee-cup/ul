@@ -20,4 +20,18 @@ public class Identifier extends Expression {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj instanceof Identifier) {
+            return ((Identifier) obj).getName().equals(this.getName());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
+    }
 }

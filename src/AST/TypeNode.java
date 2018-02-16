@@ -15,11 +15,27 @@ public class TypeNode extends ASTNode {
         return v.visit(this);
     }
 
+    // public boolean is(Class c) {
+    //     return (this.getType().is(c));
+    // }
+
     public String toString() {
         return type.toString();
     }
 
     public Type getType() {
         return this.type;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj instanceof TypeNode) {
+            return (((TypeNode)obj).getType().equals(this.getType()));
+        }
+        if (obj instanceof Type) {
+            return (((Type)obj).equals(this.getType()));
+        }
+        return false;
     }
 }
