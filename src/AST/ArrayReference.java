@@ -13,19 +13,19 @@ public class ArrayReference extends Expression {
         return v.visit(this);
     }
 
-	public Identifier getName() {
-		return name;
-	}
+    public Identifier getName() {
+        return name;
+    }
 
-	public void setName(Identifier name) {
-		this.name = name;
-	}
+    public void setName(Identifier name) {
+        this.name = name;
+    }
 
-	public Expression getExpr() {
-		return expr;
-	}
+    public Expression getExpr() {
+        return expr;
+    }
 
-	public void setExpr(Expression expr) {
-		this.expr = expr;
-	}
+    public void setExpr(Expression expr) {
+        this.expr = expr;
+    }
 }

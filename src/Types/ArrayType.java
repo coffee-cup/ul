@@ -11,15 +11,30 @@ public class ArrayType extends Type {
         this.size = size;
     }
 
-    public Type getInstance() {
+    public static Type getInstance() {
         throw new RuntimeException("Cannot getInstance of ArrayType");
     }
 
-    public boolean check(Type t) {
+    public static boolean check(Type t) {
         return (t instanceof ArrayType);
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public String toString() {
         return arrayOf.toString() + "[" + size + "]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+
+        if (obj instanceof Type && ArrayType.check((Type) obj)) {
+            return (((ArrayType)obj).getSize() == this.getSize());
+        }
+
+        return false;
     }
 }
