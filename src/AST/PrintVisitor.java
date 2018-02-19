@@ -84,7 +84,7 @@ public class PrintVisitor implements Visitor<Void> {
     }
 
     public Void visit(FormalParameter p) {
-        p.getType().accept(this);
+        p.getTypeNode().accept(this);
         space();
         p.getIdent().accept(this);
 
@@ -149,7 +149,7 @@ public class PrintVisitor implements Visitor<Void> {
     }
 
     public Void visit(FunctionDecl decl) {
-        decl.getType().accept(this);
+        decl.getTypeNode().accept(this);
         space();
         decl.getIdent().accept(this);
         space();
@@ -294,7 +294,7 @@ public class PrintVisitor implements Visitor<Void> {
     }
 
     public Void visit(VariableDeclaration v) {
-        v.getType().accept(this);
+        v.getTypeNode().accept(this);
         space();
         v.getIdent().accept(this);
         semi();

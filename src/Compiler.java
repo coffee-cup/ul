@@ -39,15 +39,15 @@ public class Compiler {
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
 
-        // if (!options.silent) {
-        //     if (options.dotFormat) {
-        //         DotVisitor dotVisitor = new DotVisitor(outStream);
-        //         p.accept(dotVisitor);
-        //     } else {
-        //         PrintVisitor printVisitor = new PrintVisitor(outStream);
-        //         p.accept(printVisitor);
-        //     }
-        // }
+        if (!options.silent) {
+            if (options.prettyPrint) {
+                PrintVisitor printVisitor = new PrintVisitor(outStream);
+                p.accept(printVisitor);
+            } else if (options.dotFormat) {
+                DotVisitor dotVisitor = new DotVisitor(outStream);
+                p.accept(dotVisitor);
+            }
+        }
     }
 
     public static void main(String[] args) {

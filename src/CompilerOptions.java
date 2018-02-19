@@ -6,12 +6,14 @@ import ParseCmd.ParseCmd;
 public class CompilerOptions {
     public String infile;
     public String outfile = "<stdout>";
+    public boolean prettyPrint = false;
     public boolean dotFormat = false;
     public boolean silent = false;
 
-    public CompilerOptions(String infile, String outfile, boolean dotFormat, boolean silent) {
+    public CompilerOptions(String infile, String outfile, boolean prettyPrint, boolean dotFormat, boolean silent) {
         this.infile = infile;
         this.outfile = outfile;
+        this.prettyPrint = prettyPrint;
         this.dotFormat = dotFormat;
         this.silent = silent;
     }
@@ -22,15 +24,18 @@ public class CompilerOptions {
 
         String usage = "usage: [-o outfile -s 0] filename";
         ParseCmd cmd = new ParseCmd.Builder()
-                .help(usage)
-                .parm("-o", "<stdout>")
-                .parm("-s", "0")
+            .help(usage)
+            .parm("-o", "<stdout>")
+            .parm("-p", "0")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
-                .parm("-d", "0")
+            .parm("-s", "0")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
-                .build();
+            .parm("-d", "0")
+                .rex("^[01]{1}$")
+                .msg("enter 0 or 1; other values are invalid")
+            .build();
 
         if (args.length == 0) {
             System.out.println(usage);
@@ -50,9 +55,10 @@ public class CompilerOptions {
         }
 
         String outfile = R.get("-o");
+        boolean prettyPrint = R.get("-p").equals("1");
         boolean dot = R.get("-d").equals("1");
         boolean silent = R.get("-s").equals("1");
 
-        return new CompilerOptions(filename, outfile, dot, silent);
+        return new CompilerOptions(filename, outfile, prettyPrint, dot, silent);
     }
 }
