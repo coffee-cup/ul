@@ -11,4 +11,8 @@ public class MultipleDefinitionException extends SemanticException {
     public MultipleDefinitionException(FormalParameter p) {
         super("parameter " + p.getIdent().getName() + " already defined", p.getIdent());
     }
+
+    public MultipleDefinitionException(VariableDeclaration v) {
+        super("variable " + v.getIdent().getName() + " already defined", v.getIdent());
+    }
 }

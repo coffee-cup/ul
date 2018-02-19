@@ -1,8 +1,8 @@
 int foo(int x) {
-    int x;
+    int y;
 }
 
 void main() {
      int x;
-     float x;
+     float y;
 }

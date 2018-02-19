@@ -26,15 +26,19 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Block b) {
+        for (Statement s: b.getStmts()) {
+            s.accept(this);
+        }
+
         return null;
     }
 
     public Type visit(BooleanLiteral b) {
-        return null;
+        return BooleanType.getInstance();
     }
 
     public Type visit(CharacterLiteral c) {
-        return null;
+        return CharType.getInstance();
     }
 
     public Type visit(ExpressionStatement e) {
@@ -42,7 +46,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FloatLiteral f) {
-        return null;
+        return FloatType.getInstance();
     }
 
     public Type visit(FormalParameter p) {
@@ -59,6 +63,17 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionBody f) {
+        for (VariableDeclaration v: f.getVars()) {
+            if (vtable.inCurrentScope(v.getIdent())) {
+                throw new MultipleDefinitionException(v);
+            }
+            vtable.add(v.getIdent(), v.getType());
+
+            if (VoidType.check(v.getType())) {
+                throw new InvalidTypeException(v);
+            }
+        }
+
         return null;
     }
 
@@ -90,7 +105,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(IntegerLiteral i) {
-        return null;
+        return IntegerType.getInstance();
     }
 
     public Type visit(OperatorExpression e) {
@@ -142,7 +157,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(StringLiteral s) {
-        return null;
+        return StringType.getInstance();
     }
 
     public Type visit(TypeNode t) {
