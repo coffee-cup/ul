@@ -1,9 +1,18 @@
 package Types;
 
 public class BooleanType extends Type {
+    public static Type instance;
+
     public BooleanType() {}
 
-    public boolean check(Type t) {
+    public static Type getInstance() {
+        if (instance == null) {
+            instance = new BooleanType();
+        }
+        return instance;
+    }
+
+    public static boolean check(Type t) {
         return (t instanceof BooleanType);
     }
 

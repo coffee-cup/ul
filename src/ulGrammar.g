@@ -89,12 +89,12 @@ arrayType returns [TypeNode t]
     ;
 
 type returns [TypeNode t]
-    : INT       { $t = new TypeNode(new IntegerType(), $INT.line, $INT.pos); }
-    | FLOAT     { $t = new TypeNode(new FloatType(), $FLOAT.line, $FLOAT.pos); }
-    | CHAR      { $t = new TypeNode(new CharType(), $CHAR.line, $CHAR.pos); }
-    | STRING    { $t = new TypeNode(new StringType(), $STRING.line, $STRING.pos); }
-    | BOOLEAN   { $t = new TypeNode(new BooleanType(), $BOOLEAN.line, $BOOLEAN.pos); }
-    | VOID      { $t = new TypeNode(new VoidType(), $VOID.line, $VOID.pos); }
+    : INT       { $t = new TypeNode(IntegerType.getInstance(), $INT.line, $INT.pos); }
+    | FLOAT     { $t = new TypeNode(FloatType.getInstance(), $FLOAT.line, $FLOAT.pos); }
+    | CHAR      { $t = new TypeNode(CharType.getInstance(), $CHAR.line, $CHAR.pos); }
+    | STRING    { $t = new TypeNode(StringType.getInstance(), $STRING.line, $STRING.pos); }
+    | BOOLEAN   { $t = new TypeNode(BooleanType.getInstance(), $BOOLEAN.line, $BOOLEAN.pos); }
+    | VOID      { $t = new TypeNode(VoidType.getInstance(), $VOID.line, $VOID.pos); }
     ;
 
 statement

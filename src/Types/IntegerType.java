@@ -1,9 +1,18 @@
 package Types;
 
 public class IntegerType extends Type {
+    public static Type instance;
+
     public IntegerType() {}
 
-    public boolean check(Type t) {
+    public static Type getInstance() {
+        if (instance == null) {
+            instance = new IntegerType();
+        }
+        return instance;
+    }
+
+    public static boolean check(Type t) {
         return (t instanceof IntegerType);
     }
 

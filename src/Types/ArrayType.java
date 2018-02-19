@@ -11,6 +11,10 @@ public class ArrayType extends Type {
         this.size = size;
     }
 
+    public Type getInstance() {
+        throw new RuntimeException("Cannot getInstance of ArrayType");
+    }
+
     public boolean check(Type t) {
         return (t instanceof ArrayType);
     }

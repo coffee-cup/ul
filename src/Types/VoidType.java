@@ -1,9 +1,18 @@
 package Types;
 
 public class VoidType extends Type {
+    public static Type instance;
+
     public VoidType() {}
 
-    public boolean check(Type t) {
+    public static Type getInstance() {
+        if (instance == null) {
+            instance = new VoidType();
+        }
+        return instance;
+    }
+
+    public static boolean check(Type t) {
         return (t instanceof VoidType);
     }
 

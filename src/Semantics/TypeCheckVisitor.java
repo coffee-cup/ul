@@ -73,7 +73,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             }
             vtable.add(p.getIdent(), p.getType());
 
-            if (p.getType() instanceof VoidType) {
+            if (VoidType.check(p.getType())) {
                 throw new InvalidTypeException(p);
             }
         }
@@ -117,7 +117,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             }
             ftable.add(f.getDecl(), f.getDecl());
 
-            if (f.getDecl().getType() instanceof VoidType
+            if (VoidType.check(f.getDecl().getType())
                 && f.getDecl().getIdent().getName().equals("main")
                 && f.getDecl().getParams().size() == 0) {
                 foundMain = true;

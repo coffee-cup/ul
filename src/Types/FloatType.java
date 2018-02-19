@@ -1,9 +1,18 @@
 package Types;
 
 public class FloatType extends Type {
+    public static Type instance;
+
     public FloatType() {}
 
-    public boolean check(Type t) {
+    public static Type getInstance() {
+        if (instance == null) {
+            instance = new FloatType();
+        }
+        return instance;
+    }
+
+    public static boolean check(Type t) {
         return (t instanceof FloatType);
     }
 

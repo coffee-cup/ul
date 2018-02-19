@@ -1,10 +1,8 @@
 int foo(int x) {
-    ;
+    int x;
 }
 
-int bar (int x, void y) {}
-int bar(int x, float y) {
-    ;
+void main() {
+     int x;
+     float x;
 }
-
-void main() {}

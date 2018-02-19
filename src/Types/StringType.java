@@ -1,9 +1,18 @@
 package Types;
 
 public class StringType extends Type {
+    public static Type instance;
+
     public StringType() {}
 
-    public boolean check(Type t) {
+    public static Type getInstance() {
+        if (instance == null) {
+            instance = new StringType();
+        }
+        return instance;
+    }
+
+    public static boolean check(Type t) {
         return (t instanceof StringType);
     }
 

@@ -1,7 +1,6 @@
 package Types;
 
 public abstract class Type {
-    abstract public boolean check(Type t);
     abstract public String toString();
 
     @Override
