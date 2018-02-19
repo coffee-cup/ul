@@ -1,11 +1,8 @@
 package Types;
 
 public abstract class Type {
+    abstract public boolean check(Type t);
     abstract public String toString();
-
-    // public boolean is(Class c) {
-    //     return (this instanceof c);
-    // }
 
     @Override
     public boolean equals(Object obj) {

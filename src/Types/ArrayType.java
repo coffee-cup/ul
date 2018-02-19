@@ -11,6 +11,10 @@ public class ArrayType extends Type {
         this.size = size;
     }
 
+    public boolean check(Type t) {
+        return (t instanceof ArrayType);
+    }
+
     public String toString() {
         return arrayOf.toString() + "[" + size + "]";
     }
