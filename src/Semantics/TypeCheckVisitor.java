@@ -14,6 +14,15 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(AssignStatement s) {
+        Type t1 = vtable.lookup(s.getName());
+        if (t1 == null) {
+            throw new VariableNotDeclaredException(s.getName());
+        }
+
+        Type t2 = s.getExpr().accept(this);
+        if (!t1.equals(t2) && !(FloatType.check(t1) && IntegerType.check(t2))) {
+            throw new TypeMismatchException(s, t1, t2);
+        }
         return null;
     }
 
@@ -74,6 +83,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
             }
         }
 
+        for (Statement s: f.getStmts()) {
+            s.accept(this);
+        }
+
         return null;
     }
 
@@ -97,7 +110,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Identifier i) {
-        return null;
+        Type t = vtable.lookup(i);
+        if (t == null) {
+            throw new VariableNotDeclaredException(i);
+        }
+        return t;
     }
 
     public Type visit(IfStatement i) {

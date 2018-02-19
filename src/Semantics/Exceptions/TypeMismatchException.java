@@ -4,7 +4,7 @@ import AST.*;
 import Types.*;
 
 public class TypeMismatchException extends SemanticException {
-    public TypeMismatchException(Type t1, Type t2, ASTNode node) {
-        super("expected " + t1.toString() + " to be type " + t2.toString(), node);
+    public TypeMismatchException(AssignStatement s, Type t1, Type t2) {
+        super("cannot assign " + t1.toString() + " " + s.getName().toString() + " to " + t2.toString(), s.getName());
     }
 }

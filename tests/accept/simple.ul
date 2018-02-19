@@ -1,8 +1,16 @@
 int foo(int x) {
-    int y;
+    float y;
+    int[2] z;
+    int[2] a;
+
+    y = x;
+    z = a;
 }
 
 void main() {
      int x;
      float y;
+     string z;
+
+     z = "asf";
 }

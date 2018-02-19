@@ -1,0 +1,16 @@
+int foo(int foo, float y) {
+    int x;
+
+    foo = 2;
+    x = foo;
+    y = x;
+}
+
+void main() {
+     int x;
+     float y;
+     y = x;
+     x = 3;
+     y = 3.4;
+     y = 2;
+}

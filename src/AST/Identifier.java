@@ -22,6 +22,11 @@ public class Identifier extends Expression {
 	}
 
     @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj instanceof Identifier) {
