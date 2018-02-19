@@ -16,6 +16,10 @@ public class FloatType extends Type {
         return (t instanceof FloatType);
     }
 
+    public static boolean lessThan(Type t) {
+        return IntegerType.check(t);
+    }
+
     public String toString() {
         return "float";
     }
