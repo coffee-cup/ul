@@ -1,6 +1,7 @@
 package AST;
 
 import java.util.ArrayList;
+import Types.Type;
 
 public class FunctionDecl extends ASTNode {
     private TypeNode type;
@@ -8,7 +9,7 @@ public class FunctionDecl extends ASTNode {
     private ArrayList<FormalParameter> params;
 
     public FunctionDecl(TypeNode type, Identifier ident, ArrayList<FormalParameter> params) {
-        this.setType(type);
+        this.setTypeNode(type);
         this.setIdent(ident);
         this.setParams(params);
     }
@@ -22,7 +23,7 @@ public class FunctionDecl extends ASTNode {
 
         int i = 0;
         for (FormalParameter fp: params) {
-            s += fp.getType().getType().toString();
+            s += fp.getType().toString();
             if (i != params.size() - 1) s += ", ";
             i += 1;
         }
@@ -30,11 +31,15 @@ public class FunctionDecl extends ASTNode {
         return s;
     }
 
-	public TypeNode getType() {
-		return type;
-	}
+    public Type getType() {
+        return getTypeNode().getType();
+    }
 
-	public void setType(TypeNode type) {
+    public TypeNode getTypeNode() {
+        return type;
+    }
+
+	public void setTypeNode(TypeNode type) {
 		this.type = type;
 	}
 

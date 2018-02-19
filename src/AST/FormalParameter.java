@@ -1,11 +1,13 @@
 package AST;
 
+import Types.Type;
+
 public class FormalParameter extends ASTNode {
     private TypeNode type;
     private Identifier ident;
 
     public FormalParameter(TypeNode type, Identifier ident) {
-        this.setType(type);
+        this.setTypeNode(type);
         this.setIdent(ident);
     }
 
@@ -13,11 +15,15 @@ public class FormalParameter extends ASTNode {
         return v.visit(this);
     }
 
-	public TypeNode getType() {
-		return type;
-	}
+    public Type getType() {
+        return getTypeNode().getType();
+    }
 
-	public void setType(TypeNode type) {
+    public TypeNode getTypeNode() {
+        return type;
+    }
+
+	public void setTypeNode(TypeNode type) {
 		this.type = type;
 	}
 
