@@ -1,6 +1,7 @@
 package AST;
 
 import java.util.ArrayList;
+import Types.Type;
 
 public class FunctionCall extends Expression {
     private Identifier name;
@@ -30,4 +31,17 @@ public class FunctionCall extends Expression {
 	public void setParams(ArrayList<Expression> params) {
 		this.params = params;
 	}
+
+    public String getCallString(ArrayList<Type> paramTypes) {
+        String s = getName() + " (";
+
+        int i = 0;
+        for (Type t: paramTypes) {
+            s += t.toString();
+            if (i != paramTypes.size() - 1) s += ", ";
+            i += 1;
+        }
+        s += ")";
+        return s;
+    }
 }

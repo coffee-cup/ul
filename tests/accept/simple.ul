@@ -1,16 +1,9 @@
-int foo(int x) {
-    float y;
-    int[2] z;
-    int[2] a;
-
-    y = x;
-    z = a;
+float[2] foo(int x) {
+    return x;
 }
 
 void main() {
-     int x;
-     float y;
-     string z;
+     float[2] x;
 
-     z = "asf";
+     x = foo(3);
 }

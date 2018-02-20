@@ -1,5 +1,8 @@
-void main() {
-     int x;
+char foo(float x) {
+    return 'd';
+}
 
-     foo(x, 1;
+void main() {
+  string s;
+  s = foo(3.3);
 }

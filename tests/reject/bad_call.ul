@@ -1,3 +1,8 @@
+string foo(int x) {
+    return x;
+}
+
 void main() {
-     foo(1 2 3);
+  string s;
+  s = foo(3.3);
 }

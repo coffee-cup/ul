@@ -1,22 +1,23 @@
 package Semantics;
 
+import java.util.ArrayList;
 import Semantics.Exceptions.*;
 import AST.*;
 import Types.*;
 
 public class TypeCheckVisitor implements Visitor<Type> {
-    private Environment<FunctionDecl, FunctionDecl> ftable;
+    private Environment<String, FunctionDecl> ftable;
     private Environment<Identifier, Type> vtable;
 
     public TypeCheckVisitor() {
-        ftable = new HashEnvironment<FunctionDecl, FunctionDecl>();
+        ftable = new HashEnvironment<String, FunctionDecl>();
         vtable = new HashEnvironment<Identifier, Type>();
     }
 
     public Type visit(AssignStatement s) {
         Type t1 = vtable.lookup(s.getName());
         if (t1 == null) {
-            throw new VariableNotDeclaredException(s.getName());
+            throw new NotDeclaredException(s.getName());
         }
 
         Type t2 = s.getExpr().accept(this);
@@ -51,7 +52,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ExpressionStatement e) {
-        return null;
+        return e.getExpr().accept(this);
     }
 
     public Type visit(FloatLiteral f) {
@@ -59,7 +60,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FormalParameter p) {
-        return null;
+        return p.getType();
     }
 
     public Type visit(Function f) {
@@ -91,7 +92,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionCall f) {
-        return null;
+        ArrayList<Type> paramTypes = new ArrayList<Type>();
+        for (Expression e: f.getParams()) {
+            paramTypes.add(e.accept(this));
+        }
+
+        String callString = f.getCallString(paramTypes);
+        FunctionDecl decl = ftable.lookup(callString);
+        if (decl == null) {
+            throw new NotDeclaredException(callString, f.getName());
+        }
+
+        return decl.getType();
     }
 
     public Type visit(FunctionDecl decl) {
@@ -99,7 +111,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             if (vtable.inCurrentScope(p.getIdent())) {
                 throw new MultipleDefinitionException(p);
             }
-            vtable.add(p.getIdent(), p.getType());
+            vtable.add(p.getIdent(), p.accept(this));
 
             if (VoidType.check(p.getType())) {
                 throw new InvalidTypeException(p);
@@ -112,7 +124,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     public Type visit(Identifier i) {
         Type t = vtable.lookup(i);
         if (t == null) {
-            throw new VariableNotDeclaredException(i);
+            throw new NotDeclaredException(i);
         }
         return t;
     }
@@ -143,11 +155,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         boolean foundMain = false;
         for (Function f: p.getFunctions()) {
-            FunctionDecl prevDecl = ftable.lookup(f.getDecl());
+            FunctionDecl prevDecl = ftable.lookup(f.getDecl().toString());
             if (prevDecl != null) {
                 throw new MultipleDefinitionException(prevDecl, f.getDecl());
             }
-            ftable.add(f.getDecl(), f.getDecl());
+            ftable.add(f.getDecl().toString(), f.getDecl());
 
             if (VoidType.check(f.getDecl().getType())
                 && f.getDecl().getIdent().getName().equals("main")
