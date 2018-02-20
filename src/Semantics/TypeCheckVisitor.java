@@ -77,9 +77,9 @@ public class TypeCheckVisitor implements Visitor<Type> {
             if (vtable.inCurrentScope(v.getIdent())) {
                 throw new MultipleDefinitionException(v);
             }
-            vtable.add(v.getIdent(), v.getType());
+            vtable.add(v.getIdent(), v.accept(this));
 
-            if (VoidType.check(v.getType())) {
+            if (VoidType.check(v.accept(this))) {
                 throw new InvalidTypeException(v);
             }
         }
@@ -142,7 +142,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ParenExpression p) {
-        return null;
+        return p.getExpr().accept(this);
     }
 
     public Type visit(PrintStatement s) {
@@ -190,11 +190,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(TypeNode t) {
-        return null;
+        return t.getType();
     }
 
     public Type visit(VariableDeclaration v) {
-        return null;
+        return v.getType();
     }
 
     public Type visit(WhileStatement s) {

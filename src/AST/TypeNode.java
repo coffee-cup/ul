@@ -15,10 +15,6 @@ public class TypeNode extends ASTNode {
         return v.visit(this);
     }
 
-    // public boolean is(Class c) {
-    //     return (this.getType().is(c));
-    // }
-
     public String toString() {
         return type.toString();
     }
