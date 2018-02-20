@@ -56,7 +56,7 @@ void main () {
 
 The following AST is produced.
 
-![image](https://user-images.githubusercontent.com/3044853/35426106-5b002308-0215-11e8-8ae8-3edc4e5a54c5.png)
+![dot dot](https://user-images.githubusercontent.com/3044853/36404127-e13e5958-159d-11e8-9a48-fc4b672cfb23.png)
 
 ## Dot Graphs
 
