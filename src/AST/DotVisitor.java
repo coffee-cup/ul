@@ -93,6 +93,8 @@ public class DotVisitor implements Visitor<Void> {
     }
 
     public Void visit(Function f) {
+        labelNode(f);
+
         connectNodes(f, f.getDecl());
         f.getDecl().accept(this);
 
@@ -226,7 +228,10 @@ public class DotVisitor implements Visitor<Void> {
 
         forwardIndent();
 
+        labelNode(p);
+
         for (Function f : p.getFunctions()) {
+            connectNodes(p, f);
             f.accept(this);
             newLine();
         }
@@ -274,7 +279,7 @@ public class DotVisitor implements Visitor<Void> {
 
         s.getExpr().accept(this);
         s.getBlock().accept(this);
-  
+
         return null;
     }
 
