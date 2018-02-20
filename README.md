@@ -85,7 +85,8 @@ dot -Tpng hello.dot -O && open hello.dot.png
 
 The output should be
 
-![image](https://user-images.githubusercontent.com/3044853/35428729-80cd5df2-0225-11e8-839d-5340dd7983af.png)
+![dot dot](https://user-images.githubusercontent.com/3044853/36404174-18a6d88e-159e-11e8-8426-179d5062aae1.png)
+
 
 ## Testing
 
