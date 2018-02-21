@@ -187,7 +187,7 @@ multExpr returns [Expression e]
 atom returns [Expression e]
     : id=identifier             { $e = id; }
     | lit=literal               { $e = lit; }
-    | ref = arrayReference      { $e = ref; }
+    | ref=arrayReference        { $e = ref; }
     | call=functionCall         { $e = call; }
     | LPARENS pe=expr RPARENS   { $e = new ParenExpression(pe); }
     ;

@@ -1,9 +1,8 @@
-float[2] foo(int x) {
-    return x;
-}
+int foo(int x) {}
 
 void main() {
-     float[2] x;
+  boolean[2] x;
+  float y;
 
-     x = foo(3);
+  x[0] = true;
 }

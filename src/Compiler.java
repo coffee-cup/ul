@@ -11,14 +11,6 @@ public class Compiler {
         this.options = options;
     }
 
-    // public void test() {
-    //     return;
-    // }
-
-    // public void test() {
-    //     return;
-    // }
-
     public void compile() throws RecognitionException, FileNotFoundException, Exception {
         ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(options.infile));
 

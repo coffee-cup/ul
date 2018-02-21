@@ -3,8 +3,8 @@ package Types;
 import Types.Type;
 
 public class ArrayType extends Type {
-    Type arrayOf;
-    int size;
+    private Type arrayOf;
+    private int size;
 
     public ArrayType(Type arrayOf, int size) {
         this.arrayOf = arrayOf;
@@ -19,8 +19,16 @@ public class ArrayType extends Type {
         return (t instanceof ArrayType);
     }
 
+    public static String toTypeString() {
+        return "array";
+    }
+
     public int getSize() {
         return size;
+    }
+
+    public Type getArrayOfType() {
+        return arrayOf;
     }
 
     public String toString() {

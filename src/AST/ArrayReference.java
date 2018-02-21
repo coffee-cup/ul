@@ -7,6 +7,7 @@ public class ArrayReference extends Expression {
     public ArrayReference(Identifier name, Expression expr) {
         this.setName(name);
         this.setExpr(expr);
+        this.setPosition(name);
     }
 
     public <T> T accept(Visitor<T> v) {

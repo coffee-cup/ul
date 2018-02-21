@@ -15,31 +15,31 @@ public class ArrayAssignStatement extends Statement {
         return v.visit(this);
     }
 
-	public Identifier getName() {
-		return name;
-	}
+    public Identifier getName() {
+        return name;
+    }
 
-	public Identifier getName(Identifier name) {
-		return this.name;
-	}
-	
-	public void setName(Identifier name) {
-		this.name = name;
-	}
+    public Identifier getName(Identifier name) {
+        return this.name;
+    }
 
-	public Expression getRefExpr() {
-		return refExpr;
-	}
+    public void setName(Identifier name) {
+        this.name = name;
+    }
 
-	public void setRefExpr(Expression refExpr) {
-		this.refExpr = refExpr;
-	}
+    public Expression getRefExpr() {
+        return refExpr;
+    }
 
-	public Expression getAssignExpr() {
-		return assignExpr;
-	}
+    public void setRefExpr(Expression refExpr) {
+        this.refExpr = refExpr;
+    }
 
-	public void setAssignExpr(Expression assignExpr) {
-		this.assignExpr = assignExpr;
-	}
+    public Expression getAssignExpr() {
+        return assignExpr;
+    }
+
+    public void setAssignExpr(Expression assignExpr) {
+        this.assignExpr = assignExpr;
+    }
 }

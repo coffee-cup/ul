@@ -19,7 +19,7 @@ public class FunctionDecl extends ASTNode {
     }
 
     public String toString() {
-        String s = ident.getName() + " (";
+        String s = ident.getName() + "(";
 
         int i = 0;
         for (FormalParameter fp: params) {

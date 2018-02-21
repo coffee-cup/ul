@@ -4,7 +4,15 @@ import AST.*;
 import Types.*;
 
 public class TypeMismatchException extends SemanticException {
-    public TypeMismatchException(AssignStatement s, Type t1, Type t2) {
-        super("cannot assign " + t1.toString() + " " + s.getName().toString() + " to " + t2.toString(), s.getName());
+    public TypeMismatchException(Type tExpected, Type tReceived, ASTNode node) {
+        this("", tExpected, tReceived, node);
+    }
+
+    public TypeMismatchException(String message, Type tExpected, Type tReceived, ASTNode node) {
+        super((message.equals("") ? "" : message + " ") + "Expected " + tExpected.toString() + " Received " + tReceived.toString(), node);
+    }
+
+    public TypeMismatchException(String expectedType, Type tReceived, ASTNode node) {
+        super("Expected " + expectedType + " Received " + tReceived.toString(), node);
     }
 }

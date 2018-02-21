@@ -10,6 +10,7 @@ public class FunctionCall extends Expression {
     public FunctionCall(Identifier name, ArrayList<Expression> params) {
         this.setName(name);
         this.setParams(params);
+        this.setPosition(name);
     }
 
     public <T> T accept(Visitor<T> v) {
@@ -33,7 +34,7 @@ public class FunctionCall extends Expression {
 	}
 
     public String getCallString(ArrayList<Type> paramTypes) {
-        String s = getName() + " (";
+        String s = getName() + "(";
 
         int i = 0;
         for (Type t: paramTypes) {

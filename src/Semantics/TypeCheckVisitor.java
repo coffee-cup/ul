@@ -15,19 +15,33 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(AssignStatement s) {
-        Type t1 = vtable.lookup(s.getName());
-        if (t1 == null) {
-            throw new NotDeclaredException(s.getName());
-        }
-
-        Type t2 = s.getExpr().accept(this);
-        if (!t1.equals(t2) && !(FloatType.check(t1) && IntegerType.check(t2))) {
-            throw new TypeMismatchException(s, t1, t2);
+        Type tName = s.getName().accept(this);
+        Type tExpr = s.getExpr().accept(this);
+        if (!tName.equals(tExpr) && !(FloatType.check(tName) && IntegerType.check(tExpr))) {
+            throw new TypeMismatchException(tName, tExpr, s.getName());
         }
         return null;
     }
 
     public Type visit(ArrayAssignStatement s) {
+        Type tName = s.getName().accept(this);
+        Type tRefExpr = s.getRefExpr().accept(this);
+        Type tAssignExpr = s.getAssignExpr().accept(this);
+
+        if (!ArrayType.check(tName)) {
+            throw new TypeMismatchException(ArrayType.toTypeString(), tName, s.getName());
+        }
+        ArrayType tArray = (ArrayType)tName;
+
+        if (!IntegerType.check(tRefExpr)) {
+            throw new TypeMismatchException(IntegerType.getInstance(), tRefExpr, s.getRefExpr());
+        }
+
+        if (!tAssignExpr.equals(tArray.getArrayOfType())
+            && !(FloatType.check(tArray.getArrayOfType()) && IntegerType.check(tAssignExpr))) {
+            throw new TypeMismatchException(tArray.getArrayOfType(), tAssignExpr, s.getAssignExpr());
+        }
+
         return null;
     }
 
@@ -122,11 +136,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Identifier i) {
-        Type t = vtable.lookup(i);
-        if (t == null) {
-            throw new NotDeclaredException(i);
-        }
-        return t;
+        return getVariableType(i);
     }
 
     public Type visit(IfStatement i) {
@@ -199,5 +209,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(WhileStatement s) {
         return null;
+    }
+
+    private Type getVariableType(Identifier i) {
+        Type t = vtable.lookup(i);
+        if (t == null) {
+            throw new NotDeclaredException(i);
+        }
+        return t;
     }
 }

@@ -19,4 +19,9 @@ public abstract class ASTNode implements Visitable {
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
+    public void setPosition(ASTNode node) {
+        this.setLine(node.getLine());
+        this.setOffset(node.getOffset());
+    }
 }

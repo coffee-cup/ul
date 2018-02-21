@@ -5,6 +5,7 @@ public class ParenExpression extends Expression {
 
     public ParenExpression(Expression expr) {
         this.setExpr(expr);
+        this.setPosition(expr);
     }
 
     public <T> T accept(Visitor<T> v) {
