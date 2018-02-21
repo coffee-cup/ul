@@ -18,7 +18,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
         Type tName = s.getName().accept(this);
         Type tExpr = s.getExpr().accept(this);
         if (!tName.equals(tExpr) && !(FloatType.check(tName) && IntegerType.check(tExpr))) {
-            throw new TypeMismatchException(tName, tExpr, s.getName());
+            throw new TypeMismatchException(tName, tExpr, s.getExpr());
         }
         return null;
     }
