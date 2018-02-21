@@ -1,8 +1,8 @@
 int foo(int x) {}
 
 void main() {
-  boolean[2] x;
+  int[2] x;
   float y;
 
-  x[0] = true;
+  y = x[0];
 }

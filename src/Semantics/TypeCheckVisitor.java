@@ -46,7 +46,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ArrayReference a) {
-        return null;
+        Type t = a.getName().accept(this);
+
+        if (!ArrayType.check(t)) {
+            throw new TypeMismatchException(ArrayType.toTypeString(), t, a);
+        }
+
+        return ((ArrayType)t).getArrayOfType();
     }
 
     public Type visit(Block b) {
