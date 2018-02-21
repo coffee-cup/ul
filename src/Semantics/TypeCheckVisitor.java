@@ -46,13 +46,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ArrayReference a) {
-        Type t = a.getName().accept(this);
+        Type tName = a.getName().accept(this);
+        Type tRefExpr = a.getExpr().accept(this);
 
-        if (!ArrayType.check(t)) {
-            throw new TypeMismatchException(ArrayType.toTypeString(), t, a);
+        if (!ArrayType.check(tName)) {
+            throw new TypeMismatchException(ArrayType.toTypeString(), tName, a);
         }
 
-        return ((ArrayType)t).getArrayOfType();
+        if (!IntegerType.check(tRefExpr)) {
+            throw new TypeMismatchException(IntegerType.getInstance(), tRefExpr, a.getExpr());
+        }
+
+        return ((ArrayType)tName).getArrayOfType();
     }
 
     public Type visit(Block b) {
@@ -88,6 +93,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
         f.getDecl().accept(this);
         f.getBody().accept(this);
         vtable.endScope();
+
 
         return null;
     }
@@ -146,6 +152,16 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(IfStatement i) {
+        Type tCond = i.getExpr().accept(this);
+        if (!BooleanType.check(tCond)) {
+            throw new TypeMismatchException(BooleanType.getInstance(), tCond, i.getExpr());
+        }
+
+        i.getThenBlock().accept(this);
+        if (i.getElseBlock() != null) {
+            i.getElseBlock().accept(this);
+        }
+
         return null;
     }
 
@@ -162,6 +178,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(PrintStatement s) {
+        Type t = s.getExpr().accept(this);
+
         return null;
     }
 
@@ -214,6 +232,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(WhileStatement s) {
+        Type tCond = s.getExpr().accept(this);
+        if (!BooleanType.check(tCond)) {
+            throw new TypeMismatchException(BooleanType.getInstance(), tCond, s.getExpr());
+        }
+
+        s.getBlock().accept(this);
+
         return null;
     }
 
@@ -224,4 +249,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
         }
         return t;
     }
+
+    // private void checkTypeIs(Type[] types, Type t) {
+    //     for (int i = 0; i < types.length; i += 1) {
+    //         if ()
+    //     }
+    // }
 }

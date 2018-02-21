@@ -1,6 +1,6 @@
-int foo() {}
-
 void main() {
   int[2] x;
-  x[2.3];
+  string s;
+
+  s = x[2.3];
 }
