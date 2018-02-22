@@ -1,4 +1,6 @@
-int foo() {}
+void foo() {
+  return;
+}
 
 void main() {
 }

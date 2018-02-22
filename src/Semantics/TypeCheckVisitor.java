@@ -108,7 +108,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         vtable.endScope();
 
-
         return null;
     }
 
@@ -230,6 +229,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ReturnStatement s) {
+        Expression returnExpr = s.getExpr();
+
+        if (returnExpr == null && !VoidType.check(currentFunction.getType())) {
+            throw new ReturnException(currentFunction.getType(), VoidType.getInstance(), s);
+        } else if (returnExpr != null) {
+            Type tReturn = returnExpr.accept(this);
+            if (!currentFunction.getType().equals(tReturn)) {
+                throw new ReturnException(currentFunction.getType(), tReturn, returnExpr);
+            }
+        }
+
+        foundReturn = true;
         return null;
     }
 

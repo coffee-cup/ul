@@ -131,7 +131,7 @@ printStatement returns [PrintStatement s]
 
 returnStatement returns [ReturnStatement s]
     : RETURN e=expr? SEMI
-        { s = new ReturnStatement(e); }
+        { s = new ReturnStatement(e, $RETURN.line, $RETURN.pos); }
     ;
 
 assignStatement returns [AssignStatement s]
