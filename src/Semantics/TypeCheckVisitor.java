@@ -235,7 +235,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new ReturnException(currentFunction.getType(), VoidType.getInstance(), s);
         } else if (returnExpr != null) {
             Type tReturn = returnExpr.accept(this);
-            if (!currentFunction.getType().equals(tReturn)) {
+            if (!currentFunction.getType().equals(tReturn) &&
+                !(FloatType.check(currentFunction.getType()) && IntegerType.check(tReturn))) {
                 throw new ReturnException(currentFunction.getType(), tReturn, returnExpr);
             }
         }

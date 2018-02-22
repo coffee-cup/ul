@@ -1,0 +1,6 @@
+float foo(int x) { return x; }
+void bar() {}
+void hello() { return; }
+string test(string s) { return s; }
+string test() { return "asdf"; }
+void main() {}
