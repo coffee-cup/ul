@@ -8,7 +8,7 @@ public class SemanticException extends RuntimeException {
     }
 
     public SemanticException(String message, ASTNode node) {
-        super("\nError:" + getPositionMessage(node) + ": " + message + "\n");
+        super("\nError:" + getPositionMessage(node) + " " + message + "\n");
     }
 
     static String getPositionMessage(ASTNode node) {
