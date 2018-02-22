@@ -3,7 +3,7 @@ package AST;
 public class SubExpression extends OperatorExpression {
     public SubExpression(Expression e1, Expression e2, int line, int offset) {
         super(e1, e2);
-        operatorSymbol = "-";
+        this.setOperatorSymbol("-");
         this.line = line;
         this.offset = offset;
     }

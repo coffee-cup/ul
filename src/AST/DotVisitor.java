@@ -10,6 +10,12 @@ public class DotVisitor implements Visitor<Void> {
         this.out = out;
     }
 
+    public Void visit(AddExpression e) {
+        visitOperatorExpression(e);
+
+        return null;
+    }
+
     public Void visit(AssignStatement s) {
         labelNode(s);
 
@@ -66,6 +72,12 @@ public class DotVisitor implements Visitor<Void> {
 
     public Void visit(CharacterLiteral c) {
         labelNode(c, Character.toString(c.getValue()));
+
+        return null;
+    }
+
+    public Void visit(EqualityExpression e) {
+        visitOperatorExpression(e);
 
         return null;
     }
@@ -192,14 +204,14 @@ public class DotVisitor implements Visitor<Void> {
         return null;
     }
 
-    public Void visit(OperatorExpression e) {
-        labelNode(e);
+    public Void visit(LessThanExpression e) {
+        visitOperatorExpression(e);
 
-        connectNodes(e, e.e1);
-        connectNodes(e, e.e2);
+        return null;
+    }
 
-        e.e1.accept(this);
-        e.e2.accept(this);
+    public Void visit(MultExpression e) {
+        visitOperatorExpression(e);
 
         return null;
     }
@@ -259,6 +271,12 @@ public class DotVisitor implements Visitor<Void> {
         return null;
     }
 
+    public Void visit(SubExpression e) {
+        visitOperatorExpression(e);
+
+        return null;
+    }
+
     public Void visit(TypeNode t) {
         labelNode(t, t.getType().toString());
 
@@ -281,6 +299,16 @@ public class DotVisitor implements Visitor<Void> {
         s.getBlock().accept(this);
 
         return null;
+    }
+
+    public void visitOperatorExpression(OperatorExpression e) {
+        labelNode(e);
+
+        connectNodes(e, e.getLeftExpr());
+        connectNodes(e, e.getRightExpr());
+
+        e.getLeftExpr().accept(this);
+        e.getRightExpr().accept(this);
     }
 
     private void connectNodes(Object fromNode, Object toNode) {

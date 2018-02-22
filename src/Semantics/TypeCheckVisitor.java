@@ -17,6 +17,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
         vtable = new HashEnvironment<Identifier, Type>();
     }
 
+    public Type visit(AddExpression e) {
+        return null;
+    }
+
     public Type visit(AssignStatement s) {
         Type tName = s.getName().accept(this);
         Type tExpr = s.getExpr().accept(this);
@@ -77,6 +81,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(CharacterLiteral c) {
         return CharType.getInstance();
+    }
+
+    public Type visit(EqualityExpression e) {
+        return null;
     }
 
     public Type visit(ExpressionStatement e) {
@@ -182,7 +190,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
         return IntegerType.getInstance();
     }
 
-    public Type visit(OperatorExpression e) {
+    public Type visit(LessThanExpression e) {
+        return null;
+    }
+
+    public Type visit(MultExpression e) {
         return null;
     }
 
@@ -247,6 +259,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(StringLiteral s) {
         return StringType.getInstance();
+    }
+
+    public Type visit(SubExpression e) {
+        return null;
     }
 
     public Type visit(TypeNode t) {

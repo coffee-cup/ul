@@ -10,6 +10,12 @@ public class PrintVisitor implements Visitor<Void> {
         this.out = out;
     }
 
+    public Void visit(AddExpression e) {
+        visitOperatorExpression(e);
+
+        return null;
+    }
+
     public Void visit(AssignStatement s) {
         s.getName().accept(this);
         out.print("=");
@@ -64,6 +70,12 @@ public class PrintVisitor implements Visitor<Void> {
         out.print("'");
         out.print(c.getValue());
         out.print("'");
+
+        return null;
+    }
+
+    public Void visit(EqualityExpression e) {
+        visitOperatorExpression(e);
 
         return null;
     }
@@ -224,10 +236,14 @@ public class PrintVisitor implements Visitor<Void> {
         return null;
     }
 
-    public Void visit(OperatorExpression e) {
-        e.e1.accept(this);
-        out.print(e.operatorSymbol);
-        e.e2.accept(this);
+    public Void visit(LessThanExpression e) {
+        visitOperatorExpression(e);
+
+        return null;
+    }
+
+    public Void visit(MultExpression e) {
+        visitOperatorExpression(e);
 
         return null;
     }
@@ -287,6 +303,12 @@ public class PrintVisitor implements Visitor<Void> {
         return null;
     }
 
+    public Void visit(SubExpression e) {
+        visitOperatorExpression(e);
+
+        return null;
+    }
+
     public Void visit(TypeNode t) {
         out.print(t.getType().toString());
 
@@ -321,6 +343,12 @@ public class PrintVisitor implements Visitor<Void> {
         closeBrace();
 
         return null;
+    }
+
+    private void visitOperatorExpression(OperatorExpression e) {
+        e.getLeftExpr().accept(this);
+        out.print(e.getOperatorSymbol());
+        e.getRightExpr().accept(this);
     }
 
     private void forwardIndent() {

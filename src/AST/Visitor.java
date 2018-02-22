@@ -1,6 +1,8 @@
 package AST;
 
 public interface Visitor<T> {
+    public T visit(AddExpression e);
+
     public T visit(AssignStatement s);
 
     public T visit(ArrayAssignStatement s);
@@ -12,6 +14,8 @@ public interface Visitor<T> {
     public T visit(BooleanLiteral b);
 
     public T visit(CharacterLiteral c);
+
+    public T visit(EqualityExpression e);
 
     public T visit(ExpressionStatement e);
 
@@ -33,7 +37,9 @@ public interface Visitor<T> {
 
     public T visit(IntegerLiteral i);
 
-    public T visit(OperatorExpression e);
+    public T visit(LessThanExpression e);
+
+    public T visit(MultExpression e);
 
     public T visit(ParenExpression p);
 
@@ -44,6 +50,8 @@ public interface Visitor<T> {
     public T visit(ReturnStatement s);
 
     public T visit(StringLiteral s);
+
+    public T visit(SubExpression e);
 
     public T visit(TypeNode t);
 

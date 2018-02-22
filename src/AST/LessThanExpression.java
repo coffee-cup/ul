@@ -3,7 +3,7 @@ package AST;
 public class LessThanExpression extends OperatorExpression {
     public LessThanExpression(Expression e1, Expression e2, int line, int offset) {
         super(e1, e2);
-        operatorSymbol = "<";
+        this.setOperatorSymbol("<");
         this.line = line;
         this.offset = offset;
     }
