@@ -9,6 +9,9 @@ public class TypeCheckVisitor implements Visitor<Type> {
     private Environment<String, FunctionDecl> ftable;
     private Environment<Identifier, Type> vtable;
 
+    private FunctionDecl currentFunction;
+    private boolean foundReturn = false;
+
     public TypeCheckVisitor() {
         ftable = new HashEnvironment<String, FunctionDecl>();
         vtable = new HashEnvironment<Identifier, Type>();
@@ -90,8 +93,19 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(Function f) {
         vtable.beginScope();
-        f.getDecl().accept(this);
+        FunctionDecl decl = f.getDecl();
+
+        currentFunction = decl;
+        foundReturn = false;
+
+        decl.accept(this);
         f.getBody().accept(this);
+
+        // The function should have a return
+        if (!VoidType.check(decl.getType()) && !foundReturn) {
+            throw new SemanticException("Function " + decl.getIdent().getName() + " should have a return of type " + decl.getType().toString(), decl.getTypeNode());
+        }
+
         vtable.endScope();
 
 
