@@ -1,0 +1,4 @@
+void main() {
+     string x;
+     x = "asdf" + 1.2;
+}

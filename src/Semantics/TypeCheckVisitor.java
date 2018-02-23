@@ -1,6 +1,7 @@
 package Semantics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import Semantics.Exceptions.*;
 import AST.*;
 import Types.*;
@@ -18,7 +19,29 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(AddExpression e) {
-        return null;
+        Type tLeft = e.getLeftExpr().accept(this);
+        Type tRight = e.getRightExpr().accept(this);
+        Type tReturn;
+
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class,
+                                                               CharType.class,
+                                                               StringType.class));
+        if (!checkTypeIs(validTypes, tLeft)) {
+            throw new InvalidTypeException(tLeft, e.getOperatorSymbol(), e.getLeftExpr());
+        }
+
+        if (!checkTypeIs(validTypes, tRight)) {
+            throw new InvalidTypeException(tRight, e.getOperatorSymbol(), e.getRightExpr());
+        }
+
+        if (!tLeft.equals(tRight)) {
+            throw new TypeMismatchException(tLeft, tRight, e);
+        }
+
+        tReturn = tLeft;
+        return tReturn;
     }
 
     public Type visit(AssignStatement s) {
@@ -292,9 +315,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
         return t;
     }
 
-    // private void checkTypeIs(Type[] types, Type t) {
-    //     for (int i = 0; i < types.length; i += 1) {
-    //         if ()
-    //     }
-    // }
+    private <T extends Type> boolean checkTypeIs(ArrayList<Class<? extends Type>> types, Type t) {
+        for (int i = 0; i < types.size(); i += 1) {
+            if (t.getClass().equals(types.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

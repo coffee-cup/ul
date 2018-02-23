@@ -5,10 +5,14 @@ import Types.*;
 
 public class InvalidTypeException extends SemanticException {
     public InvalidTypeException(FormalParameter p) {
-        super("parameter " + p.getIdent().getName() + " cannot have type " + p.getType().toString(), p.getIdent());
+        super("Parameter " + p.getIdent().getName() + " cannot have type " + p.getType().toString(), p.getIdent());
     }
 
     public InvalidTypeException(VariableDeclaration p) {
-        super("variable " + p.getIdent().getName() + " cannot have type " + p.getType().toString(), p.getIdent());
+        super("Variable " + p.getIdent().getName() + " cannot have type " + p.getType().toString(), p.getIdent());
+    }
+
+    public InvalidTypeException(Type t, String forExpr, ASTNode node) {
+        super("Type " + t.toString() + " is invalid for " + forExpr + " expression", node);
     }
 }
