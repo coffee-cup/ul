@@ -107,7 +107,28 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(EqualityExpression e) {
-        return null;
+        Type tLeft = e.getLeftExpr().accept(this);
+        Type tRight = e.getRightExpr().accept(this);
+
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class,
+                                                               CharType.class,
+                                                               StringType.class,
+                                                               BooleanType.class));
+        if (!checkTypeIs(validTypes, tLeft)) {
+            throw new InvalidTypeException(tLeft, e.toString(), e.getLeftExpr());
+        }
+
+        if (!checkTypeIs(validTypes, tRight)) {
+            throw new InvalidTypeException(tRight, e.toString(), e.getRightExpr());
+        }
+
+        if (!tLeft.equals(tRight)) {
+            throw new TypeMismatchException(tLeft, tRight, e);
+        }
+
+        return BooleanType.getInstance();
     }
 
     public Type visit(ExpressionStatement e) {
@@ -134,7 +155,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         // The function should have a return
         if (!VoidType.check(decl.getType()) && !foundReturn) {
-            throw new SemanticException("Function " + decl.getIdent().getName() + " should have a return of type " + decl.getType().toString(), decl.getTypeNode());
+            throw new SemanticException("Function " + decl.getIdent().getName()
+                                        + " should have a return of type " + decl.getType().toString(), decl.getTypeNode());
         }
 
         vtable.endScope();

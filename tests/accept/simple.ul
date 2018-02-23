@@ -3,5 +3,7 @@ int foo() {
 }
 
 void main() {
-  println (foo() + "asdf");
+  boolean a;
+
+  a = (1 == 2.2);
 }
