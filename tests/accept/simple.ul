@@ -1,9 +1,9 @@
-int foo() {
-  return 2;
+string foo() {
+  return "asdf";
 }
 
 void main() {
-  boolean a;
+  float x;
 
-  a = (1 == 2.2);
+  x = 2 - ((foo()));
 }

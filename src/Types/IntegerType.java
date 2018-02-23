@@ -16,6 +16,10 @@ public class IntegerType extends Type {
         return (t instanceof IntegerType);
     }
 
+    public boolean isSubtype(Type t) {
+        return FloatType.check(t);
+    }
+
     public String toString() {
         return "int";
     }

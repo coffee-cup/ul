@@ -19,35 +19,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(AddExpression e) {
-        Type tLeft = e.getLeftExpr().accept(this);
-        Type tRight = e.getRightExpr().accept(this);
-        Type tReturn;
-
         ArrayList<Class<? extends Type>> validTypes =
             new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
                                                                FloatType.class,
                                                                CharType.class,
                                                                StringType.class));
-        if (!checkTypeIs(validTypes, tLeft)) {
-            throw new InvalidTypeException(tLeft, e.toString(), e.getLeftExpr());
-        }
-
-        if (!checkTypeIs(validTypes, tRight)) {
-            throw new InvalidTypeException(tRight, e.toString(), e.getRightExpr());
-        }
-
-        if (!tLeft.equals(tRight)) {
-            throw new TypeMismatchException(tLeft, tRight, e);
-        }
-
-        tReturn = tLeft;
-        return tReturn;
+        return checkBinaryExpression(validTypes, e, null);
     }
 
     public Type visit(AssignStatement s) {
         Type tName = s.getName().accept(this);
         Type tExpr = s.getExpr().accept(this);
-        if (!tName.equals(tExpr) && !(FloatType.check(tName) && IntegerType.check(tExpr))) {
+        if (!(tName.equals(tExpr) || tExpr.isSubtype(tName))) {
             throw new TypeMismatchException(tName, tExpr, s.getExpr());
         }
         return null;
@@ -107,28 +90,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(EqualityExpression e) {
-        Type tLeft = e.getLeftExpr().accept(this);
-        Type tRight = e.getRightExpr().accept(this);
-
         ArrayList<Class<? extends Type>> validTypes =
             new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
                                                                FloatType.class,
                                                                CharType.class,
                                                                StringType.class,
                                                                BooleanType.class));
-        if (!checkTypeIs(validTypes, tLeft)) {
-            throw new InvalidTypeException(tLeft, e.toString(), e.getLeftExpr());
-        }
-
-        if (!checkTypeIs(validTypes, tRight)) {
-            throw new InvalidTypeException(tRight, e.toString(), e.getRightExpr());
-        }
-
-        if (!tLeft.equals(tRight)) {
-            throw new TypeMismatchException(tLeft, tRight, e);
-        }
-
-        return BooleanType.getInstance();
+        return checkBinaryExpression(validTypes, e, BooleanType.getInstance());
     }
 
     public Type visit(ExpressionStatement e) {
@@ -236,11 +204,20 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(LessThanExpression e) {
-        return null;
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class,
+                                                               CharType.class,
+                                                               StringType.class,
+                                                               BooleanType.class));
+        return checkBinaryExpression(validTypes, e, BooleanType.getInstance());
     }
 
     public Type visit(MultExpression e) {
-        return null;
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class));
+        return checkBinaryExpression(validTypes, e, null);
     }
 
     public Type visit(ParenExpression p) {
@@ -317,7 +294,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(SubExpression e) {
-        return null;
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class,
+                                                               CharType.class));
+        return checkBinaryExpression(validTypes, e, null);
     }
 
     public Type visit(TypeNode t) {
@@ -345,6 +326,31 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new NotDeclaredException(i);
         }
         return t;
+    }
+
+    private <T extends Type> Type checkBinaryExpression(ArrayList<Class<? extends Type>> validTypes,
+                                                           OperatorExpression e,
+                                                           Type tReturn) {
+        Type tLeft = e.getLeftExpr().accept(this);
+        Type tRight = e.getRightExpr().accept(this);
+
+        if (!checkTypeIs(validTypes, tLeft)) {
+            throw new InvalidTypeException(tLeft, e.toString(), e.getLeftExpr());
+        }
+
+        if (!checkTypeIs(validTypes, tRight)) {
+            throw new InvalidTypeException(tRight, e.toString(), e.getRightExpr());
+        }
+
+        if (!(tLeft.equals(tRight) || tLeft.isSubtype(tRight) || tRight.isSubtype(tLeft))) {
+            throw new TypeMismatchException(tLeft, tRight, e);
+        }
+
+        if (tReturn == null) {
+            tReturn = Type.greaterType(tLeft, tRight);
+        }
+
+        return tReturn;
     }
 
     private <T extends Type> boolean checkTypeIs(ArrayList<Class<? extends Type>> types, Type t) {
