@@ -29,11 +29,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
                                                                CharType.class,
                                                                StringType.class));
         if (!checkTypeIs(validTypes, tLeft)) {
-            throw new InvalidTypeException(tLeft, e.getOperatorSymbol(), e.getLeftExpr());
+            throw new InvalidTypeException(tLeft, e.toString(), e.getLeftExpr());
         }
 
         if (!checkTypeIs(validTypes, tRight)) {
-            throw new InvalidTypeException(tRight, e.getOperatorSymbol(), e.getRightExpr());
+            throw new InvalidTypeException(tRight, e.toString(), e.getRightExpr());
         }
 
         if (!tLeft.equals(tRight)) {
@@ -227,6 +227,15 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(PrintStatement s) {
         Type t = s.getExpr().accept(this);
+        ArrayList<Class<? extends Type>> validTypes =
+            new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
+                                                               FloatType.class,
+                                                               CharType.class,
+                                                               StringType.class,
+                                                               BooleanType.class));
+        if (!checkTypeIs(validTypes, t)) {
+            throw new InvalidTypeException(t, s.toString(), s.getExpr());
+        }
 
         return null;
     }
@@ -277,6 +286,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
         }
 
         foundReturn = true;
+
         return null;
     }
 

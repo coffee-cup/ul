@@ -25,4 +25,8 @@ public abstract class OperatorExpression extends Expression {
     public void setOperatorSymbol(String operatorSymbol) {
         this.operatorSymbol = operatorSymbol;
     }
+
+    public String toString() {
+        return operatorSymbol + " expression";
+    }
 }

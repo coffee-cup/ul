@@ -13,6 +13,6 @@ public class InvalidTypeException extends SemanticException {
     }
 
     public InvalidTypeException(Type t, String forExpr, ASTNode node) {
-        super("Type " + t.toString() + " is invalid for " + forExpr + " expression", node);
+        super("Type " + t.toString() + " is invalid for " + forExpr, node);
     }
 }

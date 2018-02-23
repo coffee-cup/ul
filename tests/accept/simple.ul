@@ -1,8 +1,7 @@
-void foo() {
-  return;
+int foo() {
+  return 2;
 }
 
 void main() {
-  int x;
-  x = 3 + foo();
+  println (foo() + "asdf");
 }

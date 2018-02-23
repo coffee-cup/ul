@@ -32,4 +32,12 @@ public class PrintStatement extends Statement {
 	public void setNewline(boolean newline) {
 		this.newline = newline;
 	}
+
+    public String toString() {
+        String s = "print";
+        if (newline) {
+            s += "ln";
+        }
+        return s + " statement";
+    }
 }
