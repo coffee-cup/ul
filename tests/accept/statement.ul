@@ -1,5 +1,13 @@
 int ifFn () {
     int x;
+    int a;
+    int b;
+    int y;
+    int c;
+    int hello;
+    int world;
+    int t;
+    int h;
 
     if (x + 2 < 40) {
         ;
@@ -38,43 +46,19 @@ int ifFn () {
         }
     }
 
-    if ((6 - 2) < (y + b * (t - y)) == (h * (b * (a)))) {
-        ;
-    } else {
-        ;;;
-        if (true) {
-            ;
-        } else {
-            if (false) {
-                if (hello == world) {
-                    if (a < b) {
-                        return i;
-                    }
-                }
-                else
-                    {
-                        return a + (c * 22);
-                    }
-            }
-        }
-    }
+    return 2;
 }
 
 void whileFn() {
+    int x;
     while(true) {}
     while(false) {}
     while     (x == 2) {;}
-    while (((((((((((((x - 3) + 2) - 4))))))))))) {}
-    while  (  (6 - 2) < (y + b * (t - y)) == (h * (b * (a)))) {
-        while(true) {
-            while(false) {
-                ;
-            }
-        }
-    }
 }
 
-void printAndReturn() {
+void printFn() {
+    int a;
+    int[2] x;
     print (a + 1);
     print a;
     print "hello";
@@ -92,15 +76,6 @@ void printAndReturn() {
     println 2.3;
     println true;
     println false;
-
-    return (a + 1);
-    return a;
-    return "hello";
-    return 'a';
-    return x[2];
-    return 2.3;
-    return true;
-    return false;
 }
 
 void main() {}

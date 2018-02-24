@@ -100,7 +100,10 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(ExpressionStatement e) {
-        return e.getExpr().accept(this);
+        if (e.getExpr() != null) {
+            return e.getExpr().accept(this);
+        }
+        return null;
     }
 
     public Type visit(FloatLiteral f) {
@@ -259,7 +262,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
         }
 
         if (!foundMain) {
-            throw new SemanticException("function void main() not found in program");
+            throw new SemanticException("Function void main() not found in program");
         }
 
         // Visit all functions

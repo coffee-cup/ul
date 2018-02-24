@@ -1,4 +1,4 @@
-int sampleOne (int x, float y)
+float sampleOne (int x, float y)
 {
  if (x<y)
  {
@@ -30,3 +30,6 @@ void main ()
  print 'a';
  sampleTwo();
 }
+
+
+void sampleTwo() {}

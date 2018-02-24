@@ -9,8 +9,8 @@ int func() {
     char c;
     string d;
     boolean e;
-    void f;
-    int [2] g;
+    boolean [2] g;
+    int x;
     char[256] h;
 
     // Test statements
@@ -25,40 +25,29 @@ int func() {
 
     if (false) {
         while (g[1]) {
-            while (foo(1, 23, bar())) {}
         }
     } else {
         print "Hello";
         println 123;
-        if ((2 + 3) < 3) {
-            return 'a';
+        if ((2 + 3.3) < 3.0) {
+            return 3;
         } else {
-            return "balloon";
+            return 3;
         }
-        return (foo());
     }
 
-    while(g[foo(2 + (3 * 1))]) {
-        ;
-    }
+    while(true) {foobar();}
 
     // Test expressions
     g[2];
     g[1999];
-    c[2];
-    foo();
-    bar(1, 2, 3);
     g;
     a; b; c;
-    (foo(100, bar(), charlie("asdf", g[100])));
 
     // Test operators
     a = 1 + 2;
     a = 1 - 2;
     a = 1 * 2;
-    b = 1 < 2;
-    b = 1 == 2;
-    x = x * f(x + b(a * (2 - test)));
 
     // Test literals
     "hello"; "";
@@ -77,14 +66,20 @@ int func() {
     d = "";
     e = true;
     e = false;
-    g[0] = 0;
-    g[1] = 10;
+    g[0] = true;
+    g[1] = false;
 }
 
-int foo(int a, float b, char c, string d, boolean e, void f) {}
-float floatFn() {}
-boolean boolFn() {}
-int[3] arrFn() {}
-int    [45]    fn() {}
+int foo(int a, float b, char c) { return 3; }
+void hello(int x) {}
+void world(int x, int y) {}
+void bar() {}
+float floatFn() {return 3;}
+boolean boolFn() {return (3 <2);}
+int[3] arrFn() {
+  int[3] x;
+  return x;
+}
 void a() {}
 void main() {}
+boolean foobar() { return true; }

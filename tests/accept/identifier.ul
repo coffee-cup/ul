@@ -1,11 +1,11 @@
 void main() {
-    _;
-    a;
-    abc;
-    ABC;
-    aB;
-    a0123;
-    a01Accg__;
-    ____asdsf332525___DFFff;
-    a_B_0_;
+    int _;
+    int a;
+    int abc;
+    int ABC;
+    int aB;
+    int a0123;
+    int a01Accg__;
+    int ____asdsf332525___DFFff;
+    int a_B_0_;
 }

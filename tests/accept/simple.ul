@@ -5,5 +5,5 @@ string foo() {
 void main() {
   float x;
 
-  x = 2 - ((foo()));
+  x = 3.4 * 1;
 }

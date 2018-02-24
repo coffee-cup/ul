@@ -3,3 +3,5 @@ foo(int foo)
 {
      return foo+1;
 }
+
+void main() {}

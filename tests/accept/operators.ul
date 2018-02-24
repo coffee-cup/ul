@@ -1,8 +1,12 @@
 void main () {
     int x;
     boolean b;
+    int y;
+    int h;
+    int a;
+    int t;
 
-    1 + (1 < (x * 2));
+    true == (1 < (x * 2));
     (((((((((((((1) - (1 * (1))))))))))))));
 
     x = 1 + 2;
@@ -12,7 +16,7 @@ void main () {
     b = true == false;
     b = true == true;
     b = true == (true == false);
-    b = (6 - 2) < (y + b * (t - y)) == (h * (b * (a)));
+    b = ((6 - 2) < (y + x * (t - y))) == (1 < (h * (x * (a))));
 
     b = "asdf" == "hello";
 }

@@ -4,7 +4,7 @@ import AST.ASTNode;
 
 public class SemanticException extends RuntimeException {
     public SemanticException(String message) {
-        super("\nError: " + message);
+        super("\nError: " + message + "\n");
     }
 
     public SemanticException(String message, ASTNode node) {

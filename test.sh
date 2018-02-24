@@ -21,16 +21,16 @@ do
     TMP2="../tmp/$(basename ${f} .ul)_2.ul"
 
     echo "Testing accept - $f"
-    if ! java Compiler -o $TMP1 $f; then
-        echo "$f is not in the language!"
+    if ! java Compiler -p 1 -o $TMP1 $f; then
+        echo "$f did not compile"
         echo "!!!!! ERROR !!!!!"
         exit 1
     fi
 
     # Pretty print output of first to a second file and ensure
     # contents are the same
-    if ! java Compiler -o $TMP2 $TMP1; then
-        echo "$TMP1 is not in the language!"
+    if ! java Compiler -p 1 -o $TMP2 $TMP1; then
+        echo "$tmp1 did not compile"
         echo "!!!!! ERROR !!!!!"
         exit 1
     fi

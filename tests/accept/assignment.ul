@@ -4,6 +4,8 @@ int foo(int foo, float y) {
     foo = 2;
     x = foo;
     y = x;
+
+    return 3;
 }
 
 void main() {

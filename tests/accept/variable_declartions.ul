@@ -5,7 +5,6 @@ void main() {
     char c;
     string d;
     boolean e;
-    void f;
 
     // Array types
     int [10]g;
@@ -13,5 +12,4 @@ void main() {
     char[1000] i;
     string[0] j;
     boolean    [10]     k;
-    void[1]l;
 }
