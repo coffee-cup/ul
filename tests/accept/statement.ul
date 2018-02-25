@@ -9,22 +9,11 @@ int ifFn () {
     int t;
     int h;
 
-    if (x + 2 < 40) {
-        ;
-    }
-
-    if (true) {
-        ;
-    } else {
-        ;
-    }
-
-    if (a < b) {
-        ;
-    }
-    else {
-        x = 1;
-    }
+    if (cmp(x, b)) {}
+    if (cmp(1, 1.1)) {}
+    if (x + 2 < 40) {}
+    if (true) {} else {}
+    if (a < b) {} else { x = 1; }
 
     if (a < (x + (x + ((x * 2) - (5 - y))))) {
         ;
@@ -79,3 +68,5 @@ void printFn() {
 }
 
 void main() {}
+
+boolean cmp(float x, float y) { return x < y; }

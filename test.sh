@@ -2,8 +2,8 @@
 
 make clean; make
 
-ACCEPT_FILES=../tests/accept/**/*.ul
-REJECT_FILES=../tests/reject/**/*.ul
+ACCEPT_FILES=../tests/accept
+REJECT_FILES=../tests/reject
 
 cd bin/
 
@@ -15,7 +15,7 @@ echo "------ Running parser against accept files"
 echo ""
 
 # All of these files should be in the language
-for f in $ACCEPT_FILES
+for f in $(find $ACCEPT_FILES -name "*.ul")
 do
     TMP1="../tmp/$(basename ${f} .ul)_1.ul"
     TMP2="../tmp/$(basename ${f} .ul)_2.ul"
@@ -52,7 +52,7 @@ echo "------ Running parser against reject files"
 echo ""
 
 # All of these files should not be in the language
-for f in $REJECT_FILES
+for f in $(find $REJECT_FILES -name "*.ul")
 do
     echo ""
     echo "Testing reject - $f"

@@ -1,0 +1,22 @@
+void foo(int i, char c) {}
+void foo(float f, char c, string s) {}
+
+int bar(int x, int y) { return x; }
+int bar(int x, float y) { return x; }
+float bar(float x, float y) { return y; }
+
+void main() {
+     int i;
+     float f;
+
+     foo(i, 'c');
+     foo(1, 'c', "a");
+     foo(1.1, 'a', "asdf");
+
+     i = bar(1, 1);
+     i = bar(i, f);
+     i = bar(1, 1.2213);
+
+     f = bar(f, i);
+     f = bar(f, f);
+}

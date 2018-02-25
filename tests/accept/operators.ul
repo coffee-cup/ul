@@ -1,22 +1,67 @@
+int foo() { return 1; }
+float bar() { return 1; }
+
 void main () {
-    int x;
-    boolean b;
-    int y;
-    int h;
-    int a;
-    int t;
+  int i;
+  float f;
+  char c;
+  string s;
+  boolean b;
+  int[10] a;
 
-    true == (1 < (x * 2));
-    (((((((((((((1) - (1 * (1))))))))))))));
+  i = 1;
+  f = 1.1;
+  c = 'a';
+  s = "a";
+  b = true;
 
-    x = 1 + 2;
-    x = 5 - (3 * 9);
-    x = 5 * 5 - 2;
+  // +
+  i = i + 1;
+  i = i + foo();
 
-    b = true == false;
-    b = true == true;
-    b = true == (true == false);
-    b = ((6 - 2) < (y + x * (t - y))) == (1 < (h * (x * (a))));
+  f = f + 1;
+  f = f + i;
+  f = f + bar() + foo() + i;
 
-    b = "asdf" == "hello";
+  c = c + c;
+  c = c + 'b';
+
+  s = s + s;
+  s = s + "hello";
+
+  a[0] = a[0] + i;
+
+  // -
+  i = i - 1;
+  i = i - foo();
+
+  f = f - 1;
+  f = f - i;
+  f = f - bar() - foo() - i;
+
+  a[0] = a[0] - 1;
+
+  // *
+  i = i * 1;
+  i = i * foo();
+
+  f = f * 1;
+  f = f * i;
+  f = f * bar() * foo() * i;
+
+  a[0] = a[0] * foo();
+
+  // <
+  b = i < f;
+  b = f < i;
+  b = c < 'a';
+  b = s < "a";
+  b = a[0] < a[0];
+
+  // ==
+  b = i == f;
+  b = f == i;
+  b = c == c;
+  b = s == s;
+  b = a[0] == a[0];
 }

@@ -1,0 +1,17 @@
+int bar(int x, float y) {
+    int a;
+    float b;
+
+    a = x + x;
+    b = x + y;
+    return a;
+}
+
+int foo(int foo) {
+    return foo + 1;
+}
+
+void main() {
+     float x;
+     x = foo(bar(1, 1));
+}

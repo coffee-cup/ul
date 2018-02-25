@@ -1,18 +1,29 @@
-int foo(int foo, float y) {
-    int x;
-
-    foo = 2;
-    x = foo;
-    y = x;
-
-    return 3;
-}
+int foo() { return 1; }
+float bar() { return 1.1; }
 
 void main() {
-     int x;
-     float y;
-     y = x;
-     x = 3;
-     y = 3.4;
-     y = 2;
+  int i;
+  float f;
+  char c;
+  string s;
+  boolean b;
+  int[10] a;
+
+  i = foo();
+  i = 1;
+
+  f = bar();
+  f = foo();
+  f = i;
+  f = 1;
+  f = 1.1124124;
+
+  c = 'a';
+
+  s = "asdf";
+
+  b = true;
+  b = false;
+
+  a[0] = 0;
 }
