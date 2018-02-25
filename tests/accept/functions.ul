@@ -5,7 +5,6 @@ char foo(char c) {return 'c';}
 string foo(string s, string t) {return "asdf";}
 boolean foo(boolean b) {return (1 < 1);}
 
-void [1224141] foo(void [1224141] x) {void [1224141] y; return y;}
 int[2] foo(int[2] x) { return x; }
 float      [0] foo(float[0] f) {return f;}
 char[1]foo(char[1] c){return c;}

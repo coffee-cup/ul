@@ -111,7 +111,21 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FormalParameter p) {
-        return p.getType();
+        Type t = p.getType();
+
+        if (VoidType.check(t)) {
+            throw new InvalidTypeException(p);
+        }
+        if (!checkArrayType(t)) {
+            throw new InvalidTypeException((ArrayType)t, p.getTypeNode());
+        }
+
+        if (vtable.inCurrentScope(p.getIdent())) {
+            throw new MultipleDefinitionException(p);
+        }
+        vtable.add(p.getIdent(), t);
+
+        return null;
     }
 
     public Type visit(Function f) {
@@ -137,14 +151,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     public Type visit(FunctionBody f) {
         for (VariableDeclaration v: f.getVars()) {
-            if (vtable.inCurrentScope(v.getIdent())) {
-                throw new MultipleDefinitionException(v);
-            }
-            vtable.add(v.getIdent(), v.accept(this));
-
-            if (VoidType.check(v.accept(this))) {
-                throw new InvalidTypeException(v);
-            }
+            v.accept(this);
         }
 
         for (Statement s: f.getStmts()) {
@@ -170,15 +177,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionDecl decl) {
-        for (FormalParameter p: decl.getParams()) {
-            if (vtable.inCurrentScope(p.getIdent())) {
-                throw new MultipleDefinitionException(p);
-            }
-            vtable.add(p.getIdent(), p.accept(this));
+        if (!checkArrayType(decl.getType())) {
+            throw new InvalidTypeException((ArrayType)decl.getType(), decl.getTypeNode());
+        }
 
-            if (VoidType.check(p.getType())) {
-                throw new InvalidTypeException(p);
-            }
+        for (FormalParameter p: decl.getParams()) {
+            p.accept(this);
         }
 
         return null;
@@ -309,7 +313,21 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(VariableDeclaration v) {
-        return v.getType();
+        Type t = v.getType();
+
+        if (VoidType.check(t)) {
+            throw new InvalidTypeException(v);
+        }
+        if (!checkArrayType(t)) {
+            throw new InvalidTypeException((ArrayType)t, v.getTypeNode());
+        }
+
+        if (vtable.inCurrentScope(v.getIdent())) {
+            throw new MultipleDefinitionException(v);
+        }
+        vtable.add(v.getIdent(), t);
+
+        return null;
     }
 
     public Type visit(WhileStatement s) {
@@ -329,6 +347,20 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new NotDeclaredException(i);
         }
         return t;
+    }
+
+    // Check array is not of type void
+    private boolean checkArrayType(Type t) {
+        if (!ArrayType.check(t)) {
+            return true;
+        }
+
+        ArrayType tArr = (ArrayType)t;
+        if (VoidType.check(tArr.getArrayOfType())) {
+            return false;
+        }
+
+        return true;
     }
 
     private <T extends Type> Type checkBinaryExpression(ArrayList<Class<? extends Type>> validTypes,

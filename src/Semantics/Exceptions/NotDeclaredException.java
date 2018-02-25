@@ -5,10 +5,10 @@ import Types.*;
 
 public class NotDeclaredException extends SemanticException {
     public NotDeclaredException(Identifier i) {
-        super("variable " + i.getName() + " is not declared", i);
+        super("Variable " + i.getName() + " is not declared", i);
     }
 
     public NotDeclaredException(String s, ASTNode node) {
-        super("function " + s + " is not declared", node);
+        super("Function " + s + " is not declared", node);
     }
 }
