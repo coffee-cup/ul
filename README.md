@@ -20,7 +20,7 @@ make clean; make
 
 ## Running
 
-The compiler can be run against language files to produce a pretty printed version of the file. Options can be specified to change the default behaviour.
+The compiler can be run against language files to type check them. Options can be specified to change the default behaviour.
 
 The built compiler is located in the `bin/` directory.
 
@@ -32,8 +32,44 @@ java Compiler path/to/file.ul
 ### Options
 
 - `-o outfile` Specify a file to output the pretty printed language. If no file is given, output is sent to stdout.
+- `-p 1|0` Whether or not to pretty print the file after type checking
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this to just compile a file and check for errors.
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
+
+## Differences From Default Spec
+
+My compiler has a few changes from the default specification. These are
+
+- int < float subtype relationship
+- Functions with same name but different type signature are allowed
+
+### Subtype Relationship
+
+With the single subtype relationship, this code is allowed
+
+```c
+void main() {
+    int a;
+    float b;
+    float c;
+    
+    a = 1;
+    b = 1.1;
+    c = a + b;
+}
+```
+
+_Because of this relationship, test wSt_3.2.2.a_invalid.ul has been removed from the test set._
+
+### Function Declarations
+
+Type signatures are used when comparing function declarations. Two functions can have the same name as long as their signatures are different. For example, this is allowed.
+
+```c
+void foo() {}
+void foo(int x) {}
+void main() {}
+```
 
 ## Example
 
@@ -74,7 +110,7 @@ void main() {
 You can compile it with
 
 ```bash
-java Compiler -d 1 -o hello.dot hello.ul
+java Compiler -p 1 -d 1 -o hello.dot hello.ul
 ```
 
 You can then use the dot program to create a png image file and open it
@@ -107,8 +143,8 @@ All third party code is referenced in the LICENSES file.
 - [x] Parser and AST generation
 - [x] Pretty printing
 - [x] Dot output
-- [ ] Syntax analysis
-- [ ] Type checking
+- [x] Syntax analysis
+- [x] Type checking
 - [ ] Intermediate code generation
 - [ ] Register allocation
 - [ ] Machine code generation

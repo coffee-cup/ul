@@ -1,9 +1,6 @@
-string foo() {
-  return "asdf";
-}
+void foo(int x, int y) {}
+void foo(int x, float y) {}
 
 void main() {
-  float x;
-
-  x = 3.4 * 1;
+  foo(1, 1.1);
 }

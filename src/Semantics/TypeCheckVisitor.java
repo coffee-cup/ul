@@ -7,14 +7,14 @@ import AST.*;
 import Types.*;
 
 public class TypeCheckVisitor implements Visitor<Type> {
-    private Environment<String, FunctionDecl> ftable;
+    private Environment<String, ArrayList<FunctionDecl>> ftable;
     private Environment<Identifier, Type> vtable;
 
     private FunctionDecl currentFunction;
     private boolean foundReturn = false;
 
     public TypeCheckVisitor() {
-        ftable = new HashEnvironment<String, FunctionDecl>();
+        ftable = new HashEnvironment<String, ArrayList<FunctionDecl>>();
         vtable = new HashEnvironment<Identifier, Type>();
     }
 
@@ -167,13 +167,25 @@ public class TypeCheckVisitor implements Visitor<Type> {
             paramTypes.add(e.accept(this));
         }
 
-        String callString = f.getCallString(paramTypes);
-        FunctionDecl decl = ftable.lookup(callString);
-        if (decl == null) {
-            throw new NotDeclaredException(callString, f.getName());
+        String functionKey = f.getName().toString();
+        ArrayList<FunctionDecl> decls = ftable.lookup(functionKey);
+        FunctionDecl foundDecl = null;
+
+        if (decls != null) {
+            for (FunctionDecl d: decls) {
+                // Check if there are any function decls that can be called
+                if (checkFunctionCall(paramTypes, d)) {
+                    foundDecl = d;
+                    break;
+                }
+            }
         }
 
-        return decl.getType();
+        if (foundDecl == null) {
+            throw new NotDeclaredException(f.getCallString(paramTypes), f.getName());
+        }
+
+        return foundDecl.getType();
     }
 
     public Type visit(FunctionDecl decl) {
@@ -252,11 +264,19 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         boolean foundMain = false;
         for (Function f: p.getFunctions()) {
-            FunctionDecl prevDecl = ftable.lookup(f.getDecl().toString());
-            if (prevDecl != null) {
-                throw new MultipleDefinitionException(prevDecl, f.getDecl());
+            String functionKey = f.getDecl().getIdent().toString();
+            ArrayList<FunctionDecl> decls = ftable.lookup(functionKey);
+            if (decls != null) {
+                for (FunctionDecl d: decls) {
+                    if (d.toString().equals(functionKey)) {
+                        throw new MultipleDefinitionException(d, f.getDecl());
+                    }
+                }
+            }  else {
+                decls = new ArrayList<FunctionDecl>();
+                ftable.add(functionKey, decls);
             }
-            ftable.add(f.getDecl().toString(), f.getDecl());
+            decls.add(f.getDecl());
 
             if (VoidType.check(f.getDecl().getType())
                 && f.getDecl().getIdent().getName().equals("main")
@@ -347,6 +367,22 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new NotDeclaredException(i);
         }
         return t;
+    }
+
+    // Check if array of type params is valid for a function decl
+    private boolean checkFunctionCall(ArrayList<Type> params, FunctionDecl d) {
+        if (params.size() != d.getParams().size()) {
+            return false;
+        }
+
+        for (int i = 0; i < params.size(); i += 1) {
+            Type tParam = d.getParams().get(i).getType();
+            if (!(params.get(i).equals(tParam) || params.get(i).isSubtype(tParam))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Check array is not of type void

@@ -2,8 +2,8 @@
 
 make clean; make
 
-ACCEPT_FILES=../tests/accept/*.ul
-REJECT_FILES=../tests/reject/*.ul
+ACCEPT_FILES=../tests/accept/**/*.ul
+REJECT_FILES=../tests/reject/**/*.ul
 
 cd bin/
 
