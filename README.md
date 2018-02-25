@@ -36,6 +36,17 @@ java Compiler path/to/file.ul
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this to just compile a file and check for errors.
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
+## Testing
+
+There are a bunch of .ul language files that can be tested against the compiler. Throughout the course I will update the test script to check whether the latest requirements are met. Use the script `test.sh` to run all tests.
+
+```sh
+# Run the tests
+./test.sh
+```
+
+The latest provided tests are in `accept/provided` for all `*_valid.ul` files and `reject/provided` for all `*_invalid.ul` files.
+
 ## Differences From Default Spec
 
 My compiler has a few changes from the default specification. These are
@@ -122,16 +133,6 @@ dot -Tpng hello.dot -O && open hello.dot.png
 The output should be
 
 ![dot dot](https://user-images.githubusercontent.com/3044853/36404174-18a6d88e-159e-11e8-8426-179d5062aae1.png)
-
-
-## Testing
-
-There are a bunch of .ul language files that can be tested against the compiler. Throughout the course I will update the test script to check whether the latest requirements are met. Use the script `test.sh` to run all tests.
-
-```sh
-# Run the tests
-./test.sh
-```
 
 ## Licenses
 
