@@ -11,7 +11,7 @@ cd bin/
 mkdir -p ../tmp
 
 echo ""
-echo "------ Running parser against accept files"
+echo "------ Running compiler against accept files"
 echo ""
 
 # All of these files should be in the language
@@ -48,7 +48,7 @@ do
 done
 
 echo ""
-echo "------ Running parser against reject files"
+echo "------ Running compiler against reject files"
 echo ""
 
 # All of these files should not be in the language
