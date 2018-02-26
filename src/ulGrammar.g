@@ -64,13 +64,7 @@ moreFormals returns [FormalParameter fp]
     ;
 
 functionBody returns [FunctionBody body]
-    @init
-    {
-        ArrayList<VariableDeclaration> vars = new ArrayList<VariableDeclaration>();
-        ArrayList<Statement> stmts = new ArrayList<Statement>();
-    }
-    : LCURLY (v=varDecl { vars.add(v); })* (s=statement { stmts.add(s); })* RCURLY
-        { body = new FunctionBody(vars, stmts); }
+    : b=block { $body = new FunctionBody(b); }
     ;
 
 varDecl returns [VariableDeclaration v]
@@ -102,6 +96,7 @@ returns [Statement s]
 options { backtrack = true; }
     : SEMI                          { $s = new ExpressionStatement(null); }
     | e=expr SEMI                   { $s = new ExpressionStatement(e); }
+    | v=varDecl                     { $s = v; }
     | ifStmt=ifStatement            { $s = ifStmt; }
     | whileStmt=whileStatement      { $s = whileStmt; }
     | printStmt=printStatement      { $s = printStmt; }

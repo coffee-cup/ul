@@ -74,9 +74,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Block b) {
+        vtable.beginScope();
         for (Statement s: b.getStmts()) {
             s.accept(this);
         }
+        vtable.endScope();
 
         return null;
     }
@@ -129,14 +131,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(Function f) {
-        vtable.beginScope();
         FunctionDecl decl = f.getDecl();
 
         currentFunction = decl;
         foundReturn = false;
 
+        // scope for parameters
+        vtable.beginScope();
+
         decl.accept(this);
         f.getBody().accept(this);
+
+        vtable.endScope();
 
         // The function should have a return
         if (!VoidType.check(decl.getType()) && !foundReturn) {
@@ -144,19 +150,19 @@ public class TypeCheckVisitor implements Visitor<Type> {
                                         + " should have a return of type " + decl.getType().toString(), decl.getTypeNode());
         }
 
-        vtable.endScope();
-
         return null;
     }
 
     public Type visit(FunctionBody f) {
-        for (VariableDeclaration v: f.getVars()) {
-            v.accept(this);
-        }
+        // for (VariableDeclaration v: f.getVars()) {
+        //     v.accept(this);
+        // }
 
-        for (Statement s: f.getStmts()) {
-            s.accept(this);
-        }
+        // for (Statement s: f.getStmts()) {
+        //     s.accept(this);
+        // }
+
+        f.getBlock().accept(this);
 
         return null;
     }
@@ -344,7 +350,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new InvalidTypeException((ArrayType)t, v.getTypeNode());
         }
 
-        if (vtable.inCurrentScope(v.getIdent())) {
+        if (vtable.inScope(v.getIdent())) {
             throw new MultipleDefinitionException(v);
         }
         vtable.add(v.getIdent(), t);

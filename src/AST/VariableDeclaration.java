@@ -2,7 +2,7 @@ package AST;
 
 import Types.Type;
 
-public class VariableDeclaration extends ASTNode {
+public class VariableDeclaration extends Statement {
     private TypeNode type;
     private Identifier ident;
 

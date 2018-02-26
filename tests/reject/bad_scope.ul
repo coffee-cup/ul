@@ -3,7 +3,6 @@ void main() {
 
   if (true) {
     int y;
-    y = x + 1;
-    x = y + 1;
   }
+  x = y;
 }

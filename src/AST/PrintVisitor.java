@@ -118,25 +118,7 @@ public class PrintVisitor implements Visitor<Void> {
 
     public Void visit(FunctionBody f) {
         forwardIndent();
-
-        for (VariableDeclaration v : f.getVars()) {
-            printIndent();
-            v.accept(this);
-            newLine();
-        }
-
-        if (f.getVars().size() > 0) {
-            newLine();
-        }
-
-        int index = 0;
-        for (Statement s : f.getStmts()) {
-            printIndent();
-            s.accept(this);
-            index += 1;
-            newLine();
-        }
-
+        f.getBlock().accept(this);
         backIndent();
 
         return null;

@@ -124,21 +124,8 @@ public class DotVisitor implements Visitor<Void> {
     public Void visit(FunctionBody f) {
         labelNode(f);
 
-        connectNodes(f, f.getVars());
-        labelNode(f.getVars(), "VariableDeclarations");
-
-        for (VariableDeclaration v : f.getVars()) {
-            connectNodes(f.getVars(), v);
-            v.accept(this);
-        }
-
-        connectNodes(f, f.getStmts());
-        labelNode(f.getStmts(), "Statements");
-
-        for (Statement s : f.getStmts()) {
-            connectNodes(f.getStmts(), s);
-            s.accept(this);
-        }
+        connectNodes(f, f.getBlock());
+        f.getBlock().accept(this);
 
         return null;
     }

@@ -24,7 +24,7 @@ public class HashEnvironment<K, V> implements Environment<K, V> {
     }
 
     public HashMap<K, V> getCurrentScope() {
-        return scopes.get(scopes.size() - 1);
+        return scopes.size() > 0 ? scopes.get(0): null;
     }
 
     public boolean inScope(K key) {

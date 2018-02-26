@@ -1,0 +1,17 @@
+int foo(int foo) {
+  return foo + 1;
+}
+
+void main() {
+  int x;
+  x = foo(1) + 1;
+
+  if (true) {
+    int a;
+    while(true) {
+      int b;
+      x = a + b;
+    }
+    a = x + foo(a);
+  }
+}
