@@ -32,7 +32,7 @@ java Compiler path/to/file.ul
 ### Options
 
 - `-o outfile` Specify a file to output the pretty printed language. If no file is given, output is sent to stdout.
-- `-p 1|0` Whether or not to pretty print the file after type checking
+- `-p 1|0` Pretty print mode. If `1` then file will be pretty printed after type checking.
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this to just compile a file and check for errors.
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
