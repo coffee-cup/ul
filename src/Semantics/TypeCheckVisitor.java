@@ -174,9 +174,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
         if (decls != null) {
             for (FunctionDecl d: decls) {
                 // Check if there are any function decls that can be called
-                if (checkFunctionCall(paramTypes, d)) {
+                int status = checkFunctionCall(paramTypes, d);
+                if (status == 0) {
                     foundDecl = d;
-                    break;
+                } else if (foundDecl == null && status == 1) {
+                    foundDecl = d;
                 }
             }
         }
@@ -370,19 +372,25 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     // Check if array of type params is valid for a function decl
-    private boolean checkFunctionCall(ArrayList<Type> params, FunctionDecl d) {
+    // returns -1 if not valid, 0 if types match exactly, 1 if subtyping is required
+    private int checkFunctionCall(ArrayList<Type> params, FunctionDecl d) {
         if (params.size() != d.getParams().size()) {
-            return false;
+            return -1;
         }
 
+        boolean subtypingRequired = false;
         for (int i = 0; i < params.size(); i += 1) {
             Type tParam = d.getParams().get(i).getType();
+
             if (!(params.get(i).equals(tParam) || params.get(i).isSubtype(tParam))) {
-                return false;
+                return -1;
+            }
+            if (params.get(i).isSubtype(tParam)) {
+                subtypingRequired = true;
             }
         }
 
-        return true;
+        return subtypingRequired ? 1: 0;
     }
 
     // Check array is not of type void

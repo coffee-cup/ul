@@ -1,6 +1,7 @@
-void foo(int x, int y) {}
 void foo(int x, float y) {}
+void foo(float x, float y) {}
+void foo(int x, int y) {}
 
 void main() {
-  foo(1, 1.1);
+     foo(1, 1);
 }

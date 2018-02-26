@@ -21,6 +21,7 @@ void main () {
 
   f = f + 1;
   f = f + i;
+  f = i + f;
   f = f + bar() + foo() + i;
 
   c = c + c;
@@ -37,6 +38,7 @@ void main () {
 
   f = f - 1;
   f = f - i;
+  f = i - f;
   f = f - bar() - foo() - i;
 
   a[0] = a[0] - 1;
