@@ -63,7 +63,7 @@ I have changed by grammar to treat variable declarations as statements. This mea
 void main() {
     print "hello"
     int x;
-    
+
     if (true) {
         int y;
         x = y + 1;
@@ -133,7 +133,7 @@ void main () {
 
 The following AST is produced.
 
-![dot dot](https://user-images.githubusercontent.com/3044853/36404127-e13e5958-159d-11e8-9a48-fc4b672cfb23.png)
+![factorial dot](https://user-images.githubusercontent.com/3044853/36663989-3a39564e-1a98-11e8-8323-7c2364c1a24b.png)
 
 ## Dot Graphs
 
@@ -162,7 +162,7 @@ dot -Tpng hello.dot -O && open hello.dot.png
 
 The output should be
 
-![dot dot](https://user-images.githubusercontent.com/3044853/36404174-18a6d88e-159e-11e8-8426-179d5062aae1.png)
+![hello dot](https://user-images.githubusercontent.com/3044853/36664072-68ef2f72-1a98-11e8-8827-2c41ace55062.png)
 
 ## Licenses
 
