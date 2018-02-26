@@ -31,7 +31,7 @@ java Compiler path/to/file.ul
 
 ### Options
 
-- `-o outfile` Specify a file to output the pretty printed language. If no file is given, output is sent to stdout.
+- `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to stdout.
 - `-p 1|0` Pretty print mode. If `1` then file will be pretty printed after type checking.
 - `-s 1|0` Silent mode. If `1` then no output will be produced. Use this to just compile a file and check for errors.
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html).
@@ -51,8 +51,38 @@ The latest provided tests are in `accept/provided` for all `*_valid.ul` files an
 
 My compiler has a few changes from the default specification. These are
 
+- Variables can be declared anywhere in a function and their use is scoped to the current block
 - int < float subtype relationship
 - Functions with same name but different type signature are allowed
+
+### Variable Declarations and Scopes
+
+I have changed by grammar to treat variable declarations as statements. This means that variables can be declared anywhere in the function. Their use is scoped to the current block. My environment creates a new scope when a function or block is entered. For example, the following code was previously not in the language, now it is.
+
+```c
+void main() {
+    print "hello"
+    int x;
+    
+    if (true) {
+        int y;
+        x = y + 1;
+    }
+}
+```
+
+If a scope is exited, then the variable becomes out of scope and is not allowed. For example, this would result a "Variable is not declared" error.
+
+```c
+void main() {
+    int x;
+    
+    if (true) {
+        int y;
+    }
+    x = y; // not allowed because y is not in scope.
+}
+```
 
 ### Subtype Relationship
 
@@ -121,7 +151,7 @@ void main() {
 You can compile it with
 
 ```bash
-java Compiler -p 1 -d 1 -o hello.dot hello.ul
+java Compiler -d 1 -o hello.dot hello.ul
 ```
 
 You can then use the dot program to create a png image file and open it
