@@ -270,7 +270,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             ArrayList<FunctionDecl> decls = ftable.lookup(functionKey);
             if (decls != null) {
                 for (FunctionDecl d: decls) {
-                    if (d.toString().equals(functionKey)) {
+                    if (d.toString().equals(f.getDecl().toString())) {
                         throw new MultipleDefinitionException(d, f.getDecl());
                     }
                 }

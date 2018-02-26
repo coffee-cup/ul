@@ -1,6 +1,9 @@
 void foo(int x, float y) {}
 void foo(float x, float y) {}
-void foo(int x, int y) {}
+int foo(char x, float y) { return 1; }
+
+void bar(string s) {}
+void bar() {}
 
 void main() {
      foo(1, 1);
