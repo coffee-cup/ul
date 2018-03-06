@@ -154,7 +154,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionBody f) {
-        f.getBlock().accept(this);
+        // Since we cannot shadow parameters, cannot enter the block
+        // as it will create a new scope
+        for (Statement s: f.getBlock().getStmts()) {
+            s.accept(this);
+        }
 
         return null;
     }
@@ -342,7 +346,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new InvalidTypeException((ArrayType)t, v.getTypeNode());
         }
 
-        if (vtable.inScope(v.getIdent())) {
+        if (vtable.inCurrentScope(v.getIdent())) {
             throw new MultipleDefinitionException(v);
         }
         vtable.add(v.getIdent(), t);

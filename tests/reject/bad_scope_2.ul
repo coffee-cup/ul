@@ -1,0 +1,10 @@
+void main() {
+     int x;
+     if (true) {
+        string y;
+        if (true) {
+           string x;
+        }
+        y = x;
+     }
+}
