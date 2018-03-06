@@ -1,8 +1,9 @@
-package IR;
+package IR.Instructions;
 
 import Types.Type;
+import IR.*;
 
-public class Temp {
+public class Temp extends IRInstruction {
     private int number;
     private Type type;
     private TempClass tempClass;
@@ -23,5 +24,9 @@ public class Temp {
 
     public TempClass getTempClass() {
         return tempClass;
+    }
+
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

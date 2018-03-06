@@ -3,6 +3,7 @@ package IR;
 import java.util.ArrayList;
 
 import IR.Exceptions.MaxTempsExceededException;
+import IR.Instructions.*;
 import Types.Type;
 
 public class TempFactory {
