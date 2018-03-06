@@ -9,10 +9,7 @@ public class IRFunction extends IRNode {
     private LinkedList<IRInstruction> instrs;
     private TempFactory tempFactory;
 
-    public IRFunction(String name, String signature) {
-        this.name = name;
-        this.signature = signature;
-
+    public IRFunction() {
         instrs = new LinkedList<IRInstruction>();
         tempFactory = new TempFactory();
     }
@@ -21,8 +18,16 @@ public class IRFunction extends IRNode {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSignature() {
         return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public LinkedList<IRInstruction> getInstructions() {

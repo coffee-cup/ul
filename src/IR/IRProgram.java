@@ -6,9 +6,10 @@ public class IRProgram extends IRNode {
     private String name;
     private LinkedList<IRFunction> functions;
 
-    public IRProgram(String name, LinkedList<IRFunction> functions) {
+    public IRProgram(String name) {
         this.name = name;
-        this.functions = functions;
+
+        functions = new LinkedList<IRFunction>();
     }
 
     public String getName() {

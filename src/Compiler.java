@@ -1,9 +1,22 @@
-import org.antlr.runtime.*;
-import java.io.*;
-import AST.*;
-import Semantics.*;
-import Semantics.Exceptions.*;
-import IR.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
+
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
+
+import AST.DotVisitor;
+import AST.PrintVisitor;
+import AST.Program;
+import IR.IRPrintVisitor;
+import IR.IRProgram;
+import IR.IRVisitor;
+import IR.Exceptions.IRException;
+import Semantics.TypeCheckVisitor;
+import Semantics.Exceptions.SemanticException;
 
 public class Compiler {
     private CompilerOptions options;
@@ -32,7 +45,7 @@ public class Compiler {
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
 
-        IRVisitor irVisitor = new IRVisitor();
+        IRVisitor irVisitor = new IRVisitor(options.infile);
         p.accept(irVisitor);
         IRProgram irProgram = irVisitor.getIRProgram();
 
@@ -71,6 +84,9 @@ public class Compiler {
             e.printStackTrace();
             System.exit(1);
         } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } catch (IRException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         } catch (Exception e) {

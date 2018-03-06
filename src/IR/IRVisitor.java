@@ -1,17 +1,21 @@
 package IR;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+
 import AST.*;
 import Types.*;
 import IR.Instructions.*;
 
 public class IRVisitor implements AST.Visitor<Temp> {
+    private String sourceFilename;
     private IRProgram irProgram;
 
-    private ArrayList<IRInstruction> instrs;
+    private IRFunction currentFunction;
+    private LinkedList<IRInstruction> instrs;
     private TempFactory temps;
 
-    public IRVisitor() {
+    public IRVisitor(String sourceFilename) {
+        this.sourceFilename = sourceFilename;
     }
 
     public Temp visit(AddExpression e) {
@@ -59,6 +63,14 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(Function f) {
+        currentFunction = new IRFunction();
+        instrs = currentFunction.getInstructions();
+        temps = currentFunction.getTempFactory();
+        irProgram.getFunctions().add(currentFunction);
+
+        f.getDecl().accept(this);
+
+
         return null;
     }
 
@@ -71,6 +83,16 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(FunctionDecl f) {
+        currentFunction.setName(f.getIdent().getName());
+
+        String sig = "(";
+        for (FormalParameter fp: f.getParams()) {
+            sig += fp.getType().toIRString();
+        }
+        sig += ")" + f.getType().toIRString();
+
+        currentFunction.setSignature(sig);
+
         return null;
     }
 
@@ -103,6 +125,12 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(Program p) {
+        irProgram = new IRProgram(sourceFilename);
+
+        for (Function f: p.getFunctions()) {
+            f.accept(this);
+        }
+
         return null;
     }
 

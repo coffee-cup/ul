@@ -21,6 +21,6 @@ public class VoidType extends Type {
     }
 
     public String toIRString() {
-        throw new RuntimeException("Cannot get IR type string of VoidType");
+        return "V";
     }
 }
