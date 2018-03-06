@@ -1,20 +1,26 @@
 package IR;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import IR.Exceptions.MaxTempsExceededException;
-import IR.Instructions.*;
+import IR.Instructions.Temp;
 import Types.Type;
 
 public class TempFactory {
     private int maxTemps = 65535;
 
     private int currentNumber;
-    private ArrayList<Temp> temps;
+    private HashMap<String, Temp> paramTemps;
+    private HashMap<String, Temp> localTemps;
+    private LinkedList<Temp> oneOffTemps;
 
     public TempFactory() {
         currentNumber = 0;
-        temps = new ArrayList<Temp>();
+        paramTemps = new HashMap<String, Temp>();
+        localTemps = new HashMap<String, Temp>();
+        oneOffTemps = new LinkedList<Temp>();
     }
 
     public Temp createTemp(Type type, TempClass tempClass) {
@@ -28,18 +34,42 @@ public class TempFactory {
     }
 
     public Temp getTemp(Type type) {
-        return createTemp(type, TempClass.TEMP);
+        Temp t = createTemp(type, TempClass.TEMP);
+        oneOffTemps.add(t);
+        return t;
     }
 
-    public Temp getParamTemp(Type type) {
-        return createTemp(type, TempClass.PARAMETER);
+    public Temp getParamTemp(String name, Type type) {
+        Temp t = paramTemps.get(name);
+        if (t == null) {
+            t = createTemp(type, TempClass.PARAMETER);
+            paramTemps.put(name, t);
+        }
+        return t;
     }
 
-    public Temp getLocalTemp(Type type) {
-        return createTemp(type, TempClass.LOCAL);
+    public Temp getLocalTemp(String name, Type type) {
+        Temp t = localTemps.get(name);
+        if (t == null) {
+            t = createTemp(type, TempClass.LOCAL);
+            localTemps.put(name, t);
+        }
+        return t;
     }
 
-    public ArrayList<Temp> getAllTemps() {
+    public LinkedList<Temp> getAllTemps() {
+        LinkedList<Temp> temps = new LinkedList<Temp>();
+
+        for (Temp t: paramTemps.values()) {
+            temps.add(t);
+        }
+        for (Temp t: localTemps.values()) {
+            temps.add(t);
+        }
+        for (Temp t: oneOffTemps) {
+            temps.add(t);
+        }
+
         return temps;
     }
 }

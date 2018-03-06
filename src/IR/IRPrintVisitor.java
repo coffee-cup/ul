@@ -19,21 +19,30 @@ public class IRPrintVisitor implements IR.Visitor<Void> {
         out.print(f.getSignature()); newLine();
         openBrace(); forwardIndent();
 
-        for (IRInstruction i: f.getInstructions()) {
-            printIndent();
-            IRInstructionPrintVisitor irInstructionPrintVisitor =
-                new IRInstructionPrintVisitor(out);
-            i.accept(irInstructionPrintVisitor);
-            newLine();
-        }
-        if (f.getInstructions().size() == 0) newLine();
+        // Print visitor for instructions
+        IRInstructionPrintVisitor irInstructionPrintVisitor =
+            new IRInstructionPrintVisitor(out);
 
-        backIndent(); closeBrace();
+        // Temp Creation
+        for (IRInstruction i: f.getTempFactory().getAllTemps()) {
+            newLine(); printIndent();
+            i.accept(irInstructionPrintVisitor);
+        }
+
+        // Instructions
+        for (IRInstruction i: f.getInstructions()) {
+            newLine(); printIndent();
+            i.accept(irInstructionPrintVisitor);
+        }
+
+        backIndent(); newLine(); closeBrace();
 
         return null;
     }
 
     public Void visit(IRProgram p) {
+        out.print("PROG"); space();
+        out.print(p.getName()); newLine();
         for (IRFunction f: p.getFunctions()) {
             f.accept(this);
             newLine(); newLine();
