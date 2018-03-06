@@ -35,9 +35,11 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(Block b) {
+        temps.beginScope();
         for (Statement s: b.getStmts()) {
             s.accept(this);
         }
+        temps.endScope();
 
         return null;
     }
@@ -72,15 +74,20 @@ public class IRVisitor implements AST.Visitor<Temp> {
         temps = currentFunction.getTempFactory();
         irProgram.getFunctions().add(currentFunction);
 
+        temps.beginScope();
+
         f.getDecl().accept(this);
         f.getBody().accept(this);
 
+        temps.endScope();
 
         return null;
     }
 
     public Temp visit(FunctionBody f) {
-        f.getBlock().accept(this);
+        for (Statement s: f.getBlock().getStmts()) {
+            s.accept(this);
+        }
 
         return null;
     }
@@ -165,6 +172,6 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public IRProgram getIRProgram() {
-            return irProgram;
+        return irProgram;
     }
 }
