@@ -19,4 +19,8 @@ public class StringType extends Type {
     public String toString() {
         return "string";
     }
+
+    public String toIRString() {
+        return "U";
+    }
 }

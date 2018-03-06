@@ -154,14 +154,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     public Type visit(FunctionBody f) {
-        // for (VariableDeclaration v: f.getVars()) {
-        //     v.accept(this);
-        // }
-
-        // for (Statement s: f.getStmts()) {
-        //     s.accept(this);
-        // }
-
         f.getBlock().accept(this);
 
         return null;

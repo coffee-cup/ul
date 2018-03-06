@@ -35,6 +35,10 @@ public class ArrayType extends Type {
         return arrayOf.toString() + "[" + size + "]";
     }
 
+    public String toIRString() {
+        return "A" + arrayOf.toIRString();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;

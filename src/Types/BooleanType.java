@@ -19,4 +19,8 @@ public class BooleanType extends Type {
     public String toString() {
         return "boolean";
     }
+
+    public String toIRString() {
+        return "Z";
+    }
 }

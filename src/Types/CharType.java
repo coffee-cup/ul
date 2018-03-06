@@ -19,4 +19,8 @@ public class CharType extends Type {
     public String toString() {
         return "char";
     }
+
+    public String toIRString() {
+        return "C";
+    }
 }

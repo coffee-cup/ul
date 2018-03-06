@@ -1,6 +1,6 @@
 package AST;
 
-public interface Visitor<T> {
+public interface ASTVisitor<T> {
     public T visit(AddExpression e);
     public T visit(AssignStatement s);
     public T visit(ArrayAssignStatement s);

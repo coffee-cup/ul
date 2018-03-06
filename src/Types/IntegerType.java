@@ -23,4 +23,8 @@ public class IntegerType extends Type {
     public String toString() {
         return "int";
     }
+
+    public String toIRString() {
+        return "I";
+    }
 }

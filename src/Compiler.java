@@ -3,6 +3,7 @@ import java.io.*;
 import AST.*;
 import Semantics.*;
 import Semantics.Exceptions.*;
+import IR.*;
 
 public class Compiler {
     private CompilerOptions options;
@@ -30,6 +31,13 @@ public class Compiler {
 
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
+
+        IRVisitor irVisitor = new IRVisitor();
+        p.accept(irVisitor);
+        IRProgram irProgram = irVisitor.getIRProgram();
+
+        IRPrintVisitor irPrintVisitor = new IRPrintVisitor(System.out);
+        irProgram.accept(irPrintVisitor);
 
         if (!options.silent) {
             if (options.prettyPrint) {
