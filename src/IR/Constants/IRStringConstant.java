@@ -12,6 +12,6 @@ public class IRStringConstant extends IRConstant {
     }
 
     public String toString() {
-        return value;
+        return "\"" + value + "\"";
     }
 }

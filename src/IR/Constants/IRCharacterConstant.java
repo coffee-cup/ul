@@ -12,6 +12,6 @@ public class IRCharacterConstant extends IRConstant {
     }
 
     public String toString() {
-        return Character.toString(value);
+        return "'" + Character.toString(value) + "'";
     }
 }

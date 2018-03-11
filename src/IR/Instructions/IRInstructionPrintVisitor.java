@@ -93,6 +93,24 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(IRPrint i) {
+        out.print("PRINT");
+        out.print(i.getTemp().getType().toIRString());
+        space();
+        printTemp(i.getTemp());
+
+        return null;
+    }
+
+    public Void visit(IRPrintln i) {
+        out.print("PRINTLN");
+        out.print(i.getTemp().getType().toIRString());
+        space();
+        printTemp(i.getTemp());
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }

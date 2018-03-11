@@ -9,4 +9,6 @@ public interface Visitor<T> {
     public T visit(IRArrayCreation i);
     public T visit(IRArrayReference i);
     public T visit(IRArrayAssign i);
+    public T visit(IRPrint i);
+    public T visit(IRPrintln i);
 }

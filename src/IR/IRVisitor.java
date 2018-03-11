@@ -186,6 +186,16 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(PrintStatement s) {
+        Temp t = s.getExpr().accept(this);
+
+        IRInstruction in;
+        if (s.isNewline()) {
+            in = new IRPrintln(t);
+        } else {
+            in = new IRPrint(t);
+        }
+        instrs.add(in);
+
         return null;
     }
 
@@ -208,7 +218,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
         IRInstruction in = new IRConstantAssign(t, stringConstant);
         instrs.add(in);
 
-        return null;
+        return t;
     }
 
     public Temp visit(SubExpression e) {
