@@ -201,7 +201,14 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(VariableDeclaration v) {
-        return temps.getLocalTemp(v.getIdent().getName(), v.getType());
+        Temp t = temps.getLocalTemp(v.getIdent().getName(), v.getType());
+
+        if (ArrayType.check(v.getType())) {
+            IRInstruction in = new IRArrayCreation(t, (ArrayType)v.getType());
+            instrs.add(in);
+        }
+
+        return t;
     }
 
     public Temp visit(WhileStatement s) {
