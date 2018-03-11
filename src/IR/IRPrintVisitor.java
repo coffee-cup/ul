@@ -40,7 +40,7 @@ public class IRPrintVisitor implements IR.Visitor<Void> {
             boolean isLabel = (i instanceof IRLabel);
             if (!isLabel) printIndent();
             i.accept(irInstructionPrintVisitor);
-            if (!isLabel) semi();
+            semi();
         }
 
         backIndent(); newLine(); closeBrace();
