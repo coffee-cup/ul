@@ -7,4 +7,5 @@ public interface Visitor<T> {
     public T visit(IRUnaryOp i);
     public T visit(IRBinaryOp i);
     public T visit(IRArrayCreation i);
+    public T visit(IRArrayReference i);
 }

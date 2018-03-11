@@ -39,7 +39,16 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(ArrayReference a) {
-        return null;
+        Temp arrayTemp = temps.getNamedTemp(a.getName().getName());
+        Temp refTemp = a.getExpr().accept(this);
+
+        Type arrayOfType = ((ArrayType)arrayTemp.getType()).getArrayOfType();
+        Temp t = temps.getTemp(arrayOfType);
+
+        IRInstruction in = new IRArrayReference(t, arrayTemp, refTemp);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(Block b) {
@@ -75,6 +84,8 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(ExpressionStatement e) {
+        e.getExpr().accept(this);
+
         return null;
     }
 
