@@ -33,6 +33,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
         if (!(tName.equals(tExpr) || tExpr.isSubtype(tName))) {
             throw new TypeMismatchException(tName, tExpr, s.getExpr());
         }
+
         return null;
     }
 

@@ -7,11 +7,17 @@ public class Temp extends IRInstruction {
     private int number;
     private Type type;
     private TempClass tempClass;
+    private String name;
 
     public Temp(int number, Type type, TempClass tempClass) {
+        this(number, type, tempClass, "");
+    }
+
+    public Temp(int number, Type type, TempClass tempClass, String name) {
         this.number = number;
         this.type = type;
         this.tempClass = tempClass;
+        this.name = name;
     }
 
     public int getNumber() {
@@ -24,6 +30,14 @@ public class Temp extends IRInstruction {
 
     public TempClass getTempClass() {
         return tempClass;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public <T> T accept(Visitor<T> v) {

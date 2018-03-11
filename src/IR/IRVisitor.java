@@ -65,7 +65,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(FormalParameter p) {
-        return null;
+        return temps.getParamTemp(p.getIdent().getName(), p.getType());
     }
 
     public Temp visit(Function f) {
@@ -106,6 +106,10 @@ public class IRVisitor implements AST.Visitor<Temp> {
         sig += ")" + f.getType().toIRString();
 
         currentFunction.setSignature(sig);
+
+        for (FormalParameter p: f.getParams()) {
+            p.accept(this);
+        }
 
         return null;
     }

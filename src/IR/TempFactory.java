@@ -1,7 +1,8 @@
 package IR;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import IR.Exceptions.MaxTempsExceededException;
@@ -12,7 +13,11 @@ public class TempFactory {
     private static final int maxTemps = 65535;
 
     private int currentNumber;
+
+    // Temps that are assigned to a parameter or local variable
     private LinkedList<HashMap<String, Temp>> scopedTemps;
+
+    // Temps that are just used once for the result of an expression
     private LinkedList<Temp> oneOffTemps;
     private int scopeLevel;
 
@@ -45,6 +50,7 @@ public class TempFactory {
             t = createTemp(type, tempClass);
             getCurrentScope().put(name, t);
         }
+        t.setName(name);
         return t;
     }
 
@@ -63,14 +69,15 @@ public class TempFactory {
     }
 
     public void endScope() {
+        // Don't pop anything because we need to access the temps later
         scopeLevel -= 1;
     }
 
     public LinkedList<Temp> getAllTemps() {
         LinkedList<Temp> temps = new LinkedList<Temp>();
 
-        for (Iterator<HashMap<String, Temp>> it = scopedTemps.descendingIterator(); it.hasNext();) {
-            HashMap<String, Temp> scope = it.next();
+        for (HashMap<String, Temp> scope: scopedTemps) {
+            System.out.println("in a scope");
             for (Temp t: scope.values()) {
                 temps.add(t);
             }
@@ -79,6 +86,14 @@ public class TempFactory {
         for (Temp t: oneOffTemps) {
             temps.add(t);
         }
+
+        // Sort temps based on number
+        Collections.sort(temps, new Comparator<Temp>() {
+            @Override
+            public int compare(Temp t1, Temp t2) {
+                return Integer.compare(t1.getNumber(), t2.getNumber());
+            }
+        });
 
         return temps;
     }
