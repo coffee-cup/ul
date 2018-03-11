@@ -22,7 +22,7 @@ public class TempFactory {
     private int scopeLevel;
 
     public TempFactory() {
-        currentNumber = 0;
+        currentNumber = -1;
         scopeLevel = -1;
         scopedTemps = new LinkedList<HashMap<String, Temp>>();
         oneOffTemps = new LinkedList<Temp>();

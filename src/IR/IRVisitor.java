@@ -306,6 +306,34 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(WhileStatement s) {
+        IRLabel l1 = labels.getLabel();
+        IRLabel l2 = labels.getLabel();
+
+        instrs.add(l1);
+
+        Temp t = s.getExpr().accept(this);
+
+        IRInstruction in;
+        if (t.isParamOrLocal()) {
+            Temp t2 = temps.getTemp(BooleanType.getInstance());
+            in = new IRVarAssign(t2, t);
+            instrs.add(in);
+            t = t2;
+        }
+
+        in = new IRUnaryOp(t, t, IRUOp.INVERT);
+        instrs.add(in);
+
+        in = new IRIfStatement(t, l2);
+        instrs.add(in);
+
+        s.getBlock().accept(this);
+
+        in = new IRGoto(l1);
+        instrs.add(in);
+
+        instrs.add(l2);
+
         return null;
     }
 

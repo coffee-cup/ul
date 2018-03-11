@@ -10,7 +10,7 @@ public class LabelFactory {
 
     public LabelFactory() {
         labels = new LinkedList<IRLabel>();
-        currentNumber = 0;
+        currentNumber = -1;
     }
 
     public IRLabel getLabel() {
