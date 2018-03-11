@@ -8,10 +8,12 @@ public class IRFunction extends IRNode {
     private String signature;
     private LinkedList<IRInstruction> instrs;
     private TempFactory tempFactory;
+    private LabelFactory labelFactory;
 
     public IRFunction() {
         instrs = new LinkedList<IRInstruction>();
         tempFactory = new TempFactory();
+        labelFactory = new LabelFactory();
     }
 
     public String getName() {
@@ -36,6 +38,10 @@ public class IRFunction extends IRNode {
 
     public TempFactory getTempFactory() {
         return tempFactory;
+    }
+
+    public LabelFactory getLabelFactory() {
+        return labelFactory;
     }
 
     public <T> T accept(Visitor<T> v) {

@@ -140,6 +140,15 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(Label i) {
+        out.print("LABEL");
+        space();
+        out.print(i.getNumber());
+        colon();
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }
@@ -189,5 +198,4 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
     private void closeParen() {
         out.print(")");
     }
-
 }

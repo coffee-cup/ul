@@ -17,6 +17,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     private IRFunction currentFunction;
     private LinkedList<IRInstruction> instrs;
     private TempFactory temps;
+    private LabelFactory labels;
 
     public IRVisitor(String sourceFilename) {
         this.sourceFilename = sourceFilename;
@@ -117,6 +118,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
         currentFunction = new IRFunction();
         instrs = currentFunction.getInstructions();
         temps = currentFunction.getTempFactory();
+        labels = currentFunction.getLabelFactory();
         irProgram.getFunctions().add(currentFunction);
 
         temps.beginScope();
