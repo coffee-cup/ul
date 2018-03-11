@@ -42,15 +42,18 @@ public class Compiler {
             outStream = new PrintStream(new File(options.outfile));
         }
 
+        // Type checker
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
 
-        // IRVisitor irVisitor = new IRVisitor(options.infile);
-        // p.accept(irVisitor);
-        // IRProgram irProgram = irVisitor.getIRProgram();
+        // IR generator
+        IRVisitor irVisitor = new IRVisitor(options.infile);
+        p.accept(irVisitor);
+        IRProgram irProgram = irVisitor.getIRProgram();
 
-        // IRPrintVisitor irPrintVisitor = new IRPrintVisitor(System.out);
-        // irProgram.accept(irPrintVisitor);
+        // IR pretty printer
+        IRPrintVisitor irPrintVisitor = new IRPrintVisitor(System.out);
+        irProgram.accept(irPrintVisitor);
 
         if (!options.silent) {
             if (options.prettyPrint) {

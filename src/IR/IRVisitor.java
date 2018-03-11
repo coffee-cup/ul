@@ -1,5 +1,6 @@
 package IR;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import AST.*;
@@ -12,6 +13,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     private String sourceFilename;
     private IRProgram irProgram;
 
+    private FunctionDecl currentFunctionDecl;
     private IRFunction currentFunction;
     private LinkedList<IRInstruction> instrs;
     private TempFactory temps;
@@ -111,6 +113,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(Function f) {
+        currentFunctionDecl = f.getDecl();
         currentFunction = new IRFunction();
         instrs = currentFunction.getInstructions();
         temps = currentFunction.getTempFactory();
@@ -135,7 +138,26 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(FunctionCall f) {
-        return null;
+        // Get the function declaration we tagged in type checking
+        FunctionDecl decl = f.getDeclCalled();
+
+        Temp t = null;
+        if (!VoidType.check(decl.getType())) {
+            t = temps.getTemp(decl.getType());
+        }
+
+        ArrayList<Temp> args = new ArrayList<Temp>();
+        for (int i = 0; i < f.getParams().size(); i += 1) {
+            // Type cast any args to what they need to be for the call
+            Temp arg = f.getParams().get(i).accept(this);
+            Type required = decl.getParams().get(i).getType();
+            args.add(typeCast(arg, required));
+        }
+
+        IRInstruction in = new IRFunctionCall(f.getName().getName(), t, args);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(FunctionDecl f) {
@@ -213,7 +235,8 @@ public class IRVisitor implements AST.Visitor<Temp> {
         if (s.getExpr() == null) {
             in = new IRReturn();
         } else {
-            in = new IRReturn(s.getExpr().accept(this));
+            Temp t = s.getExpr().accept(this);
+            in = new IRReturn(typeCast(t, currentFunctionDecl.getType()));
         }
         instrs.add(in);
 

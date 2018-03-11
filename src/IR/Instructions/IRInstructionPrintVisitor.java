@@ -122,6 +122,24 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(IRFunctionCall i) {
+        if (i.getTemp() != null) {
+            printTemp(i.getTemp());
+            equals();
+        }
+        out.print("CALL"); space();
+        out.print(i.getName());
+
+        openParen();
+        for (int j = 0; j < i.getArgs().size(); j += 1) {
+            printTemp(i.getArgs().get(j));
+            if (j != i.getArgs().size() - 1) space();
+        }
+        closeParen();
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }

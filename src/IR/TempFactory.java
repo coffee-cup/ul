@@ -81,7 +81,6 @@ public class TempFactory {
         LinkedList<Temp> temps = new LinkedList<Temp>();
 
         for (HashMap<String, Temp> scope: scopedTemps) {
-            System.out.println("in a scope");
             for (Temp t: scope.values()) {
                 temps.add(t);
             }

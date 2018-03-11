@@ -12,4 +12,5 @@ public interface Visitor<T> {
     public T visit(IRPrint i);
     public T visit(IRPrintln i);
     public T visit(IRReturn i);
+    public T visit(IRFunctionCall i);
 }
