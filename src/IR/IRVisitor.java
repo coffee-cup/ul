@@ -21,7 +21,19 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(AddExpression e) {
-        return null;
+        Temp left = e.getLeftExpr().accept(this);
+        Temp right = e.getRightExpr().accept(this);
+
+        Type operatorType = Type.greaterType(left.getType(), right.getType());
+
+        Temp dest = temps.getTemp(operatorType);
+        IRInstruction in = new IRBinaryOp(dest,
+                                          typeCast(left, operatorType),
+                                          typeCast(right, operatorType),
+                                          IRBOp.ADD);
+        instrs.add(in);
+
+        return dest;
     }
 
     public Temp visit(AssignStatement s) {

@@ -52,6 +52,18 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(IRBinaryOp i) {
+        printTemp(i.getDest());
+        equals();
+        printTemp(i.getLeftOperand()); space();
+        out.print(i.getDest().getType().toIRString());
+        out.print(i.getOperation().toString());
+        space();
+        printTemp(i.getRightOperand());
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }
