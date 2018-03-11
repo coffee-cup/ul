@@ -6,13 +6,15 @@ import ParseCmd.ParseCmd;
 public class CompilerOptions {
     public String infile;
     public String outfile = "<stdout>";
+    public boolean irGenerate = false;
     public boolean prettyPrint = false;
     public boolean dotFormat = false;
     public boolean silent = false;
 
-    public CompilerOptions(String infile, String outfile, boolean prettyPrint, boolean dotFormat, boolean silent) {
+    public CompilerOptions(String infile, String outfile, boolean irGenerate, boolean prettyPrint, boolean dotFormat, boolean silent) {
         this.infile = infile;
         this.outfile = outfile;
+        this.irGenerate = irGenerate;
         this.prettyPrint = prettyPrint;
         this.dotFormat = dotFormat;
         this.silent = silent;
@@ -22,7 +24,7 @@ public class CompilerOptions {
         String filename;
         String[] optionsArgs;
 
-        String usage = "usage: [-o outfile -s 0] filename";
+        String usage = "usage: [-o outfile] filename";
         ParseCmd cmd = new ParseCmd.Builder()
             .help(usage)
             .parm("-o", "<stdout>")
@@ -30,6 +32,9 @@ public class CompilerOptions {
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
             .parm("-s", "0")
+                .rex("^[01]{1}$")
+                .msg("enter 0 or 1; other values are invalid")
+            .parm("-ir", "1")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
             .parm("-d", "0")
@@ -55,10 +60,11 @@ public class CompilerOptions {
         }
 
         String outfile = R.get("-o");
+        boolean irGenerate = R.get("-ir").equals("1");
         boolean prettyPrint = R.get("-p").equals("1");
         boolean dot = R.get("-d").equals("1");
         boolean silent = R.get("-s").equals("1");
 
-        return new CompilerOptions(filename, outfile, prettyPrint, dot, silent);
+        return new CompilerOptions(filename, outfile, irGenerate, prettyPrint, dot, silent);
     }
 }

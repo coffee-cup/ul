@@ -51,15 +51,18 @@ public class Compiler {
         p.accept(irVisitor);
         IRProgram irProgram = irVisitor.getIRProgram();
 
-        // IR pretty printer
-        IRPrintVisitor irPrintVisitor = new IRPrintVisitor(System.out);
-        irProgram.accept(irPrintVisitor);
-
+        // If silent, we just want to compile without producing any output
         if (!options.silent) {
-            if (options.prettyPrint) {
+            if (options.irGenerate) {
+                // IR pretty printer
+                IRPrintVisitor irPrintVisitor = new IRPrintVisitor(outStream);
+                irProgram.accept(irPrintVisitor);
+            } else if (options.prettyPrint) {
+                // Pretty printer
                 PrintVisitor printVisitor = new PrintVisitor(outStream);
                 p.accept(printVisitor);
             } else if (options.dotFormat) {
+                // Dot printer
                 DotVisitor dotVisitor = new DotVisitor(outStream);
                 p.accept(dotVisitor);
             }

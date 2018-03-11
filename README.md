@@ -32,6 +32,7 @@ java Compiler path/to/file.ul
 ### Options
 
 - `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to stdout.
+- `-ir 1|0` IR generation mode. If `1` then the IR text will be generated to the file and sent to `outfile`. _(Default 1)_
 - `-p 1|0` Pretty print mode. If `1` then file will be pretty printed after type checking. _(Default 0)_
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html). _(Default 0)_
 
