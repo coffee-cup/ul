@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import AST.*;
 import Types.*;
 import IR.Constants.*;
+import IR.Exceptions.IRException;
 import IR.Instructions.*;
 
 public class IRVisitor implements AST.Visitor<Temp> {
@@ -27,8 +28,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
         Temp tLeft = s.getName().accept(this);
         Temp tRight = s.getExpr().accept(this);
 
-        // TODO: Type casting
-        IRInstruction in = new IRVarAssign(tLeft, tRight);
+        IRInstruction in = new IRVarAssign(tLeft, typeCast(tRight, tLeft.getType()));
         instrs.add(in);
 
         return null;
@@ -206,6 +206,26 @@ public class IRVisitor implements AST.Visitor<Temp> {
 
     public Temp visit(WhileStatement s) {
         return null;
+    }
+
+    // Adds type casting instructions if necessary
+    // Ensures returns a temp that is guaranteed to be of type required
+    private Temp typeCast(Temp t, Type required) {
+        if (t.getType().equals(required)) {
+            return t;
+        }
+
+        if (!(FloatType.check(required) && IntegerType.check(t.getType()))) {
+            throw new IRException("Cannot perform type cast from " +
+                                  t.getType().toString() + " to " + required.toString());
+        }
+
+        Temp newT = temps.getTemp(required);
+
+        IRInstruction in = new IRUnaryOp(newT, t, IRUOp.TOFLOAT);
+        instrs.add(in);
+
+        return newT;
     }
 
     public IRProgram getIRProgram() {

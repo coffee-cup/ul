@@ -27,12 +27,16 @@ public class IRPrintVisitor implements IR.Visitor<Void> {
         for (IRInstruction i: f.getTempFactory().getAllTemps()) {
             newLine(); printIndent();
             i.accept(irInstructionPrintVisitor);
+            semi();
         }
+
+        newLine();
 
         // Instructions
         for (IRInstruction i: f.getInstructions()) {
-            newLine(); printIndent();
+            newLine(); printIndent(); printIndent();
             i.accept(irInstructionPrintVisitor);
+            semi();
         }
 
         backIndent(); newLine(); closeBrace();

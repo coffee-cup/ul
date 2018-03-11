@@ -22,8 +22,6 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
             closeParen(); closeSquare();
         }
 
-        semi();
-
         return null;
     }
 
@@ -39,6 +37,17 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         printTemp(i.getOperand());
         equals();
         out.print(i.getConstant().toString());
+
+        return null;
+    }
+
+    public Void visit(IRUnaryOp i) {
+        printTemp(i.getDest());
+        equals();
+        out.print(i.getSource().getType().toIRString());
+        out.print(i.getOperation().toString());
+        space();
+        printTemp(i.getSource());
 
         return null;
     }
