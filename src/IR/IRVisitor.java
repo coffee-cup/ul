@@ -21,19 +21,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(AddExpression e) {
-        Temp left = e.getLeftExpr().accept(this);
-        Temp right = e.getRightExpr().accept(this);
-
-        Type operatorType = Type.greaterType(left.getType(), right.getType());
-
-        Temp dest = temps.getTemp(operatorType);
-        IRInstruction in = new IRBinaryOp(dest,
-                                          typeCast(left, operatorType),
-                                          typeCast(right, operatorType),
-                                          IRBOp.ADD);
-        instrs.add(in);
-
-        return dest;
+        return binaryOperation(e, null, IRBOp.ADD);
     }
 
     public Temp visit(AssignStatement s) {
@@ -83,7 +71,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(EqualityExpression e) {
-        return null;
+        return binaryOperation(e, BooleanType.getInstance(), IRBOp.DOUBEQ);
     }
 
     public Temp visit(ExpressionStatement e) {
@@ -167,15 +155,15 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(LessThanExpression e) {
-        return null;
+        return binaryOperation(e, BooleanType.getInstance(), IRBOp.LESSTHAN);
     }
 
     public Temp visit(MultExpression e) {
-        return null;
+        return binaryOperation(e, null, IRBOp.MULT);
     }
 
     public Temp visit(ParenExpression p) {
-        return null;
+        return p.getExpr().accept(this);
     }
 
     public Temp visit(PrintStatement s) {
@@ -205,7 +193,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(SubExpression e) {
-        return null;
+        return binaryOperation(e, null, IRBOp.SUB);
     }
 
     public Temp visit(TypeNode t) {
@@ -218,6 +206,24 @@ public class IRVisitor implements AST.Visitor<Temp> {
 
     public Temp visit(WhileStatement s) {
         return null;
+    }
+
+    public Temp binaryOperation(OperatorExpression e, Type operatorType, IRBOp operation) {
+        Temp left = e.getLeftExpr().accept(this);
+        Temp right = e.getRightExpr().accept(this);
+
+        Type greaterType = Type.greaterType(left.getType(), right.getType());
+        if (operatorType == null) {
+            operatorType = greaterType;
+        }
+        Temp dest = temps.getTemp(operatorType);
+        IRInstruction in = new IRBinaryOp(dest,
+                                          typeCast(left, greaterType),
+                                          typeCast(right, greaterType),
+                                          operation);
+        instrs.add(in);
+
+        return dest;
     }
 
     // Adds type casting instructions if necessary

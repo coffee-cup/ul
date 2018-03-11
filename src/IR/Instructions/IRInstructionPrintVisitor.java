@@ -56,7 +56,7 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         printTemp(i.getDest());
         equals();
         printTemp(i.getLeftOperand()); space();
-        out.print(i.getDest().getType().toIRString());
+        out.print(i.getLeftOperand().getType().toIRString());
         out.print(i.getOperation().toString());
         space();
         printTemp(i.getRightOperand());
