@@ -140,11 +140,26 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
-    public Void visit(Label i) {
-        out.print("LABEL");
-        space();
+    public Void visit(IRLabel i) {
+        out.print("L");
         out.print(i.getNumber());
         colon();
+
+        return null;
+    }
+
+    public Void visit(IRGoto i) {
+        out.print("GOTO"); space();
+        out.print("L" + i.getJump().getNumber());
+
+        return null;
+    }
+
+    public Void visit(IRIfStatement i) {
+        out.print("IF"); space();
+        printTemp(i.getCond()); space();
+        out.print("GOTO"); space();
+        out.print("L" + i.getJump().getNumber());
 
         return null;
     }

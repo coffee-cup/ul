@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import IR.Instructions.IRInstruction;
 import IR.Instructions.IRInstructionPrintVisitor;
-import IR.Instructions.Label;
+import IR.Instructions.IRLabel;
 
 public class IRPrintVisitor implements IR.Visitor<Void> {
     private PrintStream out;
@@ -37,12 +37,10 @@ public class IRPrintVisitor implements IR.Visitor<Void> {
         for (IRInstruction i: f.getInstructions()) {
             newLine(); printIndent();
 
-            if (!(i instanceof Label)) {
-                printIndent();
-            }
-
+            boolean isLabel = (i instanceof IRLabel);
+            if (!isLabel) printIndent();
             i.accept(irInstructionPrintVisitor);
-            semi();
+            if (!isLabel) semi();
         }
 
         backIndent(); newLine(); closeBrace();

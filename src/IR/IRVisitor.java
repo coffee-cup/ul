@@ -185,6 +185,38 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(IfStatement i) {
+        IRLabel l1 = labels.getLabel();
+        IRLabel l2 = labels.getLabel();
+        Temp t = i.getExpr().accept(this);
+
+        IRInstruction in;
+        if (t.isParamOrLocal()) {
+            // Create new temp because we need to invert to without
+            // affecting a parameter or local variable
+            Temp t2 = temps.getTemp(BooleanType.getInstance());
+            in = new IRVarAssign(t2, t);
+            instrs.add(in);
+            t = t2;
+        }
+
+        in = new IRUnaryOp(t, t, IRUOp.INVERT);
+        instrs.add(in);
+
+        in = new IRIfStatement(t, l1);
+        instrs.add(in);
+
+        i.getThenBlock().accept(this);
+
+        in = new IRGoto(l2);
+        instrs.add(in);
+
+        instrs.add(l1);
+
+        if (i.getElseBlock() != null) {
+            i.getElseBlock().accept(this);
+        }
+        instrs.add(l2);
+
         return null;
     }
 

@@ -2,20 +2,20 @@ package IR;
 
 import java.util.LinkedList;
 
-import IR.Instructions.Label;
+import IR.Instructions.IRLabel;
 
 public class LabelFactory {
     private int currentNumber;
-    private LinkedList<Label> labels;
+    private LinkedList<IRLabel> labels;
 
     public LabelFactory() {
-        labels = new LinkedList<Label>();
+        labels = new LinkedList<IRLabel>();
         currentNumber = 0;
     }
 
-    public Label getLabel() {
+    public IRLabel getLabel() {
         currentNumber += 1;
-        Label l = new Label(currentNumber);
+        IRLabel l = new IRLabel(currentNumber);
         return l;
     }
 }

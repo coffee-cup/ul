@@ -40,6 +40,18 @@ public class Temp extends IRInstruction {
         this.name = name;
     }
 
+    public boolean isParam() {
+        return tempClass == TempClass.PARAMETER;
+    }
+
+    public boolean isLocal() {
+        return tempClass == TempClass.LOCAL;
+    }
+
+    public boolean isParamOrLocal() {
+        return isParam() || isLocal();
+    }
+
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }

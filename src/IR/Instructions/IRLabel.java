@@ -1,9 +1,9 @@
 package IR.Instructions;
 
-public class Label extends IRInstruction {
+public class IRLabel extends IRInstruction {
     private int number;
 
-    public Label(int number) {
+    public IRLabel(int number) {
         this.number = number;
     }
 
