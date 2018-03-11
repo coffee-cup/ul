@@ -209,6 +209,14 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(ReturnStatement s) {
+        IRInstruction in;
+        if (s.getExpr() == null) {
+            in = new IRReturn();
+        } else {
+            in = new IRReturn(s.getExpr().accept(this));
+        }
+        instrs.add(in);
+
         return null;
     }
 

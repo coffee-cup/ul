@@ -111,6 +111,17 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit (IRReturn i) {
+        out.print("RETURN");
+
+        if (i.getTemp() != null) {
+            space();
+            printTemp(i.getTemp());
+        }
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }

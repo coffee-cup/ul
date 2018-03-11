@@ -11,4 +11,5 @@ public interface Visitor<T> {
     public T visit(IRArrayAssign i);
     public T visit(IRPrint i);
     public T visit(IRPrintln i);
+    public T visit(IRReturn i);
 }
