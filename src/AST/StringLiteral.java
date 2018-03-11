@@ -1,5 +1,8 @@
 package AST;
 
+import Types.StringType;
+import Types.Type;
+
 public class StringLiteral extends Literal {
     private String value;
 
@@ -11,6 +14,10 @@ public class StringLiteral extends Literal {
 
     public String getValue() {
         return value;
+    }
+
+    public Type getType() {
+        return StringType.getInstance();
     }
 
     public <T> T accept(Visitor<T> v) {

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import AST.*;
 import Types.*;
+import IR.Constants.*;
 import IR.Instructions.*;
 
 public class IRVisitor implements AST.Visitor<Temp> {
@@ -23,6 +24,13 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(AssignStatement s) {
+        Temp tLeft = s.getName().accept(this);
+        Temp tRight = s.getExpr().accept(this);
+
+        // TODO: Type casting
+        IRInstruction in = new IRVarAssign(tLeft, tRight);
+        instrs.add(in);
+
         return null;
     }
 
@@ -45,11 +53,21 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(BooleanLiteral b) {
-        return null;
+        Temp t = temps.getTemp(b.getType());
+        IRConstant booleanConstant = new IRBooleanConstant(b.getValue());
+        IRInstruction in = new IRConstantAssign(t, booleanConstant);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(CharacterLiteral c) {
-        return null;
+        Temp t = temps.getTemp(c.getType());
+        IRConstant charConstant = new IRCharacterConstant(c.getValue());
+        IRInstruction in = new IRConstantAssign(t, charConstant);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(EqualityExpression e) {
@@ -61,7 +79,12 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(FloatLiteral f) {
-        return null;
+        Temp t = temps.getTemp(f.getType());
+        IRConstant floatConstant = new IRFloatConstant(f.getValue());
+        IRInstruction in = new IRConstantAssign(t, floatConstant);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(FormalParameter p) {
@@ -115,7 +138,7 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(Identifier i) {
-        return null;
+        return temps.getNamedTemp(i.getName());
     }
 
     public Temp visit(IfStatement i) {
@@ -123,7 +146,12 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(IntegerLiteral i) {
-        return null;
+        Temp t = temps.getTemp(i.getType());
+        IRConstant intConstant = new IRIntegerConstant(i.getValue());
+        IRInstruction in = new IRConstantAssign(t, intConstant);
+        instrs.add(in);
+
+        return t;
     }
 
     public Temp visit(LessThanExpression e) {
@@ -156,6 +184,11 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(StringLiteral s) {
+        Temp t = temps.getTemp(s.getType());
+        IRConstant stringConstant = new IRStringConstant(s.getValue());
+        IRInstruction in = new IRConstantAssign(t, stringConstant);
+        instrs.add(in);
+
         return null;
     }
 

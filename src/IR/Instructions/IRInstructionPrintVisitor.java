@@ -27,6 +27,30 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(IRVarAssign i) {
+        printTemp(i.getLeftOperand());
+        equals();
+        printTemp(i.getRightOperand());
+
+        return null;
+    }
+
+    public Void visit(IRConstantAssign i) {
+        printTemp(i.getOperand());
+        equals();
+        out.print(i.getConstant().toString());
+
+        return null;
+    }
+
+    private void printTemp(Temp t) {
+        out.print("T" + t.getNumber());
+    }
+
+    private void equals() {
+        out.print(" := ");
+    }
+
     private void numSpaces(int num) {
         for (int i = 0; i < num; i += 1) {
             space();

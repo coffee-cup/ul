@@ -1,5 +1,8 @@
 package AST;
 
+import Types.IntegerType;
+import Types.Type;
+
 public class IntegerLiteral extends Literal {
     private int value;
 
@@ -11,6 +14,10 @@ public class IntegerLiteral extends Literal {
 
     public int getValue() {
         return value;
+    }
+
+    public Type getType() {
+        return IntegerType.getInstance();
     }
 
     public <T> T accept(Visitor<T> v) {

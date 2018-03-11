@@ -1,3 +1,7 @@
 package AST;
 
-public abstract class Literal extends Expression {}
+import Types.Type;
+
+public abstract class Literal extends Expression {
+    public abstract Type getType();
+}

@@ -44,6 +44,10 @@ public class TempFactory {
         return t;
     }
 
+    public Temp getNamedTemp(String name) {
+        return lookupScopedTemp(name);
+    }
+
     public Temp getScopedTemp(String name, Type type, TempClass tempClass) {
         Temp t = lookupScopedTemp(name);
         if (t == null) {
