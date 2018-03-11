@@ -8,4 +8,5 @@ public interface Visitor<T> {
     public T visit(IRBinaryOp i);
     public T visit(IRArrayCreation i);
     public T visit(IRArrayReference i);
+    public T visit(IRArrayAssign i);
 }

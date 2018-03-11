@@ -35,6 +35,14 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(ArrayAssignStatement s) {
+        Temp t = temps.getNamedTemp(s.getName().getName());
+        Temp refTemp = s.getRefExpr().accept(this);
+        Temp assignTemp = s.getAssignExpr().accept(this);
+
+        Type requiredType = ((ArrayType)t.getType()).getArrayOfType();
+        IRInstruction in = new IRArrayAssign(t, refTemp, typeCast(assignTemp, requiredType));
+        instrs.add(in);
+
         return null;
     }
 

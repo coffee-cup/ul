@@ -84,6 +84,15 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         return null;
     }
 
+    public Void visit(IRArrayAssign i) {
+        printTemp(i.getDest());
+        openSquare(); printTemp(i.getRefTemp()); closeSquare();
+        equals();
+        printTemp(i.getAssignTemp());
+
+        return null;
+    }
+
     private void printTemp(Temp t) {
         out.print("T" + t.getNumber());
     }
