@@ -190,6 +190,9 @@ public class TypeCheckVisitor implements Visitor<Type> {
             throw new NotDeclaredException(f.getCallString(paramTypes), f.getName());
         }
 
+        // Tag the function call with the actual declaration that should be called
+        f.setDeclCalled(foundDecl);
+
         return foundDecl.getType();
     }
 

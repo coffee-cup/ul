@@ -7,6 +7,10 @@ public class FunctionCall extends Expression {
     private Identifier name;
     private ArrayList<Expression> params;
 
+    // When type checking we will tag the function call with
+    // the actual declaration that will be called
+    private FunctionDecl declCalled;
+
     public FunctionCall(Identifier name, ArrayList<Expression> params) {
         this.setName(name);
         this.setParams(params);
@@ -32,6 +36,14 @@ public class FunctionCall extends Expression {
 	public void setParams(ArrayList<Expression> params) {
 		this.params = params;
 	}
+
+    public FunctionDecl getDeclCalled() {
+        return declCalled;
+    }
+
+    public void setDeclCalled(FunctionDecl declCalled) {
+        this.declCalled = declCalled;
+    }
 
     public String getCallString(ArrayList<Type> paramTypes) {
         String s = getName() + "(";
