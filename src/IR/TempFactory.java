@@ -13,18 +13,23 @@ public class TempFactory {
     private static final int maxTemps = 65535;
 
     private int currentNumber;
+    private int scopeLevel;
 
     // Temps that are assigned to a parameter or local variable
     private LinkedList<HashMap<String, Temp>> scopedTemps;
 
+    // Named Temps that have gone out of scope, but we still need to
+    // know about for generating IR
+    private LinkedList<Temp> outOfScopeTemps;
+
     // Temps that are just used once for the result of an expression
     private LinkedList<Temp> oneOffTemps;
-    private int scopeLevel;
 
     public TempFactory() {
         currentNumber = -1;
         scopeLevel = -1;
         scopedTemps = new LinkedList<HashMap<String, Temp>>();
+        outOfScopeTemps = new LinkedList<Temp>();
         oneOffTemps = new LinkedList<Temp>();
     }
 
@@ -48,8 +53,8 @@ public class TempFactory {
         return lookupScopedTemp(name);
     }
 
-    public Temp getScopedTemp(String name, Type type, TempClass tempClass) {
-        Temp t = lookupScopedTemp(name);
+    public Temp getScopedTemp(String name, Type type, TempClass tempClass, boolean create) {
+        Temp t = create ? null : lookupScopedTemp(name);
         if (t == null) {
             t = createTemp(type, tempClass);
             getCurrentScope().put(name, t);
@@ -59,11 +64,15 @@ public class TempFactory {
     }
 
     public Temp getParamTemp(String name, Type type) {
-        return getScopedTemp(name, type, TempClass.PARAMETER);
+        return getScopedTemp(name, type, TempClass.PARAMETER, false);
+    }
+
+    public Temp getLocalTemp(String name, Type type, boolean create) {
+        return getScopedTemp(name, type, TempClass.LOCAL, create);
     }
 
     public Temp getLocalTemp(String name, Type type) {
-        return getScopedTemp(name, type, TempClass.LOCAL);
+        return getLocalTemp(name, type, false);
     }
 
     public void beginScope() {
@@ -73,7 +82,8 @@ public class TempFactory {
     }
 
     public void endScope() {
-        // Don't pop anything because we need to access the temps later
+        outOfScopeTemps.addAll(getCurrentScope().values());
+        scopedTemps.pop();
         scopeLevel -= 1;
     }
 
@@ -86,9 +96,8 @@ public class TempFactory {
             }
         }
 
-        for (Temp t: oneOffTemps) {
-            temps.add(t);
-        }
+        temps.addAll(outOfScopeTemps);
+        temps.addAll(oneOffTemps);
 
         // Sort temps based on number
         Collections.sort(temps, new Comparator<Temp>() {
@@ -102,7 +111,7 @@ public class TempFactory {
     }
 
     private HashMap<String, Temp> getCurrentScope () {
-        return scopedTemps.size() > 0 ? scopedTemps.get(scopeLevel): null;
+        return scopedTemps.size() > 0 ? scopedTemps.get(0): null;
     }
 
     private Temp lookupScopedTemp(String name) {
@@ -111,6 +120,7 @@ public class TempFactory {
             t = scope.get(name);
             if (t != null) break;
         }
+
         return t;
     }
 }
