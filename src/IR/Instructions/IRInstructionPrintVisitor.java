@@ -15,12 +15,12 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         out.print(t.getNumber()); colon();
         out.print(t.getType().toIRString());
 
-        if (t.getTempClass() == TempClass.PARAMETER || t.getTempClass() == TempClass.LOCAL) {
-            numSpaces(4); openSquare();
-            out.print(t.getTempClass().toString()); openParen();
-            quote(); out.print(t.getName()); quote();
-            closeParen(); closeSquare();
-        }
+        // if (t.getTempClass() == TempClass.PARAMETER || t.getTempClass() == TempClass.LOCAL) {
+        //     numSpaces(4); openSquare();
+        //     out.print(t.getTempClass().toString()); openParen();
+        //     quote(); out.print(t.getName()); quote();
+        //     closeParen(); closeSquare();
+        // }
 
         return null;
     }
