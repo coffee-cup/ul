@@ -128,6 +128,11 @@ public class IRVisitor implements AST.Visitor<Temp> {
 
         temps.endScope();
 
+        // Check if the last instruction is a Return, if not add one
+        if (!(instrs.size() > 0 && instrs.get(instrs.size() - 1) instanceof IRReturn)) {
+            instrs.add(new IRReturn());
+        }
+
         return null;
     }
 
