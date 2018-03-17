@@ -68,7 +68,7 @@ public class IRInstructionPrintVisitor implements IR.Instructions.Visitor<Void> 
         printTemp(i.getDest());
         equals();
         out.print("NEWARRAY"); space();
-        openParen(); out.print(i.getArr().getArrayOfType().toIRString()); closeParen();
+        out.print(i.getArr().getArrayOfType().toIRString());
         space();
         out.print(i.getArr().getSize());
 
