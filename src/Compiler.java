@@ -46,8 +46,12 @@ public class Compiler {
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
 
+        // Get just the filename without path or extension
+        String nameExt = new File(options.infile).getName();
+        String name = nameExt.substring(0, nameExt.lastIndexOf('.'));
+
         // IR generator
-        IRVisitor irVisitor = new IRVisitor(options.infile);
+        IRVisitor irVisitor = new IRVisitor(name);
         p.accept(irVisitor);
         IRProgram irProgram = irVisitor.getIRProgram();
 
