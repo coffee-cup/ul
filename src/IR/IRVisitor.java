@@ -95,7 +95,9 @@ public class IRVisitor implements AST.Visitor<Temp> {
     }
 
     public Temp visit(ExpressionStatement e) {
-        e.getExpr().accept(this);
+        if (e.getExpr() != null) {
+            e.getExpr().accept(this);
+        }
 
         return null;
     }
