@@ -3,13 +3,13 @@ int factorial(int n)
 	int returnValue;
 
 	if (n == 1)
-    {
-      returnValue = 1;
-    }
+	{
+		returnValue = 1;
+	}
 	else
-    {
-      returnValue =  n*factorial(n-1);
-    }
+	{
+		returnValue =  n*factorial(n-1);
+	}
 	return returnValue;
 }
 

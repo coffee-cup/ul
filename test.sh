@@ -12,10 +12,6 @@ cd bin/
 TMPDIR="../tmp"
 mkdir -p $TMPDIR
 
-echo ""
-echo "------ Running compiler against accept files"
-echo ""
-
 ERROR_STR="!!!!! ERROR !!!!!"
 
 compile_error () {
@@ -29,6 +25,10 @@ codegen_error () {
     echo $ERROR_STR
     exit 1
 }
+
+echo ""
+echo "------ Running compiler against output files"
+echo ""
 
 # The .ul files in the output directory have an associated .txt file
 # The .txt contains the correct output for the program
@@ -60,8 +60,6 @@ do
         exit 1
     fi
 
-    echo $OUTTMP
-    echo $CORRECTOUT
     # Run the .class file
     java -cp $TMPDIR $NAME > $OUTTMP
     CMP=$(cmp $OUTTMP $CORRECTOUT)
@@ -71,6 +69,10 @@ do
         exit 1
     fi
 done
+
+echo ""
+echo "------ Running compiler against accept files"
+echo ""
 
 # All of these files should be in the language
 for f in $(find $ACCEPT_FILES -name "*.ul")
