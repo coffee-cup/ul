@@ -68,6 +68,7 @@ do
         echo $ERROR_STR
         exit 1
     fi
+    echo ""
 done
 
 echo ""
