@@ -1,38 +1,81 @@
 #!/bin/bash
 
-make clean; make
+# make clean; make
 
 ACCEPT_FILES=../tests/accept
 REJECT_FILES=../tests/reject
+OUTPUT_FILES=../tests/output
 
 cd bin/
 
 # Create tmp directory
-mkdir -p ../tmp
+TMPDIR="../tmp"
+mkdir -p $TMPDIR
 
 echo ""
 echo "------ Running compiler against accept files"
 echo ""
 
+ERROR_STR="!!!!! ERROR !!!!!"
+
+compile_error () {
+    echo "$1 did not compiler"
+    echo $ERROR_STR
+    exit 1
+}
+
+codegen_error () {
+    echo "$1 did not codegen"
+    echo $ERROR_STR
+    exit 1
+}
+
+# The .ul files in the output directory have an associated .txt file
+# The .txt contains the correct output for the program
+# In the meantime this must be run on linux.csc.uvic.ca
+for f in $(find $OUTPUT_FILES -name "*.ul")
+do
+    NAME=$(basename ${f} .ul)
+    IRTMP="$TMPDIR/$NAME.ir"
+    JTMP="$TMPDIR/$NAME.j"
+
+    echo "Testing output - $f"
+
+    # Create the ir file
+    if ! java Compiler -ir 1 -o $IRTMP $f; then
+        compile_error $f
+    fi
+
+    # Create the jasmine file
+    if ! ../codegen --file=$IRTMP > $JTMP; then
+        codegen_error $IRTMP
+    fi
+
+    # Create the .class file
+    if ! java jasmin.Main $JTMP; then
+        echo "Jasmin failed! - $JTMP"
+        echo $ERROR_STR
+        exit 1
+    fi
+done
+
+exit
+
 # All of these files should be in the language
 for f in $(find $ACCEPT_FILES -name "*.ul")
 do
-    TMP1="../tmp/$(basename ${f} .ul)_1.ul"
-    TMP2="../tmp/$(basename ${f} .ul)_2.ul"
+    TMP1="$TMPDIR/$(basename ${f} .ul)_1.ul"
+    TMP2="$TMPDIR/$(basename ${f} .ul)_2.ul"
 
     echo "Testing accept - $f"
-    if ! java Compiler -p 1 -o $TMP1 $f; then
-        echo "$f did not compile"
-        echo "!!!!! ERROR !!!!!"
-        exit 1
+    if ! java Compiler -p 1 -ir 0 -o $TMP1 $f; then
+        compile_error $f
     fi
 
     # Pretty print output of first to a second file and ensure
     # contents are the same
-    if ! java Compiler -p 1 -o $TMP2 $TMP1; then
-        echo "$tmp1 did not compile"
-        echo "!!!!! ERROR !!!!!"
-        exit 1
+    if ! java Compiler -p 1 -ir 0 -o $TMP2 $TMP1; then
+        compile_error $tmp1
     fi
 
 
@@ -40,7 +83,7 @@ do
     if [ "$CMP" != "" ]
     then
         echo "$f - Pretty print of pretty print is not the same"
-        echo "!!!!! ERROR !!!!!"
+        echo $ERROR_STR
         exit 1
     fi
 
@@ -58,14 +101,14 @@ do
     echo "Testing reject - $f"
     if java Compiler -s 1 $f; then
         echo "$f is in the language and shouldn't be!"
-        echo "!!!!! ERROR !!!!!"
+        echo $ERROR_STR
         exit 1
     fi
 done
 
 # Remove tmp directory
+rm -rf $TMPDIR
 cd ..
-rm -rf tmp
 
 echo ""
 echo "Tests ran successfully!"
