@@ -47,6 +47,8 @@ There are a bunch of .ul language files that can be tested against the compiler.
 
 The latest provided tests are in `accept/provided` for all `*_valid.ul` files and `reject/provided` for all `*_invalid.ul` files.
 
+`.ul` files in the `tests/output` directory have a corresponding `.txt` file. When the tests are run, the IR is sent through `./codegen` and `jasmin`. The output of the Java `.class` file is compared to the `.txt` file. If they are different then an error is thrown. These tests allow me to ensure the behaviour of the programs the compiler generates is expected.
+
 ## Differences From Default Spec
 
 My compiler has a few changes from the default specification. These are
