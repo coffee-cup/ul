@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# make clean; make
+make clean; make
 
 ACCEPT_FILES=../tests/accept
 REJECT_FILES=../tests/reject
@@ -38,6 +38,8 @@ do
     NAME=$(basename ${f} .ul)
     IRTMP="$TMPDIR/$NAME.ir"
     JTMP="$TMPDIR/$NAME.j"
+    OUTTMP="$TMPDIR/$NAME.out.txt"
+    CORRECTOUT="$OUTPUT_FILES/$NAME.txt"
 
     echo "Testing output - $f"
 
@@ -52,14 +54,23 @@ do
     fi
 
     # Create the .class file
-    if ! java jasmin.Main $JTMP; then
+    if ! java jasmin.Main $JTMP -d $TMPDIR; then
         echo "Jasmin failed! - $JTMP"
         echo $ERROR_STR
         exit 1
     fi
-done
 
-exit
+    echo $OUTTMP
+    echo $CORRECTOUT
+    # Run the .class file
+    java -cp $TMPDIR $NAME > $OUTTMP
+    CMP=$(cmp $OUTTMP $CORRECTOUT)
+    if [ "$CMP" != "" ]; then
+        echo "$NAME - Output is not correct"
+        echo $ERROR_STR
+        exit 1
+    fi
+done
 
 # All of these files should be in the language
 for f in $(find $ACCEPT_FILES -name "*.ul")
