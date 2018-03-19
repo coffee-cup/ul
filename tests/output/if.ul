@@ -4,10 +4,11 @@ void less (int x, int y)
 	{
 		print x;
 	}
-	print y;
+	println y;
 }
 
 void main()
 {
 	less(2,3);
+  less(3, 2);
 }
