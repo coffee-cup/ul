@@ -20,7 +20,7 @@ make clean; make
 
 ## Running
 
-The compiler can be run against language files to type check them. Options can be specified to change the default behaviour.
+The compiler can be run against language files to generate IR code for them. By default, IR will be sent to standard out. Options can be specified to change the default behaviour, such as specifying a file to output the IR to.
 
 The built compiler is located in the `bin/` directory.
 
