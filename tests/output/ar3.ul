@@ -1,0 +1,21 @@
+void print_strings(string[5] strings) {
+  int x;
+  x = 0;
+
+  while (x < 5) {
+    println strings[x];
+    x = x + 1;
+  }
+}
+
+void main() {
+  string[5] strings;
+
+  strings[0] = "one";
+  strings[1] = "two";
+  strings[2] = "three";
+  strings[3] = "four";
+  strings[4] = "five";
+
+  print_strings(strings);
+}

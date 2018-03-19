@@ -1,0 +1,26 @@
+void stairs(int n, string c) {
+  int i;
+  i = 0;
+
+  string s;
+  s = "";
+
+  while (i < n) {
+    s = s + c;
+    println s;
+    i = i + 1;
+  }
+}
+
+void main() {
+  int i;
+  i = 0;
+
+  string s;
+  s = "a";
+
+  while (i < 100) {
+    stairs(i, s);
+    i = i + 1;
+  }
+}

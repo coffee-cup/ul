@@ -1,0 +1,36 @@
+int foo(float x, float y) {
+  return 1;
+}
+
+int foo(float x, int y) {
+  return 3;
+}
+
+int foo(int x, int y) {
+  return 4;
+}
+
+void main() {
+  println foo(2.3, 4.4);
+  println foo(2, 3.4);
+  println foo(2.3, 4);
+  println foo(2, 3);
+
+  string x;
+  x = "hello";
+
+  if (true) {
+    char x;
+    x = 'a';
+
+    if (false) {
+      print 4;
+    }
+    else {
+      println x;
+    }
+  } else {
+    x = "world";
+  }
+  println x;
+}
