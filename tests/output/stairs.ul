@@ -19,7 +19,7 @@ void main() {
   string s;
   s = "a";
 
-  while (i < 100) {
+  while (i < 20) {
     stairs(i, s);
     i = i + 1;
   }
