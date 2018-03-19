@@ -137,6 +137,53 @@ The following AST is produced.
 
 ![factorial dot](https://user-images.githubusercontent.com/3044853/36663989-3a39564e-1a98-11e8-8323-7c2364c1a24b.png)
 
+The following IR is generanted
+
+```ir
+PROG test
+FUNC factorial (I)I
+{
+    TEMP 0:I;
+    TEMP 1:I;
+    TEMP 2:Z;
+    TEMP 3:I;
+    TEMP 4:I;
+    TEMP 5:I;
+    TEMP 6:I;
+    TEMP 7:I;
+
+        T1 := 1;
+        T2 := T0 I== T1;
+        T2 := Z! T2;
+        IF T2 GOTO L0;
+        T3 := 1;
+        RETURN T3;
+        GOTO L1;
+    L0:;
+        T5 := 1;
+        T6 := T0 I- T5;
+        T4 := CALL factorial(T6);
+        T7 := T0 I* T4;
+        RETURN T7;
+    L1:;
+        RETURN;
+}
+
+FUNC main ()V
+{
+    TEMP 0:U;
+    TEMP 1:I;
+    TEMP 2:I;
+
+        T0 := "The factorial of 8 is ";
+        PRINTU T0;
+        T2 := 8;
+        T1 := CALL factorial(T2);
+        PRINTLNI T1;
+        RETURN;
+}
+```
+
 ## Dot Graphs
 
 [Dot language](https://www.graphviz.org/doc/info/lang.html) programs can be produced with the `-d 1` option to the compiler.
@@ -153,7 +200,7 @@ void main() {
 You can compile it with
 
 ```bash
-java Compiler -d 1 -o hello.dot hello.ul
+java Compiler -d 1 -ir 0 -o hello.dot hello.ul
 ```
 
 You can then use the dot program to create a png image file and open it
@@ -178,7 +225,6 @@ All third party code is referenced in the LICENSES file.
 - [x] Dot output
 - [x] Syntax analysis
 - [x] Type checking
-- [ ] Intermediate code generation
-- [ ] Register allocation
+- [x] Intermediate code generation
 - [ ] Machine code generation
 - [ ] Assembly and linking
