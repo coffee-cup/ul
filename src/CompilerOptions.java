@@ -34,7 +34,7 @@ public class CompilerOptions {
             .parm("-s", "0")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
-            .parm("-ir", "1")
+            .parm("-ir", "0")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")
             .parm("-d", "0")

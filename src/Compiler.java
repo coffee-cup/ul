@@ -17,6 +17,7 @@ import IR.IRVisitor;
 import IR.Exceptions.IRException;
 import Semantics.TypeCheckVisitor;
 import Semantics.Exceptions.SemanticException;
+import Codegen.CodegenIRVisitor;
 
 public class Compiler {
     private CompilerOptions options;
@@ -54,6 +55,10 @@ public class Compiler {
         IRVisitor irVisitor = new IRVisitor(name);
         p.accept(irVisitor);
         IRProgram irProgram = irVisitor.getIRProgram();
+
+        // Codegen generator
+        CodegenIRVisitor codegenIRVisitor = new CodegenIRVisitor(outStream, options.infile);
+        irProgram.accept(codegenIRVisitor);
 
         // If silent, we just want to compile without producing any output
         if (!options.silent) {
