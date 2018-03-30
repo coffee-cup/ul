@@ -39,6 +39,10 @@ public class ArrayType extends Type {
         return "A" + arrayOf.toIRString();
     }
 
+    public String toJVMString() {
+        return "";
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;

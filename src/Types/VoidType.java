@@ -23,4 +23,8 @@ public class VoidType extends Type {
     public String toIRString() {
         return "V";
     }
+
+    public String toJVMString() {
+        return "";
+    }
 }

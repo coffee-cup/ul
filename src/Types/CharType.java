@@ -23,4 +23,8 @@ public class CharType extends Type {
     public String toIRString() {
         return "C";
     }
+
+    public String toJVMString() {
+        return "i";
+    }
 }

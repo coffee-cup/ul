@@ -27,4 +27,8 @@ public class FloatType extends Type {
     public String toIRString() {
         return "F";
     }
+
+    public String toJVMString() {
+        return "f";
+    }
 }

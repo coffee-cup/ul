@@ -3,6 +3,7 @@ package Types;
 public abstract class Type {
     abstract public String toString();
     abstract public String toIRString();
+    abstract public String toJVMString();
 
     public boolean isSubtype(Type t) {
         return false;

@@ -24,13 +24,19 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
         forwardIndent();
 
         StringBuilder builder = new StringBuilder();
-        Integer stackSize = 0;
         CodegenIRInstructionVisitor codegenIRInstructionVisitor =
             new CodegenIRInstructionVisitor(builder);
-        for (IRInstruction i: f.getInstructions()) {
-            stackSize += i.accept(codegenIRInstructionVisitor);
+
+        for (IRInstruction i: f.getTempFactory().getAllTemps()) {
+            i.accept(codegenIRInstructionVisitor);
         }
 
+        for (IRInstruction i: f.getInstructions()) {
+            i.accept(codegenIRInstructionVisitor);
+            builder.append("\n");
+        }
+
+        int stackSize = codegenIRInstructionVisitor.getMaxStackSize();
         printIndent(); printLimitLocals(f.getTempFactory().getTempCount());
         printIndent(); printLimitStack(stackSize); newLine();
         out.print(builder.toString());

@@ -27,4 +27,8 @@ public class IntegerType extends Type {
     public String toIRString() {
         return "I";
     }
+
+    public String toJVMString() {
+        return "i";
+    }
 }

@@ -23,4 +23,8 @@ public class BooleanType extends Type {
     public String toIRString() {
         return "Z";
     }
+
+    public String toJVMString() {
+        return "i";
+    }
 }

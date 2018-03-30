@@ -23,4 +23,8 @@ public class StringType extends Type {
     public String toIRString() {
         return "U";
     }
+
+    public String toJVMString() {
+        return "";
+    }
 }
