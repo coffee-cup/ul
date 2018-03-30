@@ -77,7 +77,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
         getPrint();
         load(i.getTemp());
 
-        String funcSignature = "(" + i.getTemp().getType() + ")V";
+        String funcSignature = "(" + i.getTemp().getType().toJVMString() + ")V";
         instr("invokevirtual java/io/PrintStream/print(" + funcSignature);
 
         return null;
@@ -88,7 +88,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
         getPrint();
         load(i.getTemp());
 
-        String funcSignature = "(" + i.getTemp().getType().toIRString() + ")V";
+        String funcSignature = "(" + i.getTemp().getType().toJVMString() + ")V";
         instr("invokevirtual java/io/PrintStream/println" + funcSignature);
 
         return null;
@@ -110,7 +110,18 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
             load(t);
         }
 
-        instr("invokestatic " + className + "/" + i.getSignature());
+        String argString = "";
+        for (Temp t: i.getArgs()) {
+            argString += t.getType().toJVMString();
+        }
+        String returnString = "V";
+        if (i.getTemp() != null) {
+            returnString = i.getTemp().getType().toJVMString();
+        }
+        String funcSignature = i.getName() + "(" + argString + ")" + returnString;
+
+
+        instr("invokestatic " + className + "/" + funcSignature);
         if (i.getTemp() != null) {
             store(i.getTemp());
         }
@@ -170,7 +181,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     private void typeInstr(Temp t, String s) {
-        instr(t.getType().toJVMString() + s);
+        instr(t.getType().toJVMCode() + s);
     }
 
     private void instr(String s) {

@@ -39,7 +39,7 @@ public class ArrayType extends Type {
         return "A" + arrayOf.toIRString();
     }
 
-    public String toJVMString() {
+    public String toJVMCode() {
         return "a";
     }
 

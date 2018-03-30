@@ -24,7 +24,7 @@ public class VoidType extends Type {
         return "V";
     }
 
-    public String toJVMString() {
+    public String toJVMCode() {
         return "";
     }
 }

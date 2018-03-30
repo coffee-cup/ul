@@ -24,7 +24,12 @@ public class StringType extends Type {
         return "U";
     }
 
-    public String toJVMString() {
+    public String toJVMCode() {
         return "a";
+    }
+
+    @Override
+    public String toJVMString() {
+        return "Ljava/lang/String;";
     }
 }

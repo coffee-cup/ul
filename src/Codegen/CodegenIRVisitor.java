@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import IR.IRFunction;
 import IR.IRProgram;
 import IR.Instructions.IRInstruction;
+import Types.Type;
 
 public class CodegenIRVisitor implements IR.Visitor<Void> {
     private PrintStream out;
@@ -18,10 +19,19 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
     }
 
     public Void visit(IRFunction f) {
+        String argString = "";
+        for (Type t: f.getParamTypes()) {
+            argString += t.toJVMString();
+        }
+        String returnString = "V";
+        if (f.getReturnType() != null) {
+            returnString = f.getReturnType().toJVMString();
+        }
+        String funcSignature = f.getName() + "(" + argString + ")" + returnString;
+
         out.print(".method public static"); space();
         if (f.getName().equals("main")) out.print("__");
-        out.print(f.getName());
-        out.print(f.getSignature()); newLine();
+        out.print(funcSignature); newLine();
         forwardIndent();
 
         StringBuilder builder = new StringBuilder();

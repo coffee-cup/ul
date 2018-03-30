@@ -173,12 +173,16 @@ public class IRVisitor implements AST.Visitor<Temp> {
         currentFunction.setName(f.getIdent().getName());
 
         String sig = "(";
+        LinkedList<Type> paramTypes = new LinkedList<Type>();
         for (FormalParameter fp: f.getParams()) {
             sig += fp.getType().toIRString();
+            paramTypes.add(fp.getType());
         }
         sig += ")" + f.getType().toIRString();
 
         currentFunction.setSignature(sig);
+        currentFunction.setParamTypes(paramTypes);
+        currentFunction.setReturnType(f.getType());
 
         for (FormalParameter p: f.getParams()) {
             p.accept(this);

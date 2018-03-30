@@ -1,7 +1,9 @@
 package IR;
 
 import java.util.LinkedList;
-import IR.Instructions.*;
+
+import IR.Instructions.IRInstruction;
+import Types.Type;
 
 public class IRFunction extends IRNode {
     private String name;
@@ -10,10 +12,16 @@ public class IRFunction extends IRNode {
     private TempFactory tempFactory;
     private LabelFactory labelFactory;
 
+    private LinkedList<Type> paramTypes;
+    private Type returnType;
+
     public IRFunction() {
         instrs = new LinkedList<IRInstruction>();
         tempFactory = new TempFactory();
         labelFactory = new LabelFactory();
+
+        paramTypes = null;
+        returnType = null;
     }
 
     public String getName() {
@@ -42,6 +50,22 @@ public class IRFunction extends IRNode {
 
     public LabelFactory getLabelFactory() {
         return labelFactory;
+    }
+
+    public LinkedList<Type> getParamTypes() {
+        return paramTypes;
+    }
+
+    public void setParamTypes(LinkedList<Type> paramTypes) {
+        this.paramTypes = paramTypes;
+    }
+
+    public Type getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Type returnType) {
+        this.returnType = returnType;
     }
 
     public <T> T accept(Visitor<T> v) {
