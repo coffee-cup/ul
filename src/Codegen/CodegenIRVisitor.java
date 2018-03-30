@@ -9,6 +9,7 @@ import IR.Instructions.IRInstruction;
 public class CodegenIRVisitor implements IR.Visitor<Void> {
     private PrintStream out;
     private String sourceName;
+    private String className;
     private int indentLevel = 0;
 
     public CodegenIRVisitor(PrintStream out, String sourceName) {
@@ -25,7 +26,7 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
 
         StringBuilder builder = new StringBuilder();
         CodegenIRInstructionVisitor codegenIRInstructionVisitor =
-            new CodegenIRInstructionVisitor(builder);
+            new CodegenIRInstructionVisitor(builder, className);
 
         for (IRInstruction i: f.getTempFactory().getAllTemps()) {
             i.accept(codegenIRInstructionVisitor);
@@ -54,6 +55,7 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
 
         out.print(".class public"); space();
         out.print(p.getName()); newLine();
+        this.className = p.getName();
 
         out.print(".super java/lang/Object");
         newLine(); newLine();

@@ -29,6 +29,19 @@ public class IRFunctionCall extends IRInstruction {
         return args;
     }
 
+    public String getSignature() {
+        String argString = "";
+        for (Temp t: getArgs()) {
+            argString += t.getType().toIRString();
+        }
+        String returnString = "V";
+        if (getTemp() != null) {
+            returnString = getTemp().getType().toIRString();
+        }
+
+        return getName() + "(" + argString + ")" + returnString;
+    }
+
     public <T> T accept(Visitor<T> v) {
         return v.visit(this);
     }

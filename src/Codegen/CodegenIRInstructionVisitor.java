@@ -6,11 +6,13 @@ import Types.*;
 
 public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void> {
     private StringBuilder out;
+    private String className;
     private int currentStackSize;
     private int maxStackSize;
 
-    public CodegenIRInstructionVisitor(StringBuilder out) {
+    public CodegenIRInstructionVisitor(StringBuilder out, String className) {
         this.out = out;
+        this.className = className;
 
         currentStackSize = 0;
         maxStackSize = 0;
@@ -35,6 +37,10 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRVarAssign i) {
+        stackSet(0, 1);
+        load(i.getRightOperand());
+        store(i.getLeftOperand());
+
         return null;
     }
 
@@ -100,14 +106,29 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRFunctionCall i) {
+        for (Temp t: i.getArgs()) {
+            load(t);
+        }
+
+        instr("invokestatic " + className + "/" + i.getSignature());
+        if (i.getTemp() != null) {
+            store(i.getTemp());
+        }
+
+        stackSet(i.getArgs().size(), i.getTemp() == null ? 0 : 1);
+
         return null;
     }
 
     public Void visit(IRLabel i) {
+        out.append("L" + i.getNumber() + ":\n");
+
         return null;
     }
 
     public Void visit(IRGoto i) {
+        instr("goto L" + i.getJump().getNumber());
+
         return null;
     }
 
