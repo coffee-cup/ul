@@ -25,6 +25,6 @@ public class StringType extends Type {
     }
 
     public String toJVMString() {
-        return "";
+        return "a";
     }
 }

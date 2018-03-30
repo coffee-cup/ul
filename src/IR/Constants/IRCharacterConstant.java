@@ -14,4 +14,10 @@ public class IRCharacterConstant extends IRConstant {
     public String toString() {
         return "'" + Character.toString(value) + "'";
     }
+
+    @Override
+    public String toJVMString() {
+        int i = (int) value;
+        return Integer.toString(i);
+    }
 }

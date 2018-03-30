@@ -162,7 +162,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     private void pushConstant(IRConstant c) {
-        instr("ldc " + c.toString());
+        instr("ldc " + c.toJVMString());
     }
 
     private void getPrint() {

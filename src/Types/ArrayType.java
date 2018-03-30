@@ -40,7 +40,7 @@ public class ArrayType extends Type {
     }
 
     public String toJVMString() {
-        return "";
+        return "a";
     }
 
     @Override
