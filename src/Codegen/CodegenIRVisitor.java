@@ -32,11 +32,13 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
         }
 
         for (IRInstruction i: f.getInstructions()) {
-            i.accept(codegenIRInstructionVisitor);
             builder.append("\n");
+            i.accept(codegenIRInstructionVisitor);
         }
 
         int stackSize = codegenIRInstructionVisitor.getMaxStackSize();
+        stackSize += f.getTempFactory().getTempCount();
+
         printIndent(); printLimitLocals(f.getTempFactory().getTempCount());
         printIndent(); printLimitStack(stackSize); newLine();
         out.print(builder.toString());

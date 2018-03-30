@@ -1,6 +1,7 @@
 package Codegen;
 
 import IR.Instructions.*;
+import IR.Constants.*;
 import Types.*;
 
 public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void> {
@@ -23,10 +24,10 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
         if (StringType.check(t.getType())) {
         } else if (FloatType.check(t.getType())) {
-            instr("ldc 0.0");
+            pushConstant(new IRFloatConstant(0));
             store(t);
         } else {
-            instr("ldc 0");
+            pushConstant(new IRIntegerConstant(0));
             store(t);
         }
 
@@ -38,6 +39,10 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRConstantAssign i) {
+        stackSet(0, 1);
+        pushConstant(i.getConstant());
+        store(i.getOperand());
+
         return null;
     }
 
@@ -133,6 +138,10 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
     private void store(Temp t) {
         typeInstr(t, "store " + t.getNumber());
+    }
+
+    private void pushConstant(IRConstant c) {
+        instr("ldc " + c.toString());
     }
 
     private void getPrint() {
