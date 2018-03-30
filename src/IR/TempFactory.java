@@ -87,6 +87,10 @@ public class TempFactory {
         scopeLevel -= 1;
     }
 
+    public int getTempCount() {
+        return getAllTemps().size();
+    }
+
     public LinkedList<Temp> getAllTemps() {
         LinkedList<Temp> temps = new LinkedList<Temp>();
 

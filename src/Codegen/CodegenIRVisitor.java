@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import IR.IRFunction;
 import IR.IRProgram;
+import IR.Instructions.IRInstruction;
 
 public class CodegenIRVisitor implements IR.Visitor<Void> {
     private PrintStream out;
@@ -20,7 +21,20 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
         if (f.getName().equals("main")) out.print("__");
         out.print(f.getName());
         out.print(f.getSignature()); newLine();
+        forwardIndent();
 
+        StringBuilder builder = new StringBuilder();
+        Integer stackSize = 0;
+        CodegenIRInstructionVisitor codegenIRInstructionVisitor =
+            new CodegenIRInstructionVisitor(builder);
+        for (IRInstruction i: f.getInstructions()) {
+            stackSize += i.accept(codegenIRInstructionVisitor);
+        }
+
+        printIndent(); printLimitLocals(f.getTempFactory().getTempCount());
+        printIndent(); printLimitStack(stackSize); newLine();
+        out.print(builder.toString());
+        backIndent();
         out.print(".end method"); newLine();
 
         return null;
