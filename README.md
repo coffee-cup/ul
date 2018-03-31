@@ -20,7 +20,7 @@ make clean; make
 
 ## Running
 
-The compiler can be run against langauge files to generate [Jasmin assembler code](http://jasmin.sourceforge.net/). The generated `.j` files can be run through Jasmin to create `.class` files. The `.class` files can be run with `java`.
+The compiler can be run against langauge files to generate [Jasmin assembler code](http://jasmin.sourceforge.net/). The generated `.j` files can be run through Jasmin to create `.class` files. The `.class` files can be run with `java`. By default, a `.j` file with the same base name as the input file is generated.
 
 The built compiler is located in the `bin/` directory.
 
@@ -39,7 +39,7 @@ A small shell script has been created to make running unnamed language code easi
 
 ### Options
 
-- `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to a file with the same name as the input file (different extension).
+- `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to a file with the same name as the input file (different extension). Output can be sent to stdout if the outfile is `<stdout>`.
 - `-ir 1|0` IR generation mode. If `1` then the IR text will be generated to the file and sent to `outfile`. _(Default 0)_
 - `-p 1|0` Pretty print mode. If `1` then file will be pretty printed after type checking. _(Default 0)_
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html). _(Default 0)_
