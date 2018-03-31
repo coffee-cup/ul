@@ -91,6 +91,14 @@ public class TempFactory {
         return getAllTemps().size();
     }
 
+    public int getParamCount() {
+        int count = 0;
+        for (Temp t: getAllTemps()) {
+            if (t.isParam()) count += 1;
+        }
+        return count;
+    }
+
     public LinkedList<Temp> getAllTemps() {
         LinkedList<Temp> temps = new LinkedList<Temp>();
 

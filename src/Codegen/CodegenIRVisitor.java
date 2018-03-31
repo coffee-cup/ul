@@ -48,7 +48,7 @@ public class CodegenIRVisitor implements IR.Visitor<Void> {
         }
 
         int stackSize = codegenIRInstructionVisitor.getMaxStackSize();
-        stackSize += f.getTempFactory().getTempCount();
+        stackSize += f.getTempFactory().getParamCount();
 
         printIndent(); printLimitLocals(f.getTempFactory().getTempCount());
         printIndent(); printLimitStack(stackSize); newLine();

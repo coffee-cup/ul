@@ -115,6 +115,8 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRArrayReference i) {
+        stackSet(0, 2);
+
         load(i.getArrayTemp());
         load(i.getRefTemp());
         typeInstr(i.getDest(), "aload", false);
@@ -190,7 +192,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
             store(i.getTemp());
         }
 
-        stackSet(i.getArgs().size(), i.getTemp() == null ? 0 : 1);
+        stackSet(i.getTemp() == null ? 0 : 1, i.getArgs().size());
 
         return null;
     }
