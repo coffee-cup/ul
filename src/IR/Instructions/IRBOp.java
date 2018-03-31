@@ -5,13 +5,8 @@ public enum IRBOp {
     SUB,
     MULT,
     DIV,
-    REM,
     LESSTHAN,
-    LESSTHANEQ,
-    DOUBEQ,
-    NOTEQ,
-    GREATERTHANEQ,
-    GREATERTHAN;
+    DOUBEQ;
 
     @Override
     public String toString() {
@@ -20,13 +15,28 @@ public enum IRBOp {
         case SUB: return "-";
         case MULT: return "*";
         case DIV: return "/";
-        case REM: return "rem";
         case LESSTHAN: return "<";
-        case LESSTHANEQ: return "<=";
         case DOUBEQ: return "==";
-        case NOTEQ: return "!=";
-        case GREATERTHANEQ: return ">=";
-        case GREATERTHAN: return ">";
+        }
+        return "";
+    }
+
+    public boolean hasJVMInstr() {
+        switch(this) {
+        case ADD: return true;
+        case SUB: return true;
+        case MULT: return true;
+        case DIV: return true;
+        }
+        return false;
+    }
+
+    public String toJVMInstr() {
+        switch(this) {
+        case ADD: return "add";
+        case SUB: return "sub";
+        case MULT: return "mul";
+        case DIV: return "div";
         }
         return "";
     }

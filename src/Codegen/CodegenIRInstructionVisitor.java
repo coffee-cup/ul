@@ -9,6 +9,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     private String className;
     private int currentStackSize;
     private int maxStackSize;
+    private int labelNum;
 
     public CodegenIRInstructionVisitor(StringBuilder out, String className) {
         this.out = out;
@@ -16,6 +17,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
         currentStackSize = 0;
         maxStackSize = 0;
+        labelNum = 0;
     }
 
     public Void visit(Temp t) {
@@ -57,7 +59,40 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRBinaryOp i) {
+        if (!StringType.check(i.getDest().getType())) {
+            stackSet(0, 2);
+            load(i.getLeftOperand());
+            load(i.getRightOperand());
+
+            if (i.getOperation().hasJVMInstr()) {
+                typeInstr(i.getDest(), i.getOperation().toJVMInstr());
+                store(i.getDest());
+            } else {
+                if (i.getOperation() == IRBOp.LESSTHAN) {
+                    binOpIf("lt", i.getDest());
+                } else if (i.getOperation() == IRBOp.DOUBEQ) {
+                    binOpIf("eq", i.getDest());
+                }
+            }
+        } else {
+            
+        }
+
         return null;
+    }
+
+    private void binOpIf(String op, Temp dest) {
+        String l1 = freshLabel();
+        String l2 = freshLabel();
+
+        typeInstr(dest, "sub");
+        instr("if" + op + " " + l1);
+        pushConstant(new IRIntegerConstant(0));
+        gotoInstr(l2);
+        label(l1);
+        pushConstant(new IRIntegerConstant(1));
+        label(l2);
+        store(dest);
     }
 
     public Void visit(IRArrayCreation i) {
@@ -132,13 +167,13 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRLabel i) {
-        out.append("L" + i.getNumber() + ":\n");
+        label("L" + i.getNumber());
 
         return null;
     }
 
     public Void visit(IRGoto i) {
-        instr("goto L" + i.getJump().getNumber());
+        gotoInstr("L" + i.getJump().getNumber());
 
         return null;
     }
@@ -178,6 +213,19 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
     private void getPrint() {
         instr("getstatic java/lang/System/out Ljava/io/PrintStream;");
+    }
+
+    private String freshLabel() {
+        labelNum += 1;
+        return "L_" + (labelNum - 1);
+    }
+
+    private void label(String l) {
+        out.append(l + ":\n");
+    }
+
+    private void gotoInstr(String l) {
+        instr("goto " + l);
     }
 
     private void typeInstr(Temp t, String s) {
