@@ -93,7 +93,6 @@ do
         compile_error $tmp1
     fi
 
-
     CMP=$(cmp $TMP1 $TMP2)
     if [ "$CMP" != "" ]
     then
