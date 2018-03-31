@@ -44,6 +44,11 @@ public class ArrayType extends Type {
     }
 
     @Override
+    public String toJVMString() {
+        return "[" + getArrayOfType().toJVMString();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
 

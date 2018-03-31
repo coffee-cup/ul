@@ -146,7 +146,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     public Void visit(IRArrayCreation i) {
         stackSet(0, 1);
 
-        pushConstant(new IRIntegerConstant(2));
+        pushConstant(new IRIntegerConstant(i.getArr().getSize()));
         Type typeOf = i.getArr().getArrayOfType();
         String stringType = typeOf.toString();
         if (StringType.check(typeOf)) {
