@@ -62,6 +62,7 @@ do
         exit 1
     fi
 
+    # Compare output to known correct output
     CMP=$(cmp $OUTTMP $CORRECTOUT)
     if [ "$CMP" != "" ]; then
         echo "$NAME - Output is not correct"
