@@ -9,11 +9,19 @@ int fib(int n) {
   }
 }
 
-void main() {
-  int x;
-  x = 19;
+void print_fib(int x) {
   print "The ";
   print x;
   print "th Fibonacci number is ";
   println fib(x);
+}
+
+void main() {
+  int x;
+  x = 0;
+
+  while (x < 10) {
+    print_fib(x);
+    x = x + 1;
+  }
 }

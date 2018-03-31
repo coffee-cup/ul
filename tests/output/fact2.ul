@@ -1,0 +1,22 @@
+int factorial(int n) {
+  if (n == 1) {
+    return 1;
+  } else {
+    return n * factorial(n - 1);
+  }
+}
+
+void main() {
+  int x;
+  x = 1;
+
+  while (x < 10) {
+    print "The factorial of ";
+    print x;
+    print " is ";
+    println factorial(x);
+
+    x = x + 1;
+  }
+}
+

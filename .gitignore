@@ -196,3 +196,4 @@ ulGrammar.tokens
 
 bin/
 dot.*
+*.j
