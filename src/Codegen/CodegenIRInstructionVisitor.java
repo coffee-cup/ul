@@ -63,6 +63,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     public Void visit(IRBinaryOp i) {
         if (!StringType.check(i.getDest().getType())) {
             stackSet(0, 2);
+
             load(i.getLeftOperand());
             load(i.getRightOperand());
 
@@ -76,8 +77,18 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
                     binOpIf("eq", i.getDest());
                 }
             }
-        } else {
-            
+        } else if (StringType.check(i.getDest().getType()) && i.getOperation() == IRBOp.ADD) {
+            stackSet(0, 3);
+
+            instr("new java/lang/StringBuffer");
+            instr("dup");
+            instr("invokenonvirtual java/lang/StringBuffer/<init>()V");
+            load(i.getLeftOperand());
+            instr("invokevirtual java/lang/StringBuffer/append(Ljava/lang/String;)Ljava/lang/StringBuffer;");
+            load(i.getRightOperand());
+            instr("invokevirtual java/lang/StringBuffer/append(Ljava/lang/String;)Ljava/lang/StringBuffer;");
+            instr("invokevirtual java/lang/StringBuffer/toString()Ljava/lang/String;");
+            store(i.getDest());
         }
 
         return null;
