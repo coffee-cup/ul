@@ -57,11 +57,24 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRUnaryOp i) {
+        stackSet(0, 1);
+
+        IRUOp op = i.getOperation();
+        load(i.getSource());
+        if (op == IRUOp.INVERT) {
+            pushConstant(new IRIntegerConstant(1));
+            typeInstr(i.getSource(), "xor");
+            store(i.getDest());
+        } else if (op == IRUOp.TOFLOAT) {
+            instr("i2f");
+            store(i.getDest());
+        }
+
         return null;
     }
 
     public Void visit(IRBinaryOp i) {
-        if (!StringType.check(i.getDest().getType())) {
+        if (!StringType.check(i.getLeftOperand().getType())) {
             stackSet(0, 2);
 
             load(i.getLeftOperand());
@@ -71,13 +84,10 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
                 typeInstr(i.getDest(), i.getOperation().toJVMInstr());
                 store(i.getDest());
             } else {
-                if (i.getOperation() == IRBOp.LESSTHAN) {
-                    binOpIf("lt", i.getDest());
-                } else if (i.getOperation() == IRBOp.DOUBEQ) {
-                    binOpIf("eq", i.getDest());
-                }
+                String op = i.getOperation() == IRBOp.LESSTHAN ? "lt" : "eq";
+                binOpIf(op, i.getDest(), i.getLeftOperand().getType());
             }
-        } else if (StringType.check(i.getDest().getType()) && i.getOperation() == IRBOp.ADD) {
+        } else if (i.getOperation() == IRBOp.ADD) {
             stackSet(0, 3);
 
             instr("new java/lang/StringBuffer");
@@ -89,16 +99,41 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
             instr("invokevirtual java/lang/StringBuffer/append(Ljava/lang/String;)Ljava/lang/StringBuffer;");
             instr("invokevirtual java/lang/StringBuffer/toString()Ljava/lang/String;");
             store(i.getDest());
+        } else if (i.getOperation() == IRBOp.DOUBEQ || i.getOperation() == IRBOp.LESSTHAN) {
+            stackSet(0, 2);
+
+            load(i.getLeftOperand());
+            load(i.getRightOperand());
+            String op = i.getOperation() == IRBOp.LESSTHAN ? "lt" : "eq";
+            stringBinOpIf(op, i.getDest());
         }
 
         return null;
     }
 
-    private void binOpIf(String op, Temp dest) {
+    private void stringBinOpIf(String op, Temp dest) {
         String l1 = freshLabel();
         String l2 = freshLabel();
 
-        typeInstr(dest, "sub");
+        instr("invokevirtual java/lang/String/compareTo(Ljava/lang/String;)I");
+        instr("if" + op + " " + l1);
+        pushConstant(new IRIntegerConstant(0));
+        gotoInstr(l2);
+        label(l1);
+        pushConstant(new IRIntegerConstant(1));
+        label(l2);
+        store(dest);
+    }
+
+    private void binOpIf(String op, Temp dest, Type opType) {
+        String l1 = freshLabel();
+        String l2 = freshLabel();
+
+        if (FloatType.check(opType)) {
+            typeInstr(opType, "cmpg");
+        } else {
+            typeInstr(dest, "sub");
+        }
         instr("if" + op + " " + l1);
         pushConstant(new IRIntegerConstant(0));
         gotoInstr(l2);
@@ -221,6 +256,11 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRIfStatement i) {
+        stackSet(0, 1);
+
+        load(i.getCond());
+        instr("ifne L" + i.getJump().getNumber());
+
         return null;
     }
 
