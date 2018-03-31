@@ -88,7 +88,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
                 binOpIf(op, i.getDest(), i.getLeftOperand().getType());
             }
         } else if (i.getOperation() == IRBOp.ADD) {
-            stackSet(0, 3);
+            stackSet(0, 6);
 
             instr("new java/lang/StringBuffer");
             instr("dup");
@@ -183,7 +183,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRPrint i) {
-        stackSet(0, 1);
+        stackSet(0, 2);
 
         getPrint();
         load(i.getTemp());
@@ -195,7 +195,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRPrintln i) {
-        stackSet(0, 1);
+        stackSet(0, 2);
 
         getPrint();
         load(i.getTemp());
