@@ -235,8 +235,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
             new ArrayList<Class<? extends Type>>(Arrays.asList(IntegerType.class,
                                                                FloatType.class,
                                                                CharType.class,
-                                                               StringType.class,
-                                                               BooleanType.class));
+                                                               StringType.class));
         return checkBinaryExpression(validTypes, e, BooleanType.getInstance());
     }
 
