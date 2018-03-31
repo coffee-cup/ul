@@ -115,10 +115,17 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRArrayReference i) {
+        load(i.getArrayTemp());
+        load(i.getRefTemp());
+        typeInstr(i.getDest(), "aload", false);
+        store(i.getDest());
+
         return null;
     }
 
     public Void visit(IRArrayAssign i) {
+        stackSet(0, 3);
+
         load(i.getDest());
         load(i.getRefTemp());
         load(i.getAssignTemp());
@@ -134,7 +141,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
         load(i.getTemp());
 
         String funcSignature = "(" + i.getTemp().getType().toJVMString() + ")V";
-        instr("invokevirtual java/io/PrintStream/print(" + funcSignature);
+        instr("invokevirtual java/io/PrintStream/print" + funcSignature);
 
         return null;
     }
