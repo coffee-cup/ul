@@ -26,7 +26,9 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
             return null;
         }
 
-        if (StringType.check(t.getType())) {
+        if (StringType.check(t.getType()) || ArrayType.check(t.getType())) {
+            typeInstr(t, "const_null");
+            store(t);
         } else if (FloatType.check(t.getType())) {
             pushConstant(new IRFloatConstant(0));
             store(t);
@@ -96,6 +98,19 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRArrayCreation i) {
+        stackSet(0, 1);
+
+        pushConstant(new IRIntegerConstant(2));
+        Type typeOf = i.getArr().getArrayOfType();
+        String stringType = typeOf.toString();
+        if (StringType.check(typeOf)) {
+            stringType = "java/lang/String";
+            typeInstr(typeOf, "newarray " + stringType);
+        } else {
+            instr("newarray " + stringType);
+        }
+        store(i.getDest());
+
         return null;
     }
 
@@ -109,6 +124,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
     public Void visit(IRPrint i) {
         stackSet(0, 1);
+
         getPrint();
         load(i.getTemp());
 
@@ -120,6 +136,7 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
 
     public Void visit(IRPrintln i) {
         stackSet(0, 1);
+
         getPrint();
         load(i.getTemp());
 
@@ -228,8 +245,12 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
         instr("goto " + l);
     }
 
+    private void typeInstr(Type t, String s) {
+        instr(t.toJVMCode() + s);
+    }
+
     private void typeInstr(Temp t, String s) {
-        instr(t.getType().toJVMCode() + s);
+        typeInstr(t.getType(), s);
     }
 
     private void instr(String s) {
