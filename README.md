@@ -20,19 +20,27 @@ make clean; make
 
 ## Running
 
-The compiler can be run against language files to generate IR code for them. By default, IR will be sent to standard out. Options can be specified to change the default behaviour, such as specifying a file to output the IR to.
+The compiler can be run against langauge files to generate [Jasmin assembler code](http://jasmin.sourceforge.net/). The generated `.j` files can be run through Jasmin to create `.class` files. The `.class` files can be run with `java`.
 
 The built compiler is located in the `bin/` directory.
 
 ```sh
 cd bin/
 java Compiler path/to/file.ul
+java jasmin.Main file.j
+java file
+```
+
+A small shell script has been created to make running unnamed language code easier. In the project root directory you can use the `run.sh` to compile and run an unnamed language file.
+
+```sh
+./run.sh file.ul
 ```
 
 ### Options
 
-- `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to stdout.
-- `-ir 1|0` IR generation mode. If `1` then the IR text will be generated to the file and sent to `outfile`. _(Default 1)_
+- `-o outfile` Specify a file to save the pretty printed output or dot mode output. If no file is given, output is sent to a file with the same name as the input file (different extension).
+- `-ir 1|0` IR generation mode. If `1` then the IR text will be generated to the file and sent to `outfile`. _(Default 0)_
 - `-p 1|0` Pretty print mode. If `1` then file will be pretty printed after type checking. _(Default 0)_
 - `-d 1|0` Dot mode. If `1` then the output is in the [DOT language](https://www.graphviz.org/doc/info/lang.html). _(Default 0)_
 
@@ -45,9 +53,96 @@ There are a bunch of .ul language files that can be tested against the compiler.
 ./test.sh
 ```
 
-The latest provided tests are in `accept/provided` for all `*_valid.ul` files and `reject/provided` for all `*_invalid.ul` files.
-
 `.ul` files in the `tests/output` directory have a corresponding `.txt` file. When the tests are run, the IR is sent through `./codegen` and `jasmin`. The output of the Java `.class` file is compared to the `.txt` file. If they are different then an error is thrown. These tests allow me to ensure the behaviour of the programs the compiler generates is expected.
+
+## Examples
+
+### Fibonacci Numbers
+
+```c
+// fib.ul
+int fib(int n) {
+  if (n == 0) {
+    return 0;
+  }
+  if (n == 1) {
+    return 1;
+  } else {
+    return (fib(n - 1) + fib(n - 2));
+  }
+}
+
+void print_fib(int x) {
+  print "The ";
+  print x;
+  print "th Fibonacci number is ";
+  println fib(x);
+}
+
+void main() {
+  int x;
+  x = 0;
+
+  while (x < 10) {
+    print_fib(x);
+    x = x + 1;
+  }
+}
+```
+
+```sh
+$ ./run.sh fib.ul
+The 0th Fibonacci number is 0
+The 1th Fibonacci number is 1
+The 2th Fibonacci number is 1
+The 3th Fibonacci number is 2
+The 4th Fibonacci number is 3
+The 5th Fibonacci number is 5
+The 6th Fibonacci number is 8
+The 7th Fibonacci number is 13
+The 8th Fibonacci number is 21
+The 9th Fibonacci number is 34
+```
+
+### Factorial
+
+```c
+// fact.ul
+int factorial(int n) {
+  if (n == 1) {
+    return 1;
+  } else {
+    return n * factorial(n - 1);
+  }
+}
+
+void main() {
+  int x;
+  x = 1;
+
+  while (x < 10) {
+    print "The factorial of ";
+    print x;
+    print " is ";
+    println factorial(x);
+
+    x = x + 1;
+  }
+}
+```
+
+```
+$ ./run.sh fact.ul
+The factorial of 1 is 1
+The factorial of 2 is 2
+The factorial of 3 is 6
+The factorial of 4 is 24
+The factorial of 5 is 120
+The factorial of 6 is 720
+The factorial of 7 is 5040
+The factorial of 8 is 40320
+The factorial of 9 is 362880
+```
 
 ## Differences From Default Spec
 
@@ -114,76 +209,6 @@ void foo(int x) {}
 void main() {}
 ```
 
-## Example
-
-This following code finds the factorial of 8.
-
-```c
-int factorial (int n) {
-  if (n == 1) {
-    return 1;
-  } else {
-    return n*factorial(n-1);
-  }
-}
-
-void main () {
-  print "The factorial of 8 is ";
-  println factorial(8);
-}
-```
-
-The following AST is produced.
-
-![factorial dot](https://user-images.githubusercontent.com/3044853/36663989-3a39564e-1a98-11e8-8323-7c2364c1a24b.png)
-
-The following IR is generanted
-
-```ir
-PROG test
-FUNC factorial (I)I
-{
-    TEMP 0:I;
-    TEMP 1:I;
-    TEMP 2:Z;
-    TEMP 3:I;
-    TEMP 4:I;
-    TEMP 5:I;
-    TEMP 6:I;
-    TEMP 7:I;
-
-        T1 := 1;
-        T2 := T0 I== T1;
-        T2 := Z! T2;
-        IF T2 GOTO L0;
-        T3 := 1;
-        RETURN T3;
-        GOTO L1;
-    L0:;
-        T5 := 1;
-        T6 := T0 I- T5;
-        T4 := CALL factorial(T6);
-        T7 := T0 I* T4;
-        RETURN T7;
-    L1:;
-        RETURN;
-}
-
-FUNC main ()V
-{
-    TEMP 0:U;
-    TEMP 1:I;
-    TEMP 2:I;
-
-        T0 := "The factorial of 8 is ";
-        PRINTU T0;
-        T2 := 8;
-        T1 := CALL factorial(T2);
-        PRINTLNI T1;
-        RETURN;
-}
-```
-
 ## Dot Graphs
 
 [Dot language](https://www.graphviz.org/doc/info/lang.html) programs can be produced with the `-d 1` option to the compiler.
@@ -226,5 +251,4 @@ All third party code is referenced in the LICENSES file.
 - [x] Syntax analysis
 - [x] Type checking
 - [x] Intermediate code generation
-- [ ] Machine code generation
-- [ ] Assembly and linking
+- [x] JVM code generation
