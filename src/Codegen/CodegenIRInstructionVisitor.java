@@ -119,6 +119,11 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
     }
 
     public Void visit(IRArrayAssign i) {
+        load(i.getDest());
+        load(i.getRefTemp());
+        load(i.getAssignTemp());
+        typeInstr(i.getAssignTemp(), "astore", false);
+
         return null;
     }
 
@@ -245,8 +250,17 @@ public class CodegenIRInstructionVisitor implements IR.Instructions.Visitor<Void
         instr("goto " + l);
     }
 
+    private void typeInstr(Type t, String s, boolean subcode) {
+        String stringCode = subcode ? t.toJVMSubCode() : t.toJVMCode();
+        instr(stringCode + s);
+    }
+
+    private void typeInstr(Temp t, String s, boolean subcode) {
+        typeInstr(t.getType(), s, subcode);
+    }
+
     private void typeInstr(Type t, String s) {
-        instr(t.toJVMCode() + s);
+        typeInstr(t, s, true);
     }
 
     private void typeInstr(Temp t, String s) {

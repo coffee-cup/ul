@@ -28,7 +28,7 @@ public class FloatType extends Type {
         return "F";
     }
 
-    public String toJVMCode() {
+    public String toJVMSubCode() {
         return "f";
     }
 }

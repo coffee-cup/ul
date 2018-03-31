@@ -24,7 +24,7 @@ public class StringType extends Type {
         return "U";
     }
 
-    public String toJVMCode() {
+    public String toJVMSubCode() {
         return "a";
     }
 

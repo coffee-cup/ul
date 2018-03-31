@@ -28,7 +28,7 @@ public class IntegerType extends Type {
         return "I";
     }
 
-    public String toJVMCode() {
+    public String toJVMSubCode() {
         return "i";
     }
 }

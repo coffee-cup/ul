@@ -24,7 +24,11 @@ public class BooleanType extends Type {
         return "Z";
     }
 
-    public String toJVMCode() {
+    public String toJVMSubCode() {
         return "i";
+    }
+
+    public String toJVMCode() {
+        return "b";
     }
 }

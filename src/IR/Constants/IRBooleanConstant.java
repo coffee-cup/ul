@@ -14,4 +14,9 @@ public class IRBooleanConstant extends IRConstant {
     public String toString() {
         return value ? "TRUE" : "FALSE";
     }
+
+    @Override
+    public String toJVMString() {
+        return Integer.toString(value ? 1 : 0);
+    }
 }

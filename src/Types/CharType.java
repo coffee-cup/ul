@@ -24,7 +24,11 @@ public class CharType extends Type {
         return "C";
     }
 
-    public String toJVMCode() {
+    public String toJVMSubCode() {
         return "i";
+    }
+
+    public String toJVMCode() {
+        return "c";
     }
 }
