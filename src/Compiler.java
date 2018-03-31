@@ -56,10 +56,6 @@ public class Compiler {
         p.accept(irVisitor);
         IRProgram irProgram = irVisitor.getIRProgram();
 
-        // Codegen generator
-        CodegenIRVisitor codegenIRVisitor = new CodegenIRVisitor(outStream, options.infile);
-        irProgram.accept(codegenIRVisitor);
-
         // If silent, we just want to compile without producing any output
         if (!options.silent) {
             if (options.irGenerate) {
@@ -74,6 +70,10 @@ public class Compiler {
                 // Dot printer
                 DotVisitor dotVisitor = new DotVisitor(outStream);
                 p.accept(dotVisitor);
+            } else {
+                // Codegen generator
+                CodegenIRVisitor codegenIRVisitor = new CodegenIRVisitor(outStream, nameExt);
+                irProgram.accept(codegenIRVisitor);
             }
         }
     }

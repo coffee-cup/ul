@@ -43,14 +43,9 @@ do
 
     echo "Testing output - $f"
 
-    # Create the ir file
-    if ! java Compiler -ir 1 -o $IRTMP $f; then
-        compile_error $f
-    fi
-
     # Create the jasmine file
-    if ! ../codegen --file=$IRTMP > $JTMP; then
-        codegen_error $IRTMP
+    if ! java Compiler -o $JTMP $f; then
+        compile_error $f
     fi
 
     # Create the .class file
@@ -61,7 +56,12 @@ do
     fi
 
     # Run the .class file
-    java -cp $TMPDIR $NAME > $OUTTMP
+    if ! java -cp $TMPDIR $NAME > $OUTTMP; then
+        echo "Java failed! - $NAME"
+        echo $ERROR_STR
+        exit 1
+    fi
+
     CMP=$(cmp $OUTTMP $CORRECTOUT)
     if [ "$CMP" != "" ]; then
         echo "$NAME - Output is not correct"
