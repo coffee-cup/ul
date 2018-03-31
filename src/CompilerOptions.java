@@ -5,7 +5,7 @@ import ParseCmd.ParseCmd;
 
 public class CompilerOptions {
     public String infile;
-    public String outfile = "<stdout>";
+    public String outfile = "<file>";
     public boolean irGenerate = false;
     public boolean prettyPrint = false;
     public boolean dotFormat = false;
@@ -27,7 +27,7 @@ public class CompilerOptions {
         String usage = "usage: [-o outfile] filename";
         ParseCmd cmd = new ParseCmd.Builder()
             .help(usage)
-            .parm("-o", "<stdout>")
+            .parm("-o", "<file>")
             .parm("-p", "0")
                 .rex("^[01]{1}$")
                 .msg("enter 0 or 1; other values are invalid")

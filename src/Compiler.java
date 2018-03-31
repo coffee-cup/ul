@@ -38,18 +38,25 @@ public class Compiler {
 
         Program p = parser.program();
 
+        // Get just the filename without path or extension
+        String nameExt = new File(options.infile).getName();
+        String name = nameExt.substring(0, nameExt.lastIndexOf('.'));
+
         PrintStream outStream = System.out;
-        if (options.outfile != "<stdout>") {
+        if (options.outfile == "<file>") {
+            String ext = "j";
+            if (options.irGenerate) ext = "ir";
+            else if (options.prettyPrint) ext = "_ul";
+            else if (options.dotFormat) ext = "dot";
+
+            outStream = new PrintStream(name + "." + ext);
+        } else if (options.outfile != "<stdout>") {
             outStream = new PrintStream(new File(options.outfile));
         }
 
         // Type checker
         TypeCheckVisitor typeCheckVisitor = new TypeCheckVisitor();
         p.accept(typeCheckVisitor);
-
-        // Get just the filename without path or extension
-        String nameExt = new File(options.infile).getName();
-        String name = nameExt.substring(0, nameExt.lastIndexOf('.'));
 
         // IR generator
         IRVisitor irVisitor = new IRVisitor(name);
